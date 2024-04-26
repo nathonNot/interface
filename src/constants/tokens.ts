@@ -424,6 +424,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WBNB',
     'Wrapped BNB'
   ),
+  [SupportedChainId.BITLAYER_TESTNET]: new Token(
+    SupportedChainId.BITLAYER_TESTNET,
+    '0x3e57d6946f893314324C975AA9CEBBdF3232967E',
+    18,
+    'WBTC',
+    'Wrapped BTC'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is SupportedChainId.CELO | SupportedChainId.CELO_ALFAJORES {
