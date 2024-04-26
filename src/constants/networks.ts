@@ -89,6 +89,15 @@ export const FALLBACK_URLS = {
     'https://bsc-dataseed4.defibit.io',
     'https://rpc.ankr.com/bsc',
   ],
+  [SupportedChainId.BITLAYER]: [
+    // "Safe" URLs
+    'https://rpc.bitlayer.org',
+    'https://rpc.ankr.com/bitlayer',
+  ],
+  [SupportedChainId.BITLAYER_TESTNET]: [
+    // "Safe" URLs
+    'https://testnet-rpc.bitlayer.org',
+  ],
 }
 
 /**
@@ -128,4 +137,6 @@ export const RPC_URLS = {
   [SupportedChainId.CELO]: FALLBACK_URLS[SupportedChainId.CELO],
   [SupportedChainId.CELO_ALFAJORES]: FALLBACK_URLS[SupportedChainId.CELO_ALFAJORES],
   [SupportedChainId.BNB]: [QUICKNODE_RPC_URL, ...FALLBACK_URLS[SupportedChainId.BNB]],
+  [SupportedChainId.BITLAYER]: [FALLBACK_URLS[SupportedChainId.BITLAYER]],
+  [SupportedChainId.BITLAYER_TESTNET]: [FALLBACK_URLS[SupportedChainId.BITLAYER_TESTNET]],
 }

@@ -27,6 +27,8 @@ const NETWORK_SELECTOR_CHAINS = [
   SupportedChainId.ARBITRUM_ONE,
   SupportedChainId.CELO,
   SupportedChainId.BNB,
+  SupportedChainId.BITLAYER,
+  SupportedChainId.BITLAYER_TESTNET,
 ]
 
 interface ChainSelectorProps {
