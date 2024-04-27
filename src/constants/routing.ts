@@ -50,6 +50,7 @@ import {
   WETH_POLYGON,
   WETH_POLYGON_MUMBAI,
   WRAPPED_NATIVE_CURRENCY,
+  USDT_BITLAYERTESTNET,
 } from './tokens'
 
 type ChainTokenList = {
@@ -106,7 +107,10 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     CAKE_BSC,
   ],
   [SupportedChainId.CELO]: [CUSD_CELO, CEUR_CELO, CMC02_CELO, PORTAL_USDC_CELO, PORTAL_ETH_CELO],
+  [SupportedChainId.BITLAYER]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER]],
+  [SupportedChainId.BITLAYER_TESTNET]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER_TESTNET], USDT_BITLAYERTESTNET],
 }
+
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
   [SupportedChainId.MAINNET]: {
     '0xF16E4d813f4DcfDe4c5b44f305c908742De84eF0': [ETH2X_FLI],
@@ -204,6 +208,13 @@ export const COMMON_BASES: ChainCurrencyList = {
     BTC_BSC,
     BUSD_BSC,
   ],
+  [SupportedChainId.BITLAYER]: [
+    nativeOnChain(SupportedChainId.BITLAYER),
+  ],
+  [SupportedChainId.BITLAYER_TESTNET]: [
+    nativeOnChain(SupportedChainId.BITLAYER_TESTNET),
+    USDT_BITLAYERTESTNET,
+  ],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -224,6 +235,13 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     BTC_BSC,
     BUSD_BSC,
     ETH_BSC,
+  ],
+  [SupportedChainId.BITLAYER]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER],
+  ],
+  [SupportedChainId.BITLAYER_TESTNET]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER_TESTNET],
+    USDT_BITLAYERTESTNET,
   ],
 }
 export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {

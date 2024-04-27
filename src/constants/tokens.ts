@@ -352,6 +352,14 @@ export const BUSD_BSC = new Token(
   'BUSD'
 )
 
+export const USDT_BITLAYERTESTNET = new Token(
+  SupportedChainId.BITLAYER_TESTNET,
+  '0xab40Fe1DaE842B209599269B8DafB0c54a743438',
+  18,
+  'USDT',
+  'USDT'
+)
+
 export const DAI_BSC = new Token(SupportedChainId.BNB, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'DAI')
 
 export const UNI: { [chainId: number]: Token } = {
@@ -423,6 +431,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     18,
     'WBNB',
     'Wrapped BNB'
+  ),
+  [SupportedChainId.BITLAYER]: new Token(
+    SupportedChainId.BITLAYER,
+    '0x3e57d6946f893314324C975AA9CEBBdF3232967E',
+    18,
+    'WBTC',
+    'Wrapped BTC'
   ),
   [SupportedChainId.BITLAYER_TESTNET]: new Token(
     SupportedChainId.BITLAYER_TESTNET,
@@ -535,5 +550,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in SupportedCha
     [SupportedChainId.CELO]: PORTAL_USDC_CELO.address,
     [SupportedChainId.CELO_ALFAJORES]: PORTAL_USDC_CELO.address,
     [SupportedChainId.GOERLI]: USDC_GOERLI.address,
+    [SupportedChainId.BITLAYER]: USDC_GOERLI.address,
   },
 }
