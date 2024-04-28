@@ -1,7 +1,8 @@
 name: Release
 on:
-  schedule:
-    - cron: '0 12 * * 1-4' # every day 12:00 UTC Monday-Thursday
+  push:
+    branches:
+      - cf-page
   # manual trigger
   workflow_dispatch:
 
@@ -50,54 +51,54 @@ jobs:
       - run: yarn prepare
       - run: yarn build
 
-      - name: Pin to IPFS
-        id: pinata
-        uses: anantaramdas/ipfs-pinata-deploy-action@39bbda1ce1fe24c69c6f57861b8038278d53688d
-        with:
-          pin-name: Uniswap ${{ needs.tag.outputs.new_tag }}
-          path: './build'
-          pinata-api-key: ${{ secrets.PINATA_API_KEY }}
-          pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET_KEY }}
+      # - name: Pin to IPFS
+      #   id: pinata
+      #   uses: anantaramdas/ipfs-pinata-deploy-action@39bbda1ce1fe24c69c6f57861b8038278d53688d
+      #   with:
+      #     pin-name: Uniswap ${{ needs.tag.outputs.new_tag }}
+      #     path: './build'
+      #     pinata-api-key: ${{ secrets.PINATA_API_KEY }}
+      #     pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET_KEY }}
 
-      - name: Pin to Crust
-        uses: crustio/ipfs-crust-action@v2.0.3
-        continue-on-error: true
-        timeout-minutes: 2
-        with:
-          cid: ${{ steps.pinata.outputs.hash }}
-          seeds: ${{ secrets.CRUST_SEEDS }}
+      # - name: Pin to Crust
+      #   uses: crustio/ipfs-crust-action@v2.0.3
+      #   continue-on-error: true
+      #   timeout-minutes: 2
+      #   with:
+      #     cid: ${{ steps.pinata.outputs.hash }}
+      #     seeds: ${{ secrets.CRUST_SEEDS }}
 
-      - name: Convert CIDv0 to CIDv1
-        id: convert-cidv0
-        uses: uniswap/convert-cidv0-cidv1@v1.0.0
-        with:
-          cidv0: ${{ steps.pinata.outputs.hash }}
+      # - name: Convert CIDv0 to CIDv1
+      #   id: convert-cidv0
+      #   uses: uniswap/convert-cidv0-cidv1@v1.0.0
+      #   with:
+      #     cidv0: ${{ steps.pinata.outputs.hash }}
 
-      - name: Release
-        uses: actions/create-release@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ needs.tag.outputs.new_tag }}
-          release_name: Release ${{ needs.tag.outputs.new_tag }}
-          body: |
-            IPFS hash of the deployment:
-            - CIDv0: `${{ steps.pinata.outputs.hash }}`
-            - CIDv1: `${{ steps.convert-cidv0.outputs.cidv1 }}`
+      # - name: Release
+      #   uses: actions/create-release@v1.1.0
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ needs.tag.outputs.new_tag }}
+      #     release_name: Release ${{ needs.tag.outputs.new_tag }}
+      #     body: |
+      #       IPFS hash of the deployment:
+      #       - CIDv0: `${{ steps.pinata.outputs.hash }}`
+      #       - CIDv1: `${{ steps.convert-cidv0.outputs.cidv1 }}`
 
-            The latest release is always accessible via our alias to the Cloudflare IPFS gateway at [app.uniswap.org](https://app.uniswap.org).
+      #       The latest release is always accessible via our alias to the Cloudflare IPFS gateway at [app.uniswap.org](https://app.uniswap.org).
 
-            You can also access the Uniswap Interface directly from an IPFS gateway.
-            **BEWARE**: The Uniswap interface uses [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to remember your settings, such as which tokens you have imported.
-            **You should always use an IPFS gateway that enforces origin separation**, or our alias to the latest release at [app.uniswap.org](https://app.uniswap.org).
-            Your Uniswap settings are never remembered across different URLs.
+      #       You can also access the Uniswap Interface directly from an IPFS gateway.
+      #       **BEWARE**: The Uniswap interface uses [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to remember your settings, such as which tokens you have imported.
+      #       **You should always use an IPFS gateway that enforces origin separation**, or our alias to the latest release at [app.uniswap.org](https://app.uniswap.org).
+      #       Your Uniswap settings are never remembered across different URLs.
 
-            IPFS gateways:
-            - https://${{ steps.convert-cidv0.outputs.cidv1 }}.ipfs.dweb.link/
-            - https://${{ steps.convert-cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/
-            - [ipfs://${{ steps.pinata.outputs.hash }}/](ipfs://${{ steps.pinata.outputs.hash }}/)
+      #       IPFS gateways:
+      #       - https://${{ steps.convert-cidv0.outputs.cidv1 }}.ipfs.dweb.link/
+      #       - https://${{ steps.convert-cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/
+      #       - [ipfs://${{ steps.pinata.outputs.hash }}/](ipfs://${{ steps.pinata.outputs.hash }}/)
 
-            ${{ needs.tag.outputs.changelog }}
+      #       ${{ needs.tag.outputs.changelog }}
 
       - name: Setup node@16 (required by Cloudflare Pages)
         uses: actions/setup-node@v3
@@ -113,14 +114,14 @@ jobs:
           directory: build
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload source maps to Sentry
-        uses: getsentry/action-release@bd5f874fcda966ba48139b0140fb3ec0cb3aabdd
-        continue-on-error: true
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          sourcemaps: './build/static/js'
-          url_prefix: '~/static/js'
+      # - name: Upload source maps to Sentry
+      #   uses: getsentry/action-release@bd5f874fcda966ba48139b0140fb3ec0cb3aabdd
+      #   continue-on-error: true
+      #   env:
+      #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      #     SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      #     SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      #   with:
+      #     environment: production
+      #     sourcemaps: './build/static/js'
+      #     url_prefix: '~/static/js'
