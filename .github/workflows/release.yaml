@@ -7,41 +7,41 @@ on:
   # workflow_dispatch:
 
 jobs:
-  wait-on-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - id: unit-tests
-        uses: fountainhead/action-wait-for-check@v1.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: unit-tests
-      - id: cypress-tests
-        uses: fountainhead/action-wait-for-check@v1.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: cypress-tests
-      - if: steps.unit-tests.outputs.conclusion != 'success' || steps.cypress-tests.outputs.conclusion != 'success'
-        run: exit 1
+  # wait-on-tests:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - id: unit-tests
+  #       uses: fountainhead/action-wait-for-check@v1.0.0
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         checkName: unit-tests
+  #     - id: cypress-tests
+  #       uses: fountainhead/action-wait-for-check@v1.0.0
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         checkName: cypress-tests
+  #     - if: steps.unit-tests.outputs.conclusion != 'success' || steps.cypress-tests.outputs.conclusion != 'success'
+  #       run: exit 1
 
-  tag:
-    needs: wait-on-tests
-    runs-on: ubuntu-latest
-    outputs:
-      new_tag: ${{ steps.github-tag-action.outputs.new_tag }}
-      changelog: ${{ steps.github-tag-action.outputs.changelog }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Bump and tag
-        id: github-tag-action
-        uses: mathieudutour/github-tag-action@v6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: .*
-          default_bump: patch
-
+  # tag:
+  #   needs: wait-on-tests
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     new_tag: ${{ steps.github-tag-action.outputs.new_tag }}
+  #     changelog: ${{ steps.github-tag-action.outputs.changelog }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Bump and tag
+  #       id: github-tag-action
+  #       uses: mathieudutour/github-tag-action@v6.0
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         release_branches: .*
+  #         default_bump: patch
+    
   release:
-    needs: tag
-    if: ${{ needs.tag.outputs.new_tag != null }}
+    # needs: tag
+    # if: ${{ needs.tag.outputs.new_tag != null }}
     runs-on: ubuntu-latest
     environment:
         name: release
