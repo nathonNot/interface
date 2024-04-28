@@ -181,9 +181,6 @@ export const TICK_LENS_ADDRESSES: AddressMap = {
 
 
 export function PERMIT2_ADDRESS(chainId: SupportedChainId | undefined): string {
-  if (chainId == undefined){
-    throw new Error('PERMIT2_ADDRESS chainid is undefined')
-  }
   if (chainId == SupportedChainId.BITLAYER_TESTNET){
     return "0x3EA312569078c754cf907623A434589b3ac15D2A"
   }
