@@ -1,6 +1,7 @@
 import { FACTORY_ADDRESS as V2_FACTORY_ADDRESS } from '@uniswap/v2-sdk'
 import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS } from '@uniswap/v3-sdk'
 import { SupportedChainId } from 'constants/chains'
+import { PERMIT2_ADDRESS as PERMIT2_ADDRESS_DEFAULT} from "@uniswap/permit2-sdk"
 
 import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 
@@ -176,4 +177,15 @@ export const TICK_LENS_ADDRESSES: AddressMap = {
   [SupportedChainId.BNB]: BNB_TICK_LENS_ADDRESSES,
   [SupportedChainId.OPTIMISM_GOERLI]: OPTIMISM_GOERLI_TICK_LENS_ADDRESSES,
   [SupportedChainId.BITLAYER_TESTNET]: BITLAYER_TESTNET_TICK_LENS_ADDRESSES,
+}
+
+
+export function PERMIT2_ADDRESS(chainId: SupportedChainId | undefined): string {
+  if (chainId == undefined){
+    throw new Error('PERMIT2_ADDRESS chainid is undefined')
+  }
+  if (chainId == SupportedChainId.BITLAYER_TESTNET){
+    return "0x3EA312569078c754cf907623A434589b3ac15D2A"
+  }
+  return PERMIT2_ADDRESS_DEFAULT
 }
