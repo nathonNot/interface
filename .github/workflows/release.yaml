@@ -4,7 +4,7 @@ on:
     branches:
       - cf-page
   # manual trigger
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   wait-on-tests:
