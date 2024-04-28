@@ -4995,9 +4995,9 @@
   resolved "https://registry.npmjs.org/@uniswap/merkle-distributor/-/merkle-distributor-1.0.1.tgz"
   integrity sha512-5gDiTI5hrXIh5UWTrxKYjw30QQDnpl8ckDSpefldNenDlYO1RKkdUYMYpvrqGi2r7YzLYTlO6+TDlNs6O7hDRw==
 
-"@uniswap/permit2-sdk@^1.2.0", "@uniswap/permit2-sdk@git+ssh://git@github.com:nathonNot/permit2-sdk.git#bitlayer-v2":
+"@uniswap/permit2-sdk@^1.2.0", "@uniswap/permit2-sdk@git://github.com/nathonNot/permit2-sdk.git#bitlayer-v2":
   version "1.2.0"
-  resolved "git+ssh://git@github.com:nathonNot/permit2-sdk.git#78839541378cdc98f541cbc8b71660f9ec62df7c"
+  resolved "git://github.com/nathonNot/permit2-sdk.git#78839541378cdc98f541cbc8b71660f9ec62df7c"
   dependencies:
     ethers "^5.3.1"
     tiny-invariant "^1.3.1"
@@ -5029,9 +5029,9 @@
     "@uniswap/v2-sdk" "^4.3.1"
     "@uniswap/v3-sdk" "^3.11.1"
 
-"@uniswap/router-sdk@git+ssh://git@github.com:nathonNot/router-sdk.git#bitlayer-v3":
+"@uniswap/router-sdk@git://github.com/nathonNot/router-sdk.git#bitlayer-v3":
   version "1.9.0"
-  resolved "git+ssh://git@github.com:nathonNot/router-sdk.git#c3e29116ead8b059cace45a471b077b172eccf2d"
+  resolved "git://github.com/nathonNot/router-sdk.git#c3e29116ead8b059cace45a471b077b172eccf2d"
   dependencies:
     "@ethersproject/abi" "^5.5.0"
     "@uniswap/sdk-core" "^4.2.0"
@@ -5144,9 +5144,9 @@
     bignumber.js "^9.0.2"
     ethers "^5.3.1"
 
-"@uniswap/universal-router-sdk@git+ssh://git@github.com:nathonNot/universal-router-sdk.git#bitlayer-v3":
+"@uniswap/universal-router-sdk@git://github.com/nathonNot/universal-router-sdk.git#bitlayer-v3":
   version "1.9.0"
-  resolved "git+ssh://git@github.com:nathonNot/universal-router-sdk.git#5ada5f74bdd71d5da1cf0169a4e43e0849abfa23"
+  resolved "git://github.com/nathonNot/universal-router-sdk.git#5ada5f74bdd71d5da1cf0169a4e43e0849abfa23"
   dependencies:
     "@uniswap/permit2-sdk" "^1.2.0"
     "@uniswap/router-sdk" "^1.9.0"
@@ -5297,9 +5297,9 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
-"@uniswap/v3-sdk@git+ssh://git@github.com:nathonNot/v3-sdk.git#bitlayer":
+"@uniswap/v3-sdk@git://github.com/nathonNot/v3-sdk.git#bitlayer":
   version "3.11.0"
-  resolved "git+ssh://git@github.com:nathonNot/v3-sdk.git#5810f879782c69454697a79c24c3bc1eb8a65deb"
+  resolved "git://github.com/nathonNot/v3-sdk.git#5810f879782c69454697a79c24c3bc1eb8a65deb"
   dependencies:
     "@ethersproject/abi" "^5.0.12"
     "@ethersproject/solidity" "^5.0.9"

@@ -9,7 +9,7 @@
 /src/locales/**/pseudo.po
 
 # generated graphql types
-# /src/graphql/**/__generated__
+/src/graphql/**/__generated__
 schema.graphql
 
 # dependencies
@@ -49,3 +49,5 @@ cypress/videos
 cypress/screenshots
 
 .vercel
+src/graphql/data/__generated__/types-and-hooks.ts
+.gitignore
