@@ -203,7 +203,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <DarkModeQueryParamReader />
+      {/* <DarkModeQueryParamReader /> */}
       <ApeModeQueryParamReader />
       <Trace page={currentPage}>
         <StatsigProvider

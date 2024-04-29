@@ -36,7 +36,7 @@ function Updaters() {
     <>
       <RadialGradientByChainUpdater />
       <ListsUpdater />
-      <SystemThemeUpdater />
+      {/* <SystemThemeUpdater /> */}
       <ApplicationUpdater />
       <TransactionUpdater />
       <MulticallUpdater />
