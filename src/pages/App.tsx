@@ -44,6 +44,7 @@ import RemoveLiquidityV3 from './RemoveLiquidity/V3'
 import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Tokens from './Tokens'
+import bg from 'assets/images/bg.png'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
 const Vote = lazy(() => import('./Vote'))
@@ -60,6 +61,9 @@ const BodyWrapper = styled.div`
   padding: ${({ theme }) => theme.navHeight}px 0px 5rem 0px;
   align-items: center;
   flex: 1;
+
+  background: url(${bg}) no-repeat;
+  background-size: 100% 100%;
 `
 
 const MobileBottomBar = styled.div`
