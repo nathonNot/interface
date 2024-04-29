@@ -140,7 +140,7 @@ export default function App() {
   const isExpertMode = useIsExpertMode()
   const [scrolledState, setScrolledState] = useState(false)
 
-  useAnalyticsReporter()
+  // useAnalyticsReporter()
 
   useEffect(() => {
     window.scrollTo(0, 0)

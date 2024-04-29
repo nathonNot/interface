@@ -33,9 +33,9 @@ Sentry.init({
   beforeSend,
 })
 
-initializeAnalytics(AMPLITUDE_DUMMY_KEY, OriginApplication.INTERFACE, {
-  proxyUrl: process.env.REACT_APP_AMPLITUDE_PROXY_URL,
-  defaultEventName: SharedEventName.PAGE_VIEWED,
-  commitHash: process.env.REACT_APP_GIT_COMMIT_HASH,
-  isProductionEnv: isProductionEnv(),
-})
+// initializeAnalytics(AMPLITUDE_DUMMY_KEY, OriginApplication.INTERFACE, {
+//   proxyUrl: process.env.REACT_APP_AMPLITUDE_PROXY_URL,
+//   defaultEventName: SharedEventName.PAGE_VIEWED,
+//   commitHash: process.env.REACT_APP_GIT_COMMIT_HASH,
+//   isProductionEnv: isProductionEnv(),
+// })
