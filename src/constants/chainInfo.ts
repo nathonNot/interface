@@ -253,7 +253,7 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://bscscan.com/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Bitlayer TestNet Chain',
+    label: 'Cyber Chain',
     logoUrl: bnbLogo,
     circleLogoUrl: bnbCircleLogoUrl,
     squareLogoUrl: bnbSquareLogoUrl,
