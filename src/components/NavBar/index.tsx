@@ -103,12 +103,12 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 height="48"
                 data-testid="uniswap-logo"
                 className={styles.logo}
-                onClick={() => {
-                  navigate({
-                    pathname: '/',
-                    search: '?intro=true',
-                  })
-                }}
+                // onClick={() => {
+                //   navigate({
+                //     pathname: '/',
+                //     search: '?intro=true',
+                //   })
+                // }}
               />
             </Box>
             {!isNftPage && (
