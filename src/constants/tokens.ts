@@ -446,6 +446,20 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WBTC',
     'Wrapped BTC'
   ),
+  [SupportedChainId.CYBER]: new Token(
+    SupportedChainId.CYBER,
+    '0x3e57d6946f893314324C975AA9CEBBdF3232967E',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.CYBER_TESTNET]: new Token(
+    SupportedChainId.CYBER_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is SupportedChainId.CELO | SupportedChainId.CELO_ALFAJORES {

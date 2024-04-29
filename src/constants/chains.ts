@@ -24,7 +24,9 @@ export enum SupportedChainId {
 
   BNB = 56,
   BITLAYER = 200901,
-  BITLAYER_TESTNET = 200810
+  BITLAYER_TESTNET = 200810,
+  CYBER = 7560,
+  CYBER_TESTNET = 111557560,
 }
 
 export const CHAIN_IDS_TO_NAMES = {
@@ -41,6 +43,8 @@ export const CHAIN_IDS_TO_NAMES = {
   [SupportedChainId.BNB]: 'bnb',
   [SupportedChainId.BITLAYER]: 'bitlayer',
   [SupportedChainId.BITLAYER_TESTNET]: 'bitlayer_testnet',
+  [SupportedChainId.CYBER]: 'cyber',
+  [SupportedChainId.CYBER_TESTNET]: 'cyber_testnet',
 }
 
 /**
@@ -63,6 +67,8 @@ export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [
   SupportedChainId.BNB,
   SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
+  SupportedChainId.CYBER,
+  SupportedChainId.CYBER_TESTNET,
 ] as const
 
 /**
@@ -76,6 +82,8 @@ export const UNSUPPORTED_V2POOL_CHAIN_IDS = [
   SupportedChainId.ARBITRUM_GOERLI,
   SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
+  SupportedChainId.CYBER,
+  SupportedChainId.CYBER_TESTNET,
 ] as const
 
 export const TESTNET_CHAIN_IDS = [
@@ -83,7 +91,8 @@ export const TESTNET_CHAIN_IDS = [
   SupportedChainId.POLYGON_MUMBAI,
   SupportedChainId.ARBITRUM_GOERLI,
   SupportedChainId.OPTIMISM_GOERLI,
-  SupportedChainId.BITLAYER_TESTNET
+  SupportedChainId.BITLAYER_TESTNET,
+  SupportedChainId.CYBER_TESTNET,
 ] as const
 
 export type SupportedTestnetChainId = typeof TESTNET_CHAIN_IDS[number]
@@ -113,6 +122,7 @@ export const L2_CHAIN_IDS = [
   SupportedChainId.OPTIMISM,
   SupportedChainId.OPTIMISM_GOERLI,
   SupportedChainId.BITLAYER,
+  SupportedChainId.CYBER,
 ] as const
 
 export type SupportedL2ChainId = typeof L2_CHAIN_IDS[number]

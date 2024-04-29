@@ -12,6 +12,8 @@ const BLOCK_EXPLORER_PREFIXES: { [chainId: number]: string } = {
   [SupportedChainId.BNB]: 'https://bscscan.com',
   [SupportedChainId.BITLAYER]: 'https://www.btrscan.com',
   [SupportedChainId.BITLAYER_TESTNET]: 'https://testnet-scan.bitlayer.org',
+  [SupportedChainId.CYBER]: 'https://testnet-scan.bitlayer.org',
+  [SupportedChainId.CYBER_TESTNET]: 'https://testnet.cyberscan.co',
 }
 
 export enum ExplorerDataType {

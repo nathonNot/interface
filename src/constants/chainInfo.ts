@@ -16,7 +16,7 @@ import ms from 'ms.macro'
 import { darkTheme } from 'theme/colors'
 
 import { SupportedL1ChainId, SupportedL2ChainId } from './chains'
-import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST } from './lists'
+import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST,BITLAYER_LIST } from './lists'
 
 export const AVERAGE_L1_BLOCK_TIME = ms`12s`
 
@@ -243,6 +243,38 @@ const CHAIN_INFO: ChainInfoMap = {
     squareLogoUrl: bnbSquareLogoUrl,
     nativeCurrency: { name: 'BTC', symbol: 'BTC', decimals: 18 },
     defaultListUrl: PLASMA_BNB_LIST,
+    color: darkTheme.chain_56,
+    backgroundColor: darkTheme.chain_56_background,
+  },
+  [SupportedChainId.CYBER]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms`10m`,
+    bridge: 'https://cbridge.celer.network/1/56',
+    docs: 'https://docs.bnbchain.org/',
+    explorer: 'https://bscscan.com/',
+    infoLink: 'https://info.uniswap.org/#/bnb/',
+    label: 'Bitlayer TestNet Chain',
+    logoUrl: bnbLogo,
+    circleLogoUrl: bnbCircleLogoUrl,
+    squareLogoUrl: bnbSquareLogoUrl,
+    nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
+    defaultListUrl: PLASMA_BNB_LIST,
+    color: darkTheme.chain_56,
+    backgroundColor: darkTheme.chain_56_background,
+  },
+  [SupportedChainId.CYBER_TESTNET]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms`10m`,
+    bridge: 'https://cyber-testnet-bridge.alt.technology/deposit',
+    docs: 'https://docs.bnbchain.org/',
+    explorer: 'https://testnet.cyberscan.co/',
+    infoLink: 'https://info.uniswap.org/#/bnb/',
+    label: 'Cyber TestNet Chain',
+    logoUrl: bnbLogo,
+    circleLogoUrl: bnbCircleLogoUrl,
+    squareLogoUrl: bnbSquareLogoUrl,
+    nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
+    defaultListUrl: BITLAYER_LIST,
     color: darkTheme.chain_56,
     backgroundColor: darkTheme.chain_56_background,
   },

@@ -22,11 +22,12 @@ if (typeof QUICKNODE_RPC_URL === 'undefined') {
 export const FALLBACK_URLS = {
   [SupportedChainId.MAINNET]: [
     // "Safe" URLs
-    'https://api.mycryptoapi.com/eth',
+    'https://1rpc.io/eth',
     'https://cloudflare-eth.com',
     // "Fallback" URLs
     'https://rpc.ankr.com/eth',
     'https://eth-mainnet.public.blastapi.io',
+    "https://ethereum-rpc.publicnode.com"
   ],
   [SupportedChainId.GOERLI]: [
     // "Safe" URLs
@@ -98,6 +99,14 @@ export const FALLBACK_URLS = {
     // "Safe" URLs
     'https://testnet-rpc.bitlayer.org',
   ],
+  [SupportedChainId.CYBER_TESTNET]: [
+    // "Safe" URLs
+    'https://cyber-testnet.alt.technology',
+  ],
+  [SupportedChainId.CYBER]: [
+    // "Safe" URLs
+    'https://cyber.alt.technology',
+  ],
 }
 
 /**
@@ -132,4 +141,6 @@ export const RPC_URLS = {
   [SupportedChainId.BNB]: [QUICKNODE_RPC_URL, ...FALLBACK_URLS[SupportedChainId.BNB]],
   [SupportedChainId.BITLAYER]: [FALLBACK_URLS[SupportedChainId.BITLAYER]],
   [SupportedChainId.BITLAYER_TESTNET]: [FALLBACK_URLS[SupportedChainId.BITLAYER_TESTNET]],
+  [SupportedChainId.CYBER]: [FALLBACK_URLS[SupportedChainId.CYBER]],
+  [SupportedChainId.CYBER_TESTNET]: [FALLBACK_URLS[SupportedChainId.CYBER_TESTNET]],
 }
