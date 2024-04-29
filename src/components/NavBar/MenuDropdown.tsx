@@ -150,7 +150,7 @@ export const MenuDropdown = () => {
                     </PrimaryMenuRow.Text>
                   </PrimaryMenuRow>
                 </Box>
-                <Box onClick={() => openDownloadApp(InterfaceElementName.UNISWAP_WALLET_MODAL_DOWNLOAD_BUTTON)}>
+                {/* <Box onClick={() => openDownloadApp(InterfaceElementName.UNISWAP_WALLET_MODAL_DOWNLOAD_BUTTON)}>
                   <PrimaryMenuRow close={toggleOpen}>
                     <Icon>
                       <AppleLogo width="24px" height="24px" fill={theme.textPrimary} />
@@ -175,9 +175,9 @@ export const MenuDropdown = () => {
                   <PrimaryMenuRow.Text>
                     <Trans>View more analytics</Trans>
                   </PrimaryMenuRow.Text>
-                </PrimaryMenuRow>
+                </PrimaryMenuRow> */}
               </Column>
-              <Separator />
+              {/* <Separator />
               <Box
                 display="flex"
                 flexDirection={{ sm: 'row', md: 'column' }}
@@ -233,7 +233,7 @@ export const MenuDropdown = () => {
                     color={themeVars.colors.textSecondary}
                   />
                 </Icon>
-              </IconRow>
+              </IconRow> */}
             </Column>
           </NavDropdown>
         )}
