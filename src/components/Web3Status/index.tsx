@@ -23,6 +23,7 @@ import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
 import StatusIcon from '../Identicon/StatusIcon'
 import { RowBetween } from '../Row'
+import { WalletLogo } from 'components/Icons/Wallet'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
@@ -69,13 +70,13 @@ const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
   }
 
   transition: ${({
-    theme: {
-      transition: { duration, timing },
-    },
-  }) => `${duration.fast} color ${timing.in}`};
+  theme: {
+    transition: { duration, timing },
+  },
+}) => `${duration.fast} color ${timing.in}`};
 `
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{
+const Web3StatusConnected = styled(Web3StatusGeneric) <{
   pending?: boolean
   isClaimAvailable?: boolean
 }>`
@@ -91,7 +92,7 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
     :focus {
       border: 1px solid
         ${({ pending, theme }) =>
-          pending ? darken(0.1, theme.accentAction) : darken(0.1, theme.backgroundInteractive)};
+    pending ? darken(0.1, theme.accentAction) : darken(0.1, theme.backgroundInteractive)};
     }
   }
 
@@ -107,6 +108,10 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
 const AddressAndChevronContainer = styled.div`
   display: flex;
 
+  align-items: center;
+  gap: 10px;
+
+  // todo 小屏问题
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
     display: none;
   }
@@ -145,6 +150,10 @@ const StyledConnectButton = styled.button`
   font-size: 16px;
   padding: 10px 12px;
   color: inherit;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `
 
 function Web3StatusInner() {
@@ -195,7 +204,7 @@ function Web3StatusInner() {
           pending={hasPendingTransactions}
           isClaimAvailable={isClaimAvailable}
         >
-          {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />}
+          {/* {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />} */}
           {hasPendingTransactions ? (
             <RowBetween>
               <Text>
@@ -205,6 +214,7 @@ function Web3StatusInner() {
             </RowBetween>
           ) : (
             <AddressAndChevronContainer>
+              <WalletLogo />
               <Text>{ENSName || shortenAddress(account)}</Text>
             </AddressAndChevronContainer>
           )}
@@ -225,7 +235,8 @@ function Web3StatusInner() {
           onClick={handleWalletDropdownClick}
         >
           <StyledConnectButton tabIndex={-1} data-testid="navbar-connect-wallet">
-            <Trans>Connect</Trans>
+            <WalletLogo />
+            <Trans>Connect Wallet</Trans>
           </StyledConnectButton>
         </Web3StatusConnectWrapper>
       </TraceEvent>
