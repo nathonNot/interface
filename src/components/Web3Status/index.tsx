@@ -36,7 +36,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   border-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
   user-select: none;
-  height: 36px;
+  // height: 36px;
   margin-right: 2px;
   margin-left: 2px;
   :focus {
@@ -59,15 +59,21 @@ const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
   align-items: center;
   background-color: ${({ theme }) => theme.accentActionSoft};
   border-radius: ${FULL_BORDER_RADIUS}px;
+
+  
   border: none;
   padding: 0;
-  height: 40px;
+  // height: 40px;
 
   color: ${({ theme }) => theme.accentAction};
-  :hover {
-    color: ${({ theme }) => theme.accentActionSoft};
-    stroke: ${({ theme }) => theme.accentActionSoft};
-  }
+
+  border-radius: 18px;
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  // :hover {
+  //   color: ${({ theme }) => theme.accentActionSoft};
+  //   stroke: ${({ theme }) => theme.accentActionSoft};
+  // }
 
   transition: ${({
   theme: {
@@ -80,11 +86,13 @@ const Web3StatusConnected = styled(Web3StatusGeneric) <{
   pending?: boolean
   isClaimAvailable?: boolean
 }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.accentAction : theme.deprecated_bg1)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.accentAction : theme.deprecated_bg1)};
+  background-color: ${({ pending, theme }) => (pending ? theme.accentAction : theme.primary)};
+  border: 1px solid ${({ pending, theme }) => (pending ? theme.accentAction : theme.opacify)};
   color: ${({ pending, theme }) => (pending ? theme.white : theme.textPrimary)};
   font-weight: 500;
   border: ${({ isClaimAvailable }) => isClaimAvailable && `1px solid ${colors.purple300}`};
+  border-radius: 18px;
+  padding: 12px 24px;
   :hover,
   :focus {
     border: 1px solid ${({ theme }) => darken(0.05, theme.deprecated_bg3)};
@@ -110,6 +118,7 @@ const AddressAndChevronContainer = styled.div`
 
   align-items: center;
   gap: 10px;
+
 
   // @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
   //   display: none;
@@ -142,17 +151,19 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 const StyledConnectButton = styled.button`
   background-color: transparent;
   border: none;
-  border-top-left-radius: ${FULL_BORDER_RADIUS}px;
-  border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
+  // border-top-left-radius: ${FULL_BORDER_RADIUS}px;
+  // border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px;
-  padding: 10px 12px;
+  padding: 12px 24px;
   color: inherit;
 
   display: flex;
   align-items: center;
   gap: 10px;
+
+  
 `
 
 function Web3StatusInner() {

@@ -26,7 +26,6 @@ import { PageTabIcon } from 'components/Icons/PageTabIcon'
 const Nav = styled.nav`
   padding: 20px 12px;
   width: 100%;
-  height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
 `
 
@@ -76,15 +75,15 @@ export const PageTabs = () => {
           <Trans>NFTs</Trans>
         </MenuItem>
       )} */}
-      <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
+      {/* <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full"> */}
         <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
           <PageTabIcon type='pool' active={isPoolActive}></PageTabIcon>
           <Trans>Pools</Trans>
         </MenuItem>
-      </Box>
-      <Box display={{ sm: 'none', md: 'none', lg: 'flex', xl: 'none' }} marginY={{ sm: '4', md: 'unset' }}>
+      {/* </Box> */}
+      {/* <Box display={{ sm: 'none', md: 'none', lg: 'flex', xl: 'none' }} marginY={{ sm: '4', md: 'unset' }}>
         <MenuDropdown />
-      </Box>
+      </Box> */}
     </>
   )
 }
