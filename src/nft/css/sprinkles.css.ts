@@ -1,5 +1,6 @@
 import { createGlobalTheme, createGlobalThemeContract } from '@vanilla-extract/css'
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles'
+import { darkTheme } from '../../theme/colors';
 
 const themeContractValues = {
   colors: {
@@ -152,6 +153,7 @@ const zIndices = {
 export const vars = createGlobalTheme(':root', {
   color: {
     ...themeVars.colors,
+    ...darkTheme,
     fallbackGradient: 'linear-gradient(270deg, #D1D5DB 0%, #F6F6F6 100%)',
     loadingBackground: '#24272e',
     cardDropShadow: 'rgba(0, 0, 0, 10%) 0px 4px 12px',
