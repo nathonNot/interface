@@ -96,13 +96,13 @@ const Web3StatusConnected = styled(Web3StatusGeneric) <{
     }
   }
 
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
-    width: ${({ pending }) => !pending && '36px'};
+  // @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
+  //   width: ${({ pending }) => !pending && '36px'};
 
-    ${IconWrapper} {
-      margin-right: 0;
-    }
-  }
+  //   ${IconWrapper} {
+  //     margin-right: 0;
+  //   }
+  // }
 `
 
 const AddressAndChevronContainer = styled.div`
@@ -111,10 +111,9 @@ const AddressAndChevronContainer = styled.div`
   align-items: center;
   gap: 10px;
 
-  // todo 小屏问题
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
-    display: none;
-  }
+  // @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
+  //   display: none;
+  // }
 `
 
 const Text = styled.p`
