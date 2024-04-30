@@ -21,6 +21,7 @@ import { ChainSelector } from './ChainSelector'
 import { MenuDropdown } from './MenuDropdown'
 import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
+import { PageTabIcon } from 'components/Icons/PageTabIcon'
 
 const Nav = styled.nav`
   padding: 20px 12px;
@@ -64,6 +65,7 @@ export const PageTabs = () => {
   return (
     <>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
+        <PageTabIcon type='swap' active={pathname.startsWith('/swap')}></PageTabIcon>
         <Trans>Swap</Trans>
       </MenuItem>
       {/* <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
@@ -76,10 +78,11 @@ export const PageTabs = () => {
       )} */}
       <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
         <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+          <PageTabIcon type='pool' active={isPoolActive}></PageTabIcon>
           <Trans>Pools</Trans>
         </MenuItem>
       </Box>
-      <Box marginY={{ sm: '4', md: 'unset' }}>
+      <Box display={{ sm: 'none', md: 'none', lg: 'flex', xl: 'none' }} marginY={{ sm: '4', md: 'unset' }}>
         <MenuDropdown />
       </Box>
     </>
