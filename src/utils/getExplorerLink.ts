@@ -14,6 +14,8 @@ const BLOCK_EXPLORER_PREFIXES: { [chainId: number]: string } = {
   [SupportedChainId.BITLAYER_TESTNET]: 'https://testnet-scan.bitlayer.org',
   [SupportedChainId.CYBER]: 'https://testnet-scan.bitlayer.org',
   [SupportedChainId.CYBER_TESTNET]: 'https://testnet.cyberscan.co',
+  [SupportedChainId.Linea]: 'https://lineascan.build/',
+  [SupportedChainId.LINEA_SEPOLIA]: 'https://sepolia.lineascan.build/',
 }
 
 export enum ExplorerDataType {

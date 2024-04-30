@@ -460,6 +460,20 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WETH',
     'Wrapped ETH'
   ),
+  [SupportedChainId.Linea]: new Token(
+    SupportedChainId.CYBER_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.LINEA_SEPOLIA]: new Token(
+    SupportedChainId.CYBER_TESTNET,
+    '0xfa75d8a96D6177d54ccEAe7d4c54E4BEFA712820',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is SupportedChainId.CELO | SupportedChainId.CELO_ALFAJORES {

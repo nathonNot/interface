@@ -107,6 +107,16 @@ export const FALLBACK_URLS = {
     // "Safe" URLs
     'https://cyber.alt.technology',
   ],
+  [SupportedChainId.Linea]: [
+    // "Safe" URLs
+    'https://linea.decubate.com',
+    'https://linea.drpc.org'
+  ],
+  [SupportedChainId.LINEA_SEPOLIA]: [
+    // "Safe" URLs
+    'https://linea-sepolia.blockpi.network/v1/rpc/public',
+    'https://rpc.sepolia.linea.build'
+  ],
 }
 
 /**

@@ -27,6 +27,9 @@ export enum SupportedChainId {
   BITLAYER_TESTNET = 200810,
   CYBER = 7560,
   CYBER_TESTNET = 111557560,
+
+  Linea = 59144,
+  LINEA_SEPOLIA = 59141
 }
 
 export const CHAIN_IDS_TO_NAMES = {
@@ -45,6 +48,8 @@ export const CHAIN_IDS_TO_NAMES = {
   [SupportedChainId.BITLAYER_TESTNET]: 'bitlayer_testnet',
   [SupportedChainId.CYBER]: 'cyber',
   [SupportedChainId.CYBER_TESTNET]: 'cyber_testnet',
+  [SupportedChainId.Linea]: 'linea',
+  [SupportedChainId.LINEA_SEPOLIA]: 'linea_sepolia',
 }
 
 /**
@@ -69,6 +74,8 @@ export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER,
   SupportedChainId.CYBER_TESTNET,
+  SupportedChainId.Linea,
+  SupportedChainId.LINEA_SEPOLIA,
 ] as const
 
 /**
@@ -84,6 +91,8 @@ export const UNSUPPORTED_V2POOL_CHAIN_IDS = [
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER,
   SupportedChainId.CYBER_TESTNET,
+  SupportedChainId.Linea,
+  SupportedChainId.LINEA_SEPOLIA,
 ] as const
 
 export const TESTNET_CHAIN_IDS = [
@@ -93,6 +102,7 @@ export const TESTNET_CHAIN_IDS = [
   SupportedChainId.OPTIMISM_GOERLI,
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER_TESTNET,
+  SupportedChainId.LINEA_SEPOLIA,
 ] as const
 
 export type SupportedTestnetChainId = typeof TESTNET_CHAIN_IDS[number]
@@ -123,6 +133,8 @@ export const L2_CHAIN_IDS = [
   SupportedChainId.OPTIMISM_GOERLI,
   SupportedChainId.BITLAYER,
   SupportedChainId.CYBER,
+  SupportedChainId.Linea,
+  SupportedChainId.LINEA_SEPOLIA,
 ] as const
 
 export type SupportedL2ChainId = typeof L2_CHAIN_IDS[number]
