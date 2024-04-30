@@ -17,6 +17,9 @@ export const logo = style([
     display: 'block',
     color: 'textPrimary',
   }),
+  {
+    marginRight: 100
+  }
 ])
 
 export const baseSideContainer = style([
@@ -59,9 +62,10 @@ export const rightSideContainer = style([
 const baseMenuItem = style([
   subhead,
   sprinkles({
-    paddingY: '8',
-    paddingX: '14',
-    marginY: '4',
+    paddingY: '0',
+    paddingX: '0',
+    marginY: '0',
+    marginX: '20',
     borderRadius: '12',
     transition: '250',
     height: 'min',
@@ -78,19 +82,26 @@ const baseMenuItem = style([
       background: vars.color.lightGrayOverlay,
     },
   },
+  {
+    fontSize: 18,
+    fontWeight: 400
+  }
 ])
 
 export const menuItem = style([
   baseMenuItem,
   sprinkles({
-    color: 'textSecondary',
+    color: 'textDefault',
   }),
 ])
 
 export const activeMenuItem = style([
   baseMenuItem,
   sprinkles({
-    color: 'textPrimary',
-    background: 'backgroundFloating',
+    color: 'primary',
+    background: 'opacify',
   }),
+  {
+    fontWeight: 500
+  }
 ])

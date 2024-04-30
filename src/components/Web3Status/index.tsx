@@ -23,6 +23,7 @@ import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
 import StatusIcon from '../Identicon/StatusIcon'
 import { RowBetween } from '../Row'
+import { WalletLogo } from 'components/Icons/Wallet'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
@@ -35,7 +36,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   border-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
   user-select: none;
-  height: 36px;
+  // height: 36px;
   margin-right: 2px;
   margin-left: 2px;
   :focus {
@@ -58,32 +59,40 @@ const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
   align-items: center;
   background-color: ${({ theme }) => theme.accentActionSoft};
   border-radius: ${FULL_BORDER_RADIUS}px;
+
+  
   border: none;
   padding: 0;
-  height: 40px;
+  // height: 40px;
 
   color: ${({ theme }) => theme.accentAction};
-  :hover {
-    color: ${({ theme }) => theme.accentActionSoft};
-    stroke: ${({ theme }) => theme.accentActionSoft};
-  }
+
+  border-radius: 18px;
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  // :hover {
+  //   color: ${({ theme }) => theme.accentActionSoft};
+  //   stroke: ${({ theme }) => theme.accentActionSoft};
+  // }
 
   transition: ${({
-    theme: {
-      transition: { duration, timing },
-    },
-  }) => `${duration.fast} color ${timing.in}`};
+  theme: {
+    transition: { duration, timing },
+  },
+}) => `${duration.fast} color ${timing.in}`};
 `
 
-const Web3StatusConnected = styled(Web3StatusGeneric)<{
+const Web3StatusConnected = styled(Web3StatusGeneric) <{
   pending?: boolean
   isClaimAvailable?: boolean
 }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.accentAction : theme.deprecated_bg1)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.accentAction : theme.deprecated_bg1)};
+  background-color: ${({ pending, theme }) => (pending ? theme.accentAction : theme.primary)};
+  border: 1px solid ${({ pending, theme }) => (pending ? theme.accentAction : theme.opacify)};
   color: ${({ pending, theme }) => (pending ? theme.white : theme.textPrimary)};
   font-weight: 500;
   border: ${({ isClaimAvailable }) => isClaimAvailable && `1px solid ${colors.purple300}`};
+  border-radius: 18px;
+  padding: 12px 24px;
   :hover,
   :focus {
     border: 1px solid ${({ theme }) => darken(0.05, theme.deprecated_bg3)};
@@ -91,25 +100,29 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
     :focus {
       border: 1px solid
         ${({ pending, theme }) =>
-          pending ? darken(0.1, theme.accentAction) : darken(0.1, theme.backgroundInteractive)};
+    pending ? darken(0.1, theme.accentAction) : darken(0.1, theme.backgroundInteractive)};
     }
   }
 
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
-    width: ${({ pending }) => !pending && '36px'};
+  // @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
+  //   width: ${({ pending }) => !pending && '36px'};
 
-    ${IconWrapper} {
-      margin-right: 0;
-    }
-  }
+  //   ${IconWrapper} {
+  //     margin-right: 0;
+  //   }
+  // }
 `
 
 const AddressAndChevronContainer = styled.div`
   display: flex;
 
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
-    display: none;
-  }
+  align-items: center;
+  gap: 10px;
+
+
+  // @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.navSearchInputVisible}px`}) {
+  //   display: none;
+  // }
 `
 
 const Text = styled.p`
@@ -138,13 +151,19 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 const StyledConnectButton = styled.button`
   background-color: transparent;
   border: none;
-  border-top-left-radius: ${FULL_BORDER_RADIUS}px;
-  border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
+  // border-top-left-radius: ${FULL_BORDER_RADIUS}px;
+  // border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px;
-  padding: 10px 12px;
+  padding: 12px 24px;
   color: inherit;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  
 `
 
 function Web3StatusInner() {
@@ -195,7 +214,7 @@ function Web3StatusInner() {
           pending={hasPendingTransactions}
           isClaimAvailable={isClaimAvailable}
         >
-          {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />}
+          {/* {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />} */}
           {hasPendingTransactions ? (
             <RowBetween>
               <Text>
@@ -205,6 +224,7 @@ function Web3StatusInner() {
             </RowBetween>
           ) : (
             <AddressAndChevronContainer>
+              <WalletLogo />
               <Text>{ENSName || shortenAddress(account)}</Text>
             </AddressAndChevronContainer>
           )}
@@ -225,7 +245,8 @@ function Web3StatusInner() {
           onClick={handleWalletDropdownClick}
         >
           <StyledConnectButton tabIndex={-1} data-testid="navbar-connect-wallet">
-            <Trans>Connect</Trans>
+            <WalletLogo />
+            <Trans>Connect Wallet</Trans>
           </StyledConnectButton>
         </Web3StatusConnectWrapper>
       </TraceEvent>

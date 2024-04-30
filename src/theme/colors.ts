@@ -2,6 +2,9 @@
 import { opacify } from './utils'
 
 export const colors = {
+  primary: '#BC42FF',
+  default: '#E4E4E5',
+  opacify: 'transparent',
   white: '#FFFFFF',
   black: '#000000',
   gray50: '#F5F6FC',
@@ -101,6 +104,11 @@ export const colors = {
 type Theme = typeof darkTheme
 
 const commonTheme = {
+  primary: colors.primary,
+  textDefault: colors.default,
+  opacify: colors.opacify,
+  main: '#23204E',
+  toast: '#303940',
   white: colors.white,
   black: colors.black,
 

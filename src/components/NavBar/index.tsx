@@ -21,11 +21,11 @@ import { ChainSelector } from './ChainSelector'
 import { MenuDropdown } from './MenuDropdown'
 import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
+import { PageTabIcon } from 'components/Icons/PageTabIcon'
 
 const Nav = styled.nav`
   padding: 20px 12px;
   width: 100%;
-  height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
 `
 
@@ -64,24 +64,26 @@ export const PageTabs = () => {
   return (
     <>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
+        <PageTabIcon type='swap' active={pathname.startsWith('/swap')}></PageTabIcon>
         <Trans>Swap</Trans>
       </MenuItem>
-      <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
+      {/* <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
       </MenuItem>
       {!shouldDisableNFTRoutes && (
         <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
           <Trans>NFTs</Trans>
         </MenuItem>
-      )}
-      <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full">
+      )} */}
+      {/* <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full"> */}
         <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+          <PageTabIcon type='pool' active={isPoolActive}></PageTabIcon>
           <Trans>Pools</Trans>
         </MenuItem>
-      </Box>
-      <Box marginY={{ sm: '4', md: 'unset' }}>
+      {/* </Box> */}
+      {/* <Box display={{ sm: 'none', md: 'none', lg: 'flex', xl: 'none' }} marginY={{ sm: '4', md: 'unset' }}>
         <MenuDropdown />
-      </Box>
+      </Box> */}
     </>
   )
 }
@@ -103,12 +105,12 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 height="48"
                 data-testid="uniswap-logo"
                 className={styles.logo}
-                onClick={() => {
-                  navigate({
-                    pathname: '/',
-                    search: '?intro=true',
-                  })
-                }}
+                // onClick={() => {
+                //   navigate({
+                //     pathname: '/',
+                //     search: '?intro=true',
+                //   })
+                // }}
               />
             </Box>
             {!isNftPage && (
@@ -120,14 +122,14 @@ const Navbar = ({ blur }: { blur: boolean }) => {
               <PageTabs />
             </Row>
           </Box>
-          <Box className={styles.searchContainer}>
+          {/* <Box className={styles.searchContainer}>
             <SearchBar />
-          </Box>
+          </Box> */}
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
-              <Box position="relative" display={{ sm: 'flex', navSearchInputVisible: 'none' }}>
+              {/* <Box position="relative" display={{ sm: 'flex', navSearchInputVisible: 'none' }}>
                 <SearchBar />
-              </Box>
+              </Box> */}
               {isNftPage && sellPageState !== ProfilePageStateType.LISTING && <Bag />}
               {!isNftPage && (
                 <Box display={{ sm: 'none', lg: 'flex' }}>
