@@ -3,9 +3,9 @@ import 'inter-ui'
 import 'polyfills'
 import 'tracing'
 
-// import { ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { FeatureFlagsProvider } from 'featureFlags'
-// import { apolloClient } from 'graphql/data/apollo'
+import { apolloClient } from 'graphql/data/apollo'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import { MulticallUpdater } from 'lib/state/multicall'
 import { StrictMode } from 'react'
@@ -57,7 +57,7 @@ createRoot(container).render(
           <HashRouter>
             <LanguageProvider>
               <Web3Provider>
-                {/* <ApolloProvider client={apolloClient}> */}
+                <ApolloProvider client={apolloClient}>
                   <BlockNumberProvider>
                     <Updaters />
                     <ThemeProvider>
@@ -65,7 +65,7 @@ createRoot(container).render(
                       <App />
                     </ThemeProvider>
                   </BlockNumberProvider>
-                {/* </ApolloProvider> */}
+                </ApolloProvider>
               </Web3Provider>
             </LanguageProvider>
           </HashRouter>
