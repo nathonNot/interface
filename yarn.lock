@@ -5064,10 +5064,9 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@uniswap/smart-order-router@^3.6.0", "@uniswap/smart-order-router@^3.6.1":
+"@uniswap/smart-order-router@^3.6.0", "@uniswap/smart-order-router@https://github.com/nathonNot/smart-order-router.git#linea-v1":
   version "3.6.1"
-  resolved "https://registry.yarnpkg.com/@uniswap/smart-order-router/-/smart-order-router-3.6.1.tgz#658497b907b1033d68fe8b7f613d624d31e33d80"
-  integrity sha512-UKCEeqzryu8kREOGEG2gomXApkGGJ301rp1j1sdDhTeMW2C6EiDo2jkfGjKYMb9CHJnb0YkXB7E6XIT8U4UYXA==
+  resolved "https://github.com/nathonNot/smart-order-router.git#25ead68b1c8a95803fe333f8007edc2aeb3d04f3"
   dependencies:
     "@uniswap/default-token-list" "^2.0.0"
     "@uniswap/permit2-sdk" "^1.2.0"
@@ -5145,9 +5144,9 @@
     bignumber.js "^9.0.2"
     ethers "^5.3.1"
 
-"@uniswap/universal-router-sdk@https://github.com/nathonNot/universal-router-sdk.git#bitlayer-v3":
+"@uniswap/universal-router-sdk@https://github.com/nathonNot/universal-router-sdk.git#linea-v2":
   version "1.9.0"
-  resolved "https://github.com/nathonNot/universal-router-sdk.git#5ada5f74bdd71d5da1cf0169a4e43e0849abfa23"
+  resolved "https://github.com/nathonNot/universal-router-sdk.git#ae7917079d1c2f2c252876b77b1c6f910e46938c"
   dependencies:
     "@uniswap/permit2-sdk" "^1.2.0"
     "@uniswap/router-sdk" "^1.9.0"
@@ -5270,6 +5269,20 @@
     "@uniswap/v3-core" "^1.0.0"
     base64-sol "1.0.1"
 
+"@uniswap/v3-sdk@3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@uniswap/v3-sdk/-/v3-sdk-3.11.0.tgz#328309fbafddd8c618b7b6850bb99cacf6733a79"
+  integrity sha512-gz6Q6SlN34AXvxhyz181F90D4OuIkxLnzBAucEzB9Fv3Z+3orHZY/SpGaD02nP1VsNQVu/DQvOsdkPUDGn1Y9Q==
+  dependencies:
+    "@ethersproject/abi" "^5.0.12"
+    "@ethersproject/solidity" "^5.0.9"
+    "@uniswap/sdk-core" "^4.2.0"
+    "@uniswap/swap-router-contracts" "^1.2.1"
+    "@uniswap/v3-periphery" "^1.1.1"
+    "@uniswap/v3-staker" "1.0.0"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+
 "@uniswap/v3-sdk@^3.11.0", "@uniswap/v3-sdk@^3.11.1":
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/@uniswap/v3-sdk/-/v3-sdk-3.11.1.tgz#1399d53d5db657b433b406d48289e1adb4570475"
@@ -5292,19 +5305,6 @@
     "@ethersproject/abi" "^5.0.12"
     "@ethersproject/solidity" "^5.0.9"
     "@uniswap/sdk-core" "^3.0.1"
-    "@uniswap/swap-router-contracts" "^1.2.1"
-    "@uniswap/v3-periphery" "^1.1.1"
-    "@uniswap/v3-staker" "1.0.0"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-
-"@uniswap/v3-sdk@https://github.com/nathonNot/v3-sdk.git#bitlayer":
-  version "3.11.0"
-  resolved "https://github.com/nathonNot/v3-sdk.git#5810f879782c69454697a79c24c3bc1eb8a65deb"
-  dependencies:
-    "@ethersproject/abi" "^5.0.12"
-    "@ethersproject/solidity" "^5.0.9"
-    "@uniswap/sdk-core" "^4.2.0"
     "@uniswap/swap-router-contracts" "^1.2.1"
     "@uniswap/v3-periphery" "^1.1.1"
     "@uniswap/v3-staker" "1.0.0"
