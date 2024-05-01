@@ -468,8 +468,8 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'Wrapped ETH'
   ),
   [SupportedChainId.LINEA_SEPOLIA]: new Token(
-    SupportedChainId.CYBER_TESTNET,
-    '0xfa75d8a96D6177d54ccEAe7d4c54E4BEFA712820',
+    SupportedChainId.LINEA_SEPOLIA,
+    '0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3',
     18,
     'WETH',
     'Wrapped ETH'
