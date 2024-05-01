@@ -579,5 +579,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in SupportedCha
     [SupportedChainId.CELO_ALFAJORES]: PORTAL_USDC_CELO.address,
     [SupportedChainId.GOERLI]: USDC_GOERLI.address,
     [SupportedChainId.BITLAYER]: USDC_GOERLI.address,
+    [SupportedChainId.LINEA_SEPOLIA]: USDC_GOERLI.address,
   },
 }
