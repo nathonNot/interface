@@ -35,7 +35,7 @@ export const toCurrencyAmount = (token: Token, amount: number) =>
 export const TEST_TRADE_EXACT_INPUT = new InterfaceTrade({
   v3Routes: [
     {
-      routev3: new V3Route([TEST_POOL_12], TEST_TOKEN_1, TEST_TOKEN_2),
+      routev3: new V3Route([TEST_POOL_12] as any, TEST_TOKEN_1, TEST_TOKEN_2) as any,
       inputAmount: toCurrencyAmount(TEST_TOKEN_1, 1000),
       outputAmount: toCurrencyAmount(TEST_TOKEN_2, 1000),
     },
@@ -47,7 +47,7 @@ export const TEST_TRADE_EXACT_INPUT = new InterfaceTrade({
 export const TEST_TRADE_EXACT_OUTPUT = new InterfaceTrade({
   v3Routes: [
     {
-      routev3: new V3Route([TEST_POOL_13], TEST_TOKEN_1, TEST_TOKEN_3),
+      routev3: new V3Route([TEST_POOL_13] as any, TEST_TOKEN_1, TEST_TOKEN_3) as any,
       inputAmount: toCurrencyAmount(TEST_TOKEN_1, 1000),
       outputAmount: toCurrencyAmount(TEST_TOKEN_3, 1000),
     },

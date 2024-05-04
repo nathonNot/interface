@@ -16,7 +16,7 @@ interface TradeTokenInputAmounts {
 }
 
 interface Swap {
-  route: IRoute<Currency, Currency, Pair | Pool>
+  route: IRoute<Currency, Currency, Pair | Pool | any>
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
 }

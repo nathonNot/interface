@@ -125,8 +125,8 @@ export function getPriceOrderingFromPositionForUI(position?: Position): {
   const stables = [DAI, USDC_MAINNET, USDT]
   if (stables.some((stable) => stable.equals(token0))) {
     return {
-      priceLower: position.token0PriceUpper.invert(),
-      priceUpper: position.token0PriceLower.invert(),
+      priceLower: position.token0PriceUpper.invert() as unknown as Price<Token, Token>,
+      priceUpper: position.token0PriceLower.invert() as unknown as Price<Token, Token>,
       quote: token0,
       base: token1,
     }
@@ -136,8 +136,8 @@ export function getPriceOrderingFromPositionForUI(position?: Position): {
   const bases = [...Object.values(WRAPPED_NATIVE_CURRENCY), WBTC]
   if (bases.some((base) => base && base.equals(token1))) {
     return {
-      priceLower: position.token0PriceUpper.invert(),
-      priceUpper: position.token0PriceLower.invert(),
+      priceLower: position.token0PriceUpper.invert() as unknown as Price<Token, Token>,
+      priceUpper: position.token0PriceLower.invert() as unknown as Price<Token, Token>,
       quote: token0,
       base: token1,
     }
@@ -146,8 +146,8 @@ export function getPriceOrderingFromPositionForUI(position?: Position): {
   // if both prices are below 1, invert
   if (position.token0PriceUpper.lessThan(1)) {
     return {
-      priceLower: position.token0PriceUpper.invert(),
-      priceUpper: position.token0PriceLower.invert(),
+      priceLower: position.token0PriceUpper.invert() as unknown as Price<Token, Token>,
+      priceUpper: position.token0PriceLower.invert() as unknown as Price<Token, Token>,
       quote: token0,
       base: token1,
     }
@@ -155,8 +155,8 @@ export function getPriceOrderingFromPositionForUI(position?: Position): {
 
   // otherwise, just return the default
   return {
-    priceLower: position.token0PriceLower,
-    priceUpper: position.token0PriceUpper,
+    priceLower: position.token0PriceLower as unknown as Price<Token, Token>,
+    priceUpper: position.token0PriceUpper as unknown as Price<Token, Token>,
     quote: token1,
     base: token0,
   }

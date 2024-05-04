@@ -33,25 +33,25 @@ export function sendTiming(timingCategory: any, timingVar: any, timingValue: any
   return googleAnalytics.gaCommandSendTiming(timingCategory, timingVar, timingValue, timingLabel)
 }
 
-if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-  googleAnalytics.initialize(GOOGLE_ANALYTICS_ID, {
-    gaOptions: {
-      storage: 'none',
-      storeGac: false,
-      clientId: storedClientId ?? undefined,
-    },
-  })
-  googleAnalytics.set({
-    anonymizeIp: true,
-    customBrowserType: !isMobile
-      ? 'desktop'
-      : 'web3' in window || 'ethereum' in window
-      ? 'mobileWeb3'
-      : 'mobileRegular',
-  })
-} else {
-  googleAnalytics.initialize('test', { gtagOptions: { debug_mode: true } })
-}
+// if (typeof GOOGLE_ANALYTICS_ID === 'string') {
+//   googleAnalytics.initialize(GOOGLE_ANALYTICS_ID, {
+//     gaOptions: {
+//       storage: 'none',
+//       storeGac: false,
+//       clientId: storedClientId ?? undefined,
+//     },
+//   })
+//   googleAnalytics.set({
+//     anonymizeIp: true,
+//     customBrowserType: !isMobile
+//       ? 'desktop'
+//       : 'web3' in window || 'ethereum' in window
+//       ? 'mobileWeb3'
+//       : 'mobileRegular',
+//   })
+// } else {
+//   googleAnalytics.initialize('test', { gtagOptions: { debug_mode: true } })
+// }
 
 const installed = Boolean(window.navigator.serviceWorker?.controller)
 const hit = Boolean((window as any).__isDocumentCached)

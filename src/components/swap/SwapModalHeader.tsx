@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName, SwapPriceUpdateUserResponse } from '@uniswap/analytics-events'
-import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
+import { Currency, Percent, TradeType, Price, Token } from '@uniswap/sdk-core'
 import { useUSDPrice } from 'hooks/useUSDPrice'
 import { getPriceUpdateBasisPoints } from 'lib/utils/analytics'
 import { useEffect, useState } from 'react'
@@ -83,7 +83,7 @@ export default function SwapModalHeader({
 
   useEffect(() => {
     if (!trade.executionPrice.equalTo(lastExecutionPrice)) {
-      setPriceUpdate(getPriceUpdateBasisPoints(lastExecutionPrice, trade.executionPrice))
+      setPriceUpdate(getPriceUpdateBasisPoints(lastExecutionPrice as unknown as Price<Token, Token>, trade.executionPrice as unknown as Price<Token, Token>))
       setLastExecutionPrice(trade.executionPrice)
     }
   }, [lastExecutionPrice, setLastExecutionPrice, trade.executionPrice])
@@ -154,7 +154,7 @@ export default function SwapModalHeader({
         </AutoColumn>
       </LightCard>
       <RowBetween style={{ marginTop: '0.25rem', padding: '0 1rem' }}>
-        <TradePrice price={trade.executionPrice} />
+        <TradePrice price={trade.executionPrice as unknown as Price<Token, Token>} />
       </RowBetween>
       <LightCard style={{ padding: '.75rem', marginTop: '0.5rem' }}>
         <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} />

@@ -29,6 +29,10 @@ const NETWORK_SELECTOR_CHAINS = [
   SupportedChainId.BNB,
   SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
+  SupportedChainId.CYBER,
+  SupportedChainId.CYBER_TESTNET,
+  SupportedChainId.Linea,
+  SupportedChainId.LINEA_SEPOLIA,
 ]
 
 interface ChainSelectorProps {

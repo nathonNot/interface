@@ -1,4 +1,4 @@
-import { PERMIT2_ADDRESS } from '@uniswap/permit2-sdk'
+import { PERMIT2_ADDRESS } from 'constants/addresses'
 import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { AVERAGE_L1_BLOCK_TIME } from 'constants/chainInfo'
@@ -36,11 +36,11 @@ export type Allowance =
   | AllowanceRequired
 
 export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spender?: string): Allowance {
-  const { account } = useWeb3React()
+  const { account,chainId } = useWeb3React()
   const token = amount?.currency
 
-  const { tokenAllowance, isSyncing: isApprovalSyncing } = useTokenAllowance(token, account, PERMIT2_ADDRESS)
-  const updateTokenAllowance = useUpdateTokenAllowance(amount, PERMIT2_ADDRESS)
+  const { tokenAllowance, isSyncing: isApprovalSyncing } = useTokenAllowance(token, account, PERMIT2_ADDRESS(chainId))
+  const updateTokenAllowance = useUpdateTokenAllowance(amount, PERMIT2_ADDRESS(chainId))
   const isApproved = useMemo(() => {
     if (!amount || !tokenAllowance) return false
     return tokenAllowance.greaterThan(amount) || tokenAllowance.equalTo(amount)
@@ -51,7 +51,7 @@ export default function usePermit2Allowance(amount?: CurrencyAmount<Token>, spen
   // until it has been re-observed. It wll sync immediately, because confirmation fast-forwards the block number.
   const [approvalState, setApprovalState] = useState(ApprovalState.SYNCED)
   const isApprovalLoading = approvalState !== ApprovalState.SYNCED
-  const isApprovalPending = useHasPendingApproval(token, PERMIT2_ADDRESS)
+  const isApprovalPending = useHasPendingApproval(token, PERMIT2_ADDRESS(chainId))
   useEffect(() => {
     if (isApprovalPending) {
       setApprovalState(ApprovalState.PENDING)

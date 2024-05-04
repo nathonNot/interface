@@ -183,7 +183,7 @@ export function useV3DerivedMintInfo(
   const invertPrice = Boolean(baseToken && token0 && !baseToken.equals(token0))
 
   // always returns the price with 0 as base token
-  const price: Price<Token, Token> | undefined = useMemo(() => {
+  const price: Price<Token, Token> | any | undefined = useMemo(() => {
     // if no liquidity use typed value
     if (noLiquidity) {
       const parsedQuoteAmount = tryParseCurrencyAmount(startPriceTypedValue, invertPrice ? token0 : token1)

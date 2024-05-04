@@ -199,7 +199,7 @@ function CurrentPriceCard({
           <Trans>Current price</Trans>
         </ExtentsText>
         <ThemedText.DeprecatedMediumHeader textAlign="center">
-          {formatPrice(inverted ? pool.token1Price : pool.token0Price, NumberType.TokenTx)}
+          {formatPrice((inverted ? pool.token1Price : pool.token0Price) as any, NumberType.TokenTx)}
         </ThemedText.DeprecatedMediumHeader>
         <ExtentsText>
           <Trans>
@@ -437,7 +437,7 @@ function PositionPageContent() {
     return priceLower && pool && priceUpper
       ? getRatio(
           inverted ? priceUpper.invert() : priceLower,
-          pool.token0Price,
+          pool.token0Price as any,
           inverted ? priceLower.invert() : priceUpper
         )
       : undefined

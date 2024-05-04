@@ -6,12 +6,15 @@ import {
   SwapPriceUpdateUserResponse,
 } from '@uniswap/analytics-events'
 import { Trade } from '@uniswap/router-sdk'
-import { Currency, TradeType } from '@uniswap/sdk-core'
+import { Currency, Price, Token, TradeType } from '@uniswap/sdk-core'
 import {
   AddEthereumChainParameter,
   DialogAnimationType,
   EMPTY_TOKEN_LIST,
+  OnInitialSwapQuote,
   OnReviewSwapClick,
+  OnSubmitSwapClick,
+  OnSwapPriceUpdateAck,
   SwapWidget,
   SwapWidgetSkeleton,
 } from '@uniswap/widgets'
@@ -118,7 +121,7 @@ export default function Widget({
         response: SwapPriceUpdateUserResponse.ACCEPTED,
         token_in_symbol: update.inputAmount.currency.symbol,
         token_out_symbol: update.outputAmount.currency.symbol,
-        price_update_basis_points: getPriceUpdateBasisPoints(stale.executionPrice, update.executionPrice),
+        price_update_basis_points: getPriceUpdateBasisPoints(stale.executionPrice as unknown as Price<Currency, Currency>, update.executionPrice as unknown as Price<Currency, Currency>),
         ...trace,
       }
       sendAnalyticsEvent(SwapEventName.SWAP_PRICE_UPDATE_ACKNOWLEDGED, eventProperties)
@@ -178,10 +181,10 @@ export default function Widget({
           {...transactions}
           onExpandSwapDetails={onExpandSwapDetails}
           onReviewSwapClick={onReviewSwapClick}
-          onSubmitSwapClick={onSubmitSwapClick}
+          onSubmitSwapClick={onSubmitSwapClick as unknown as OnSubmitSwapClick}
           onSwapApprove={onApproveToken}
-          onInitialSwapQuote={onInitialSwapQuote}
-          onSwapPriceUpdateAck={onSwapPriceUpdateAck}
+          onInitialSwapQuote={onInitialSwapQuote as unknown as OnInitialSwapQuote}
+          onSwapPriceUpdateAck={onSwapPriceUpdateAck as unknown as OnSwapPriceUpdateAck}
           dialogOptions={{
             pageCentered: true,
             animationType: DialogAnimationType.FADE,

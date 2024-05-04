@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
-import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
+import { Currency, Percent, TradeType, Price, Token } from '@uniswap/sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import AnimatedDropdown from 'components/AnimatedDropdown'
 import { OutlineCard } from 'components/Card'
@@ -129,7 +129,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
               )}
               {trade ? (
                 <LoadingOpacityContainer $loading={syncing}>
-                  <TradePrice price={trade.executionPrice} />
+                  <TradePrice price={trade.executionPrice as unknown as Price<Token, Token>} />
                 </LoadingOpacityContainer>
               ) : loading || syncing ? (
                 <ThemedText.DeprecatedMain fontSize={14}>

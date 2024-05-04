@@ -50,7 +50,7 @@ export function computeRoutes(
             : null,
         mixedRoute:
           routeProtocol === Protocol.MIXED
-            ? new MixedRouteSDK(route.map(genericPoolPairParser), currencyIn, currencyOut)
+            ? new MixedRouteSDK(route.map(genericPoolPairParser) as any, currencyIn, currencyOut)
             : null,
         inputAmount: CurrencyAmount.fromRawAmount(currencyIn, rawAmountIn),
         outputAmount: CurrencyAmount.fromRawAmount(currencyOut, rawAmountOut),

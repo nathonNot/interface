@@ -200,7 +200,7 @@ function V2PairMigration({
   const { onLeftRangeInput, onRightRangeInput } = useV3MintActionHandlers(noLiquidity)
 
   // the v3 tick is either the pool's tickCurrent, or the tick closest to the v2 spot price
-  const tick = pool?.tickCurrent ?? priceToClosestTick(v2SpotPrice)
+  const tick = pool?.tickCurrent ?? priceToClosestTick(v2SpotPrice as any)
   // the price is either the current v3 price, or the price at the tick
   const sqrtPrice = pool?.sqrtRatioX96 ?? TickMath.getSqrtRatioAtTick(tick)
   const position =

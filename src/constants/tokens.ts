@@ -446,6 +446,34 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WBTC',
     'Wrapped BTC'
   ),
+  [SupportedChainId.CYBER]: new Token(
+    SupportedChainId.CYBER,
+    '0x3e57d6946f893314324C975AA9CEBBdF3232967E',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.CYBER_TESTNET]: new Token(
+    SupportedChainId.CYBER_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.Linea]: new Token(
+    SupportedChainId.CYBER_TESTNET,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.LINEA_SEPOLIA]: new Token(
+    SupportedChainId.LINEA_SEPOLIA,
+    '0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is SupportedChainId.CELO | SupportedChainId.CELO_ALFAJORES {
@@ -551,5 +579,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in SupportedCha
     [SupportedChainId.CELO_ALFAJORES]: PORTAL_USDC_CELO.address,
     [SupportedChainId.GOERLI]: USDC_GOERLI.address,
     [SupportedChainId.BITLAYER]: USDC_GOERLI.address,
+    [SupportedChainId.LINEA_SEPOLIA]: USDC_GOERLI.address,
   },
 }
