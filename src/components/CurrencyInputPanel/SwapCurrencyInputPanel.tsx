@@ -52,14 +52,15 @@ const Container = styled.div<{ hideInput: boolean }>`
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
 `
 
-const CurrencySelect = styled(ButtonGray)<{
+const CurrencySelect = styled(ButtonGray) <{
   visible: boolean
   selected: boolean
   hideInput?: boolean
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+  // background-color: ${({ selected, theme }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+  background: transparent;
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   color: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.white)};
@@ -79,7 +80,8 @@ const CurrencySelect = styled(ButtonGray)<{
 
   &:hover,
   &:active {
-    background-color: ${({ theme, selected }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+    // background-color: ${({ theme, selected }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+    background: transparent;
   }
 
   &:before {
@@ -96,11 +98,13 @@ const CurrencySelect = styled(ButtonGray)<{
   }
 
   &:hover:before {
-    background-color: ${({ theme }) => theme.stateOverlayHover};
+    // background-color: ${({ theme }) => theme.stateOverlayHover};
+    background: transparent;
   }
 
   &:active:before {
-    background-color: ${({ theme }) => theme.stateOverlayPressed};
+    // background-color: ${({ theme }) => theme.stateOverlayPressed};
+    background: transparent;
   }
 
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
@@ -128,7 +132,8 @@ const LabelRow = styled.div`
 const FiatRow = styled(LabelRow)`
   justify-content: flex-end;
   min-height: 20px;
-  padding: 8px 0px 0px 0px;
+  // padding: 8px 0px 0px 0px;
+  padding: 0;
 `
 
 const Aligner = styled.span`
@@ -138,7 +143,7 @@ const Aligner = styled.span`
   width: 100%;
 `
 
-const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
+const StyledDropDown = styled(DropDown) <{ selected: boolean }>`
   margin: 0 0.25rem 0 0.35rem;
   height: 35%;
   margin-left: 8px;
@@ -158,7 +163,7 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
 const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   background-color: transparent;
   border: none;
-  color: ${({ theme }) => theme.accentAction};
+  color: ${({ theme }) => theme.primary};
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
@@ -175,12 +180,25 @@ const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   }
 `
 
-const StyledNumericalInput = styled(NumericalInput)<{ $loading: boolean }>`
+const StyledNumericalInput = styled(NumericalInput) <{ $loading: boolean }>`
   ${loadingOpacityMixin};
   text-align: left;
-  font-size: 36px;
-  line-height: 44px;
+  font-size: 24px;
+  font-weight: 600;
+  // line-height: 44px;
   font-variant: small-caps;
+`
+
+const LabelContainer = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Label = styled.div`
+  font-size: 18px;
+  color: ${({ theme }) => theme.textDefault}
 `
 
 interface SwapCurrencyInputPanelProps {
@@ -226,6 +244,7 @@ export default function SwapCurrencyInputPanel({
   hideInput = false,
   locked = false,
   loading = false,
+  label = '',
   ...rest
 }: SwapCurrencyInputPanelProps) {
   const [modalOpen, setModalOpen] = useState(false)
@@ -252,6 +271,40 @@ export default function SwapCurrencyInputPanel({
         </FixedContainer>
       )}
       <Container hideInput={hideInput}>
+        <LabelContainer>
+          <Label>
+            {label}
+          </Label>
+          {/* balance component */}
+          {Boolean(!hideInput && !hideBalance) && (
+            <FiatRow>
+              <RowBetween>
+                <LoadingOpacityContainer $loading={loading}>
+                  <FiatValue fiatValue={fiatValue} priceImpact={priceImpact} />
+                </LoadingOpacityContainer>
+                {account ? (
+                  <RowFixed style={{ height: '17px' }}>
+                    <ThemedText.DeprecatedBody
+                      color={'textDefault'}
+                      style={{ display: 'inline' }}
+                    >
+                      {!hideBalance && currency && selectedCurrencyBalance ? (
+                        renderBalance ? (
+                          renderBalance(selectedCurrencyBalance)
+                        ) : (
+                          <Trans>Balance: {formatCurrencyAmount(selectedCurrencyBalance, 4)}</Trans>
+                        )
+                      ) : null}
+                    </ThemedText.DeprecatedBody>
+
+                  </RowFixed>
+                ) : (
+                  <span />
+                )}
+              </RowBetween>
+            </FiatRow>
+          )}
+        </LabelContainer>
         <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}>
           {!hideInput && (
             <StyledNumericalInput
@@ -260,8 +313,20 @@ export default function SwapCurrencyInputPanel({
               onUserInput={onUserInput}
               disabled={!chainAllowed}
               $loading={loading}
+              placeholder="Input"
             />
           )}
+          {showMaxButton && selectedCurrencyBalance ? (
+            <TraceEvent
+              events={[BrowserEvent.onClick]}
+              name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
+              element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
+            >
+              <StyledBalanceMax onClick={onMax}>
+                <Trans>Max</Trans>
+              </StyledBalanceMax>
+            </TraceEvent>
+          ) : null}
 
           <CurrencySelect
             disabled={!chainAllowed}
@@ -283,7 +348,12 @@ export default function SwapCurrencyInputPanel({
                   </span>
                 ) : currency ? (
                   <CurrencyLogo style={{ marginRight: '2px' }} currency={currency} size="24px" />
-                ) : null}
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <rect width="28" height="28" rx="14" fill="#BC42FF" />
+                    <path d="M11.4286 10.8571C11.4286 9.51763 12.5176 8.42857 13.8571 8.42857H15.0714C16.4109 8.42857 17.5 9.51763 17.5 10.8571V10.9938C17.5 11.821 17.0788 12.5913 16.3844 13.0353L14.783 14.0636C14.3129 14.3659 13.9261 14.7814 13.6583 15.272C13.3904 15.7627 13.25 16.3127 13.25 16.8717V16.9286C13.25 17.6002 13.7926 18.1429 14.4643 18.1429C15.1359 18.1429 15.6786 17.6002 15.6786 16.9286V16.8754C15.6786 16.5643 15.8379 16.2759 16.096 16.1089L17.6973 15.0806C19.0862 14.185 19.9286 12.6482 19.9286 10.9938V10.8571C19.9286 8.17433 17.7542 6 15.0714 6H13.8571C11.1743 6 9 8.17433 9 10.8571C9 11.5288 9.54263 12.0714 10.2143 12.0714C10.8859 12.0714 11.4286 11.5288 11.4286 10.8571ZM14.4643 23C14.8668 23 15.2529 22.8401 15.5376 22.5554C15.8222 22.2708 15.9821 21.8847 15.9821 21.4821C15.9821 21.0796 15.8222 20.6935 15.5376 20.4089C15.2529 20.1242 14.8668 19.9643 14.4643 19.9643C14.0617 19.9643 13.6757 20.1242 13.391 20.4089C13.1063 20.6935 12.9464 21.0796 12.9464 21.4821C12.9464 21.8847 13.1063 22.2708 13.391 22.5554C13.6757 22.8401 14.0617 23 14.4643 23Z" fill="white" />
+                  </svg>
+                )}
                 {pair ? (
                   <StyledTokenName className="pair-name-container">
                     {pair?.token0.symbol}:{pair?.token1.symbol}
@@ -292,8 +362,8 @@ export default function SwapCurrencyInputPanel({
                   <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
                     {(currency && currency.symbol && currency.symbol.length > 20
                       ? currency.symbol.slice(0, 4) +
-                        '...' +
-                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                      '...' +
+                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
                       : currency?.symbol) || <Trans>Select token</Trans>}
                   </StyledTokenName>
                 )}
@@ -302,46 +372,7 @@ export default function SwapCurrencyInputPanel({
             </Aligner>
           </CurrencySelect>
         </InputRow>
-        {Boolean(!hideInput && !hideBalance) && (
-          <FiatRow>
-            <RowBetween>
-              <LoadingOpacityContainer $loading={loading}>
-                <FiatValue fiatValue={fiatValue} priceImpact={priceImpact} />
-              </LoadingOpacityContainer>
-              {account ? (
-                <RowFixed style={{ height: '17px' }}>
-                  <ThemedText.DeprecatedBody
-                    color={theme.textSecondary}
-                    fontWeight={400}
-                    fontSize={14}
-                    style={{ display: 'inline' }}
-                  >
-                    {!hideBalance && currency && selectedCurrencyBalance ? (
-                      renderBalance ? (
-                        renderBalance(selectedCurrencyBalance)
-                      ) : (
-                        <Trans>Balance: {formatCurrencyAmount(selectedCurrencyBalance, 4)}</Trans>
-                      )
-                    ) : null}
-                  </ThemedText.DeprecatedBody>
-                  {showMaxButton && selectedCurrencyBalance ? (
-                    <TraceEvent
-                      events={[BrowserEvent.onClick]}
-                      name={SwapEventName.SWAP_MAX_TOKEN_AMOUNT_SELECTED}
-                      element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
-                    >
-                      <StyledBalanceMax onClick={onMax}>
-                        <Trans>Max</Trans>
-                      </StyledBalanceMax>
-                    </TraceEvent>
-                  ) : null}
-                </RowFixed>
-              ) : (
-                <span />
-              )}
-            </RowBetween>
-          </FiatRow>
-        )}
+
       </Container>
       {onCurrencySelect && (
         <CurrencySearchModal

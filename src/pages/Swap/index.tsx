@@ -77,8 +77,9 @@ const ArrowContainer = styled.div`
 
 const SwapSection = styled.div`
   position: relative;
-  background-color: ${({ theme }) => theme.backgroundModule};
-  border-radius: 12px;
+  background-color: ${({ theme }) => theme.opacify};
+  border-radius: 24px;
+  border: 1px solid ${({ theme }) => theme.white};
   padding: 16px;
   color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
@@ -110,7 +111,7 @@ const SwapSection = styled.div`
   }
 `
 
-const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>`
+const OutputSwapSection = styled(SwapSection) <{ showDetailsDropdown: boolean }>`
   border-bottom: ${({ theme }) => `1px solid ${theme.backgroundSurface}`};
   border-bottom-left-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
   border-bottom-right-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
@@ -217,13 +218,13 @@ export default function Swap({ className }: { className?: string }) {
     () =>
       showWrap
         ? {
-            [Field.INPUT]: parsedAmount,
-            [Field.OUTPUT]: parsedAmount,
-          }
+          [Field.INPUT]: parsedAmount,
+          [Field.OUTPUT]: parsedAmount,
+        }
         : {
-            [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-            [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-          },
+          [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+          [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+        },
     [independentField, parsedAmount, showWrap, trade]
   )
   const fiatValueInput = useUSDPrice(parsedAmounts[Field.INPUT])
@@ -302,9 +303,9 @@ export default function Swap({ className }: { className?: string }) {
   }, [allowedSlippage, trade])
   const allowance = usePermit2Allowance(
     maximumAmountIn ??
-      (parsedAmounts[Field.INPUT]?.currency.isToken
-        ? (parsedAmounts[Field.INPUT] as CurrencyAmount<Token>)
-        : undefined),
+    (parsedAmounts[Field.INPUT]?.currency.isToken
+      ? (parsedAmounts[Field.INPUT] as CurrencyAmount<Token>)
+      : undefined),
     isSupportedChain(chainId) ? UNIVERSAL_ROUTER_ADDRESS(chainId) : undefined
   )
   const isApprovalLoading = allowance.state === AllowanceState.REQUIRED && allowance.isApprovalLoading
@@ -365,8 +366,8 @@ export default function Swap({ className }: { className?: string }) {
             recipient === null
               ? 'Swap w/o Send'
               : (recipientAddress ?? recipient) === account
-              ? 'Swap w/o Send + recipient'
-              : 'Swap w/ Send',
+                ? 'Swap w/o Send + recipient'
+                : 'Swap w/ Send',
           label: [TRADE_STRING, trade?.inputAmount?.currency?.symbol, trade?.outputAmount?.currency?.symbol, 'MH'].join(
             '/'
           ),
@@ -520,13 +521,7 @@ export default function Swap({ className }: { className?: string }) {
                 <SwapSection>
                   <Trace section={InterfaceSectionName.CURRENCY_INPUT_PANEL}>
                     <SwapCurrencyInputPanel
-                      label={
-                        independentField === Field.OUTPUT && !showWrap ? (
-                          <Trans>From (at most)</Trans>
-                        ) : (
-                          <Trans>From</Trans>
-                        )
-                      }
+                      label={<Trans>From</Trans>}
                       value={formattedAmounts[Field.INPUT]}
                       showMaxButton={showMaxButton}
                       currency={currencies[Field.INPUT] ?? null}
@@ -554,30 +549,38 @@ export default function Swap({ className }: { className?: string }) {
                       }}
                       color={theme.textPrimary}
                     >
-                      <ArrowDown
+                      {/* <ArrowDown
                         size="16"
                         color={
                           currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.textTertiary
                         }
-                      />
+                      /> */}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
+                        <rect x="0.5" width="48" height="48" rx="24" fill="#BC42FF" />
+                        <path d="M19.5343 15.959L19.5343 29.5768" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M15.4567 20.0552L19.5345 15.9585L23.6123 20.0552" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M29.462 32.2903L29.462 18.6725" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M33.54 28.1942L29.4623 32.2909L25.3845 28.1942" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
                     </ArrowContainer>
                   </TraceEvent>
                 </ArrowWrapper>
               </div>
-              <AutoColumn gap="md">
+              <AutoColumn gap="24px">
                 <div>
                   <OutputSwapSection showDetailsDropdown={showDetailsDropdown}>
                     <Trace section={InterfaceSectionName.CURRENCY_OUTPUT_PANEL}>
                       <SwapCurrencyInputPanel
                         value={formattedAmounts[Field.OUTPUT]}
                         onUserInput={handleTypeOutput}
-                        label={
-                          independentField === Field.INPUT && !showWrap ? (
-                            <Trans>To (at least)</Trans>
-                          ) : (
-                            <Trans>To</Trans>
-                          )
-                        }
+                        // label={
+                        //   independentField === Field.INPUT && !showWrap ? (
+                        //     <Trans>To (at least)</Trans>
+                        //   ) : (
+                        //     <Trans>To</Trans>
+                        //   )
+                        // }
+                        label={<Trans>To</Trans>}
                         showMaxButton={false}
                         hideBalance={false}
                         fiatValue={fiatValueOutput}

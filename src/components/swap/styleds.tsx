@@ -11,7 +11,7 @@ import { AutoColumn } from '../Column'
 
 export const PageWrapper = styled.div`
   padding: 68px 8px 0px;
-  max-width: 480px;
+  max-width: 685px;
   width: 100%;
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.md}px`}) {
@@ -26,31 +26,29 @@ export const PageWrapper = styled.div`
 // Mostly copied from `AppBody` but it was getting too hard to maintain backwards compatibility.
 export const SwapWrapper = styled.main<{ chainId: number | undefined }>`
   position: relative;
-  background: ${({ theme }) => theme.backgroundSurface};
-  border-radius: 16px;
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
-  padding: 8px;
+  background: ${({ theme }) => theme.main};
+  border-radius: 8px;
+  border: none;
+  padding: 24px;
   box-shadow: ${({ chainId }) => !!chainId && chainId === SupportedChainId.BNB && '0px 40px 120px 0px #f0b90b29'};
   z-index: ${Z_INDEX.deprecated_content};
   transition: transform 250ms ease;
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.backgroundOutline};
-  }
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
-  border-radius: 12px;
-  height: 40px;
-  width: 40px;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
   position: relative;
-  margin-top: -18px;
-  margin-bottom: -18px;
+  // margin-top: -18px;
+  // margin-bottom: -18px;
   margin-left: auto;
   margin-right: auto;
-  background-color: ${({ theme }) => theme.backgroundInteractive};
-  border: 4px solid;
-  border-color: ${({ theme }) => theme.backgroundSurface};
+  margin-top: 12px;
+  margin-bottom: 12px;
+  background-color: ${({ theme }) => theme.primary};
+  // border: 4px solid;
+  // border-color: ${({ theme }) => theme.backgroundSurface};
 
   z-index: 2;
   ${({ clickable }) =>
