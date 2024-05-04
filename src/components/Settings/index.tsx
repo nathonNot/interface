@@ -127,59 +127,12 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
   const open = useModalIsOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
 
-  const theme = useTheme()
-
-  const [expertMode, toggleExpertMode] = useExpertModeManager()
-
-  const [clientSideRouter, setClientSideRouter] = useClientSideRouter()
-
   // show confirmation view before turning on
-  const [showConfirmation, setShowConfirmation] = useState(false)
 
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
     <StyledMenu ref={node}>
-      <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)} maxHeight={100}>
-        <ModalContentWrapper>
-          <AutoColumn gap="lg">
-            <RowBetween style={{ padding: '0 2rem' }}>
-              <div />
-              <Text fontWeight={500} fontSize={20}>
-                <Trans>Are you sure?</Trans>
-              </Text>
-              <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
-            </RowBetween>
-            <Break />
-            <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
-              <Text fontWeight={500} fontSize={20}>
-                <Trans>
-                  Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                  in bad rates and lost funds.
-                </Trans>
-              </Text>
-              <Text fontWeight={600} fontSize={20}>
-                <Trans>ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.</Trans>
-              </Text>
-              <ButtonError
-                error={true}
-                padding="12px"
-                onClick={() => {
-                  const confirmWord = t`confirm`
-                  if (window.prompt(t`Please type the word "${confirmWord}" to enable expert mode.`) === confirmWord) {
-                    toggleExpertMode()
-                    setShowConfirmation(false)
-                  }
-                }}
-              >
-                <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  <Trans>Turn On Expert Mode</Trans>
-                </Text>
-              </ButtonError>
-            </AutoColumn>
-          </AutoColumn>
-        </ModalContentWrapper>
-      </Modal>
       <StyledMenuButton
         disabled={!isSupportedChainId(chainId)}
         onClick={toggle}
@@ -187,72 +140,11 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
         aria-label={t`Transaction Settings`}
       >
         <StyledMenuIcon data-testid="swap-settings-button" />
-        {expertMode ? (
-          <EmojiWrapper>
-            <span role="img" aria-label="wizard-icon">
-              🧙
-            </span>
-          </EmojiWrapper>
-        ) : null}
       </StyledMenuButton>
       {open && (
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text fontWeight={600} fontSize={14}>
-              <Trans>Settings</Trans>
-            </Text>
             <TransactionSettings placeholderSlippage={placeholderSlippage} />
-            <Text fontWeight={600} fontSize={14}>
-              <Trans>Interface Settings</Trans>
-            </Text>
-            {isSupportedChainId(chainId) && (
-              <RowBetween>
-                <RowFixed>
-                  <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.textSecondary}>
-                    <Trans>Auto Router API</Trans>
-                  </ThemedText.DeprecatedBlack>
-                  <QuestionHelper text={<Trans>Use the Uniswap Labs API to get faster quotes.</Trans>} />
-                </RowFixed>
-                <Toggle
-                  id="toggle-optimized-router-button"
-                  isActive={!clientSideRouter}
-                  toggle={() => {
-                    sendEvent({
-                      category: 'Routing',
-                      action: clientSideRouter ? 'enable routing API' : 'disable routing API',
-                    })
-                    setClientSideRouter(!clientSideRouter)
-                  }}
-                />
-              </RowBetween>
-            )}
-            <RowBetween>
-              <RowFixed>
-                <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.textSecondary}>
-                  <Trans>Expert Mode</Trans>
-                </ThemedText.DeprecatedBlack>
-                <QuestionHelper
-                  text={
-                    <Trans>Allow high price impact trades and skip the confirm screen. Use at your own risk.</Trans>
-                  }
-                />
-              </RowFixed>
-              <Toggle
-                id="toggle-expert-mode-button"
-                isActive={expertMode}
-                toggle={
-                  expertMode
-                    ? () => {
-                        toggleExpertMode()
-                        setShowConfirmation(false)
-                      }
-                    : () => {
-                        toggle()
-                        setShowConfirmation(true)
-                      }
-                }
-              />
-            </RowBetween>
           </AutoColumn>
         </MenuFlyout>
       )}

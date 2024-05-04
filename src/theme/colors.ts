@@ -109,6 +109,8 @@ const commonTheme = {
   opacify: colors.opacify,
   main: '#23204E',
   toast: '#303940',
+  toast2: '#1F1D3B',
+  title: '#f4f4f4',
   white: colors.white,
   black: colors.black,
 
