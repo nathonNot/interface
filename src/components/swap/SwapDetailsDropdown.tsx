@@ -34,13 +34,13 @@ const StyledCard = styled(OutlineCard)`
   border: 1px solid ${({ theme }) => theme.backgroundOutline};
 `
 
-const StyledHeaderRow = styled(RowBetween)<{ disabled: boolean; open: boolean }>`
+const StyledHeaderRow = styled(RowBetween) <{ disabled: boolean; open: boolean }>`
   padding: 0;
   align-items: center;
   cursor: ${({ disabled }) => (disabled ? 'initial' : 'pointer')};
 `
 
-const RotatingArrow = styled(ChevronDown)<{ open?: boolean }>`
+const RotatingArrow = styled(ChevronDown) <{ open?: boolean }>`
   transform: ${({ open }) => (open ? 'rotate(180deg)' : 'none')};
   transition: transform 0.1s linear;
 `
@@ -119,7 +119,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
           shouldLogImpression={!showDetails}
         >
           <StyledHeaderRow onClick={() => setShowDetails(!showDetails)} disabled={!trade} open={showDetails}>
-            <RowFixed style={{ position: 'relative' }} align="center">
+            <RowFixed style={{ position: 'relative', flex: 1 }} align="center">
               {Boolean(loading || syncing) && (
                 <StyledPolling>
                   <StyledPollingDot>
@@ -128,7 +128,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                 </StyledPolling>
               )}
               {trade ? (
-                <LoadingOpacityContainer $loading={syncing}>
+                <LoadingOpacityContainer $loading={syncing} style={{ width: '100%' }}>
                   <TradePrice price={trade.executionPrice as unknown as Price<Token, Token>} />
                 </LoadingOpacityContainer>
               ) : loading || syncing ? (
@@ -138,20 +138,21 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
               ) : null}
             </RowFixed>
             <RowFixed>
-              {!trade?.gasUseEstimateUSD ||
-              showDetails ||
-              !chainId ||
-              !SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? null : (
+              {/* {!trade?.gasUseEstimateUSD ||
+                showDetails ||
+                !chainId ||
+                !SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? null : (
                 <GasEstimateBadge
                   trade={trade}
                   loading={syncing || loading}
                   showRoute={!showDetails}
                   disableHover={showDetails}
                 />
-              )}
+              )} */}
               <RotatingArrow
                 stroke={trade ? theme.textTertiary : theme.deprecated_bg3}
                 open={Boolean(trade && showDetails)}
+                style={{ marginLeft: 12 }}
               />
             </RowFixed>
           </StyledHeaderRow>
@@ -163,7 +164,6 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                 <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} syncing={syncing} />
               </StyledCard>
             ) : null}
-            {trade ? <SwapRoute trade={trade} syncing={syncing} /> : null}
           </AutoColumn>
         </AnimatedDropdown>
       </AutoColumn>
