@@ -59,7 +59,7 @@ import useWrapCallback, { WrapErrorText, WrapType } from '../../hooks/useWrapCal
 import { Field } from '../../state/swap/actions'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers } from '../../state/swap/hooks'
 import swapReducer, { initialState as initialSwapState } from '../../state/swap/reducer'
-import { useExpertModeManager } from '../../state/user/hooks'
+import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, ThemedText } from '../../theme'
 import { computeFiatValuePriceImpact } from '../../utils/computeFiatValuePriceImpact'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -129,6 +129,20 @@ const DetailsSwapSection = styled(SwapSection)`
   padding: 0;
   padding-top: 31px;
   border-radius: 0;
+`
+
+const SlippageBox = styled.div`
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #322E70;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 16px;
+  font-weight: 500;
+  color: #8E8E8E;
 `
 
 function getIsValidSwapQuote(
@@ -449,6 +463,8 @@ export default function Swap({ className }: { className?: string }) {
   const priceImpactTooHigh = priceImpactSeverity > 3 && !isExpertMode
   const showPriceImpactWarning = largerPriceImpact && priceImpactSeverity > 3
 
+  const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
+
   // Handle time based logging events and event properties.
   useEffect(() => {
     const now = new Date()
@@ -715,6 +731,14 @@ export default function Swap({ className }: { className?: string }) {
                       </ButtonError>
                     )}
                     {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
+                    {
+                      userSlippageTolerance !== 'auto' && (
+                        <SlippageBox>
+                          <div>Slippage Tolerance</div>
+                          <div style={{ color: theme.white }}>{userSlippageTolerance.toFixed(2)}%</div>
+                        </SlippageBox>
+                      )
+                    }
                   </div>
                 </AutoColumn>
               </SwapWrapper>

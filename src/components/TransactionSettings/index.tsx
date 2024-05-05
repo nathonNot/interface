@@ -134,8 +134,6 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
 
   const [deadline, setDeadline] = useUserTransactionTTL()
 
-  console.log(userSlippageTolerance, 'userSlippageTolerance')
-
   const [slippageOption, setSlippageOption] = useState<Slippage | 'custom'>(userSlippageTolerance === 'auto' ? SlippageArr[0] : (userSlippageTolerance.toFixed(2) ?? SlippageArr[0]));
   const [slippageInput, setSlippageInput] = useState('')
   const [slippageError, setSlippageError] = useState<SlippageError | false>(false)
