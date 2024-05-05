@@ -61,7 +61,7 @@ export function useUniversalRouterSwapCallback(
           if (!trade) throw new Error('missing trade')
 
           setTraceData('slippageTolerance', options.slippageTolerance.toFixed(2))
-          const { calldata: data, value } = SwapRouter.swapERC20CallParameters(trade, {
+          const { calldata: data, value } = SwapRouter.swapERC20CallParameters(trade as any, {
             slippageTolerance: options.slippageTolerance,
             deadlineOrPreviousBlockhash: options.deadline?.toString(),
             inputTokenPermit: options.permit,

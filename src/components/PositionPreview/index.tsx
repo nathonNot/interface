@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Currency } from '@uniswap/sdk-core'
+import { Currency, Price, Token } from '@uniswap/sdk-core'
 import { Position } from '@uniswap/v3-sdk'
 import RangeBadge from 'components/Badge/RangeBadge'
 import { LightCard } from 'components/Card'
@@ -51,8 +51,8 @@ export const PositionPreview = ({
 
   const price = sorted ? position.pool.priceOf(position.pool.token0) : position.pool.priceOf(position.pool.token1)
 
-  const priceLower = sorted ? position.token0PriceLower : position.token0PriceUpper.invert()
-  const priceUpper = sorted ? position.token0PriceUpper : position.token0PriceLower.invert()
+  const priceLower = (sorted ? position.token0PriceLower : position.token0PriceUpper.invert()) as unknown as Price<Token, Token>
+  const priceUpper = (sorted ? position.token0PriceUpper : position.token0PriceLower.invert())  as unknown as Price<Token, Token>
 
   const handleRateChange = useCallback(() => {
     setBaseCurrency(quoteCurrency)

@@ -110,7 +110,7 @@ export function useClientSideRouter(): [boolean, (userClientSideRouter: boolean)
 /**
  * Return the user's slippage tolerance, from the redux store, and a function to update the slippage tolerance
  */
-export function useUserSlippageTolerance(): [Percent | 'auto', (slippageTolerance: Percent | 'auto') => void] {
+export function useUserSlippageTolerance(): [Percent | 'auto' | any, (slippageTolerance: Percent | 'auto') => void] {
   const userSlippageToleranceRaw = useAppSelector((state) => {
     return state.user.userSlippageTolerance
   })

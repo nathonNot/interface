@@ -9,8 +9,8 @@ import SettingsTab from '../Settings'
 import SwapBuyFiatButton from './SwapBuyFiatButton'
 
 const StyledSwapHeader = styled.div`
-  padding: 8px 12px;
-  margin-bottom: 8px;
+  // padding: 8px 12px;
+  margin-bottom: 24px;
   width: 100%;
   color: ${({ theme }) => theme.textSecondary};
 `
@@ -23,6 +23,10 @@ const TextHeader = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  font-size: 32px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.white};
 `
 
 export default function SwapHeader({ allowedSlippage }: { allowedSlippage: Percent }) {
@@ -35,7 +39,7 @@ export default function SwapHeader({ allowedSlippage }: { allowedSlippage: Perce
           <TextHeader className={subhead}>
             <Trans>Swap</Trans>
           </TextHeader>
-          {fiatOnRampButtonEnabled && <SwapBuyFiatButton />}
+          {/* {fiatOnRampButtonEnabled && <SwapBuyFiatButton />} */}
         </RowFixed>
         <RowFixed>
           <SettingsTab placeholderSlippage={allowedSlippage} />

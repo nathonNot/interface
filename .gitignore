@@ -10,7 +10,6 @@
 
 # generated graphql types
 /src/graphql/**/__generated__
-schema.graphql
 
 # dependencies
 /node_modules
@@ -51,3 +50,5 @@ cypress/screenshots
 .vercel
 src/graphql/data/__generated__/types-and-hooks.ts
 .gitignore
+
+/src/*.test.*
