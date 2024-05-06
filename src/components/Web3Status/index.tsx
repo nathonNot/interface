@@ -28,6 +28,7 @@ import { WalletLogo } from 'components/Icons/Wallet'
 import { Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { updateSelectedWallet } from 'state/user/reducer'
+import { useIsMobile } from 'nft/hooks'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
@@ -58,7 +59,7 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   }
 `
 
-const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
+const Web3StatusConnectWrapper = styled.div<{ faded?: boolean; isMobile: boolean; }>`
   ${flexRowNoWrap};
   align-items: center;
   background-color: ${({ theme }) => theme.accentActionSoft};
@@ -71,7 +72,7 @@ const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
 
   color: ${({ theme }) => theme.accentAction};
 
-  border-radius: 18px;
+  border-radius: ${({ isMobile }) => isMobile ? 8 : 16}px;
   background: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.white};
   // :hover {
@@ -153,7 +154,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
-const StyledConnectButton = styled.button`
+const StyledConnectButton = styled.button<{ isMobile: boolean }>`
   background-color: transparent;
   border: none;
   // border-top-left-radius: ${FULL_BORDER_RADIUS}px;
@@ -161,7 +162,7 @@ const StyledConnectButton = styled.button`
   cursor: pointer;
   font-weight: 500;
   font-size: 16px;
-  padding: 12px 24px;
+  padding: ${({ isMobile }) => isMobile ? '6px 12px' : '12px 24px'};
   color: inherit;
 
   display: flex;
@@ -215,6 +216,8 @@ function Web3StatusInner() {
     sendAnalyticsEvent(InterfaceEventName.ACCOUNT_DROPDOWN_BUTTON_CLICKED)
     toggleAccountDrawer()
   }, [toggleAccountDrawer])
+
+  const isMobile = useIsMobile()
 
   const [menuOpen, setMenuOpen] = useState(false);
   const isClaimAvailable = useIsNftClaimAvailable((state) => state.isClaimAvailable)
@@ -315,10 +318,19 @@ function Web3StatusInner() {
           faded={!account}
           onKeyPress={(e) => e.key === 'Enter' && handleWalletDropdownClick()}
           onClick={handleWalletDropdownClick}
+          isMobile={isMobile}
         >
-          <StyledConnectButton tabIndex={-1} data-testid="navbar-connect-wallet">
-            <WalletLogo />
-            <Trans>Connect Wallet</Trans>
+          <StyledConnectButton isMobile={isMobile} tabIndex={-1} data-testid="navbar-connect-wallet">
+            {
+              isMobile ? (
+                <Trans>Connect</Trans>
+              ) : (
+                <>
+                  <WalletLogo />
+                  <Trans>Connect Wallet</Trans>
+                </>
+              )
+            }
           </StyledConnectButton>
         </Web3StatusConnectWrapper>
       </TraceEvent>

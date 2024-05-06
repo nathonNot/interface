@@ -645,7 +645,7 @@ export default function Swap({ className }: { className?: string }) {
                         {wrapInputError ? (
                           <WrapErrorText wrapInputError={wrapInputError} />
                         ) : wrapType === WrapType.WRAP ? (
-                          <Trans>Wrap Now</Trans>
+                          <Trans>Wrap</Trans>
                         ) : wrapType === WrapType.UNWRAP ? (
                           <Trans>Unwrap</Trans>
                         ) : null}
