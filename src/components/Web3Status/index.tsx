@@ -282,10 +282,10 @@ function Web3StatusInner() {
             isMobile ? (
               <Trans>{ENSName || shortenAddress(account, 3)}</Trans>
             ) : (
-              <>
+              <RowBetween gap='8px'>
                 <WalletLogo />
                 <Trans>{ENSName || shortenAddress(account)}</Trans>
-              </>
+              </RowBetween>
             )
           )}
         </Web3StatusConnected>
@@ -332,10 +332,10 @@ function Web3StatusInner() {
               isMobile ? (
                 <Trans>Connect</Trans>
               ) : (
-                <>
+                <RowBetween gap='8px'>
                   <WalletLogo />
                   <Trans>Connect Wallet</Trans>
-                </>
+                </RowBetween>
               )
             }
           </StyledConnectButton>
