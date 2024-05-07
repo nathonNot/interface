@@ -7,3 +7,5 @@ export const isMobile = type === 'mobile' || type === 'tablet'
 const platform = parser.getOS().name
 export const isIOS = platform === 'iOS'
 export const isNonIOSPhone = !isIOS && type === 'mobile'
+
+export const fontSize = isMobile ? 14 : 16;

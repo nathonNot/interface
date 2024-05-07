@@ -279,14 +279,18 @@ function Web3StatusInner() {
               <Loader stroke="white" />
             </RowBetween>
           ) : (
-            isMobile ? (
-              <Trans>{ENSName || shortenAddress(account, 3)}</Trans>
-            ) : (
-              <>
-                <WalletLogo />
-                <Trans>{ENSName || shortenAddress(account)}</Trans>
-              </>
-            )
+            <AddressAndChevronContainer>
+              {
+                isMobile ? (
+                  <Trans>{ENSName || shortenAddress(account, 3)}</Trans>
+                ) : (
+                  <>
+                    <WalletLogo />
+                    <Trans>{ENSName || shortenAddress(account)}</Trans>
+                  </>
+                )
+              }
+            </AddressAndChevronContainer>
           )}
         </Web3StatusConnected>
         {

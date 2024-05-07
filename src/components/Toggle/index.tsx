@@ -53,13 +53,13 @@ const ToggleElement = styled.span<{ isActive?: boolean; bgColor?: string; isInit
   background: ${({ theme, bgColor, isActive }) =>
     isActive ? bgColor ?? theme.accentAction : bgColor ? theme.deprecated_bg4 : theme.textTertiary};
   border-radius: 50%;
-  height: 24px;
+  height: 16px;
   :hover {
     ${({ bgColor, theme, isActive }) => ToggleElementHoverStyle(!!bgColor, theme, isActive)}
   }
   margin-left: ${({ isActive }) => isActive && '2.2em'};
   margin-right: ${({ isActive }) => !isActive && '2.2em'};
-  width: 24px;
+  width: 16px;
 `
 
 interface ToggleProps {

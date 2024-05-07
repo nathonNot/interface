@@ -27,17 +27,19 @@ type BaseButtonProps = {
   width?: string
   $borderRadius?: string
   altDisabledStyle?: boolean
+  gap?: string
 } & ButtonProps
 
-export const BaseButton = styled(RebassButton)<BaseButtonProps>`
+export const BaseButton = styled(RebassButton) <BaseButtonProps>`
   padding: ${({ padding }) => padding ?? '16px'};
   width: ${({ width }) => width ?? '100%'};
   font-weight: 500;
   text-align: center;
+  background: #26143D;
   border-radius: ${({ $borderRadius }) => $borderRadius ?? '20px'};
   outline: none;
-  border: 1px solid transparent;
-  color: ${({ theme }) => theme.textPrimary};
+  border: 1px solid ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.primary};
   text-decoration: none;
   display: flex;
   justify-content: center;
@@ -46,6 +48,7 @@ export const BaseButton = styled(RebassButton)<BaseButtonProps>`
   cursor: pointer;
   position: relative;
   z-index: 1;
+  gap: ${({ gap }) => gap}
   &:disabled {
     opacity: 50%;
     cursor: auto;
@@ -84,9 +87,9 @@ export const ButtonPrimary = styled(BaseButton)`
   }
   &:disabled {
     background-color: ${({ theme, altDisabledStyle, disabled }) =>
-      altDisabledStyle ? (disabled ? theme.accentAction : theme.backgroundInteractive) : theme.backgroundInteractive};
+    altDisabledStyle ? (disabled ? theme.accentAction : theme.backgroundInteractive) : theme.backgroundInteractive};
     color: ${({ altDisabledStyle, disabled, theme }) =>
-      altDisabledStyle ? (disabled ? theme.white : theme.textSecondary) : theme.textSecondary};
+    altDisabledStyle ? (disabled ? theme.white : theme.textSecondary) : theme.textSecondary};
     cursor: auto;
     box-shadow: none;
     border: 1px solid transparent;
@@ -187,9 +190,12 @@ export const ButtonSecondary = styled(BaseButton)`
 `
 
 export const ButtonOutlined = styled(BaseButton)`
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
+  border-radius: 6px;
+  border: 1px solid #8E8E8E;
+  width: fit-content;
+  padding: 6px 16px;
   background-color: transparent;
-  color: ${({ theme }) => theme.textPrimary};
+  color: #8E8E8E;
   &:focus {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.deprecated_bg4};
   }
@@ -328,7 +334,9 @@ export function ButtonDropdownLight({ disabled = false, children, ...rest }: { d
 
 const ActiveOutlined = styled(ButtonOutlined)`
   border: 1px solid;
-  border-color: ${({ theme }) => theme.accentAction};
+  border-color: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => theme.primary};
+  color: #F4F4F4;
 `
 
 const Circle = styled.div`
@@ -367,11 +375,6 @@ export function ButtonRadioChecked({ active = false, children, ...rest }: { acti
       <ActiveOutlined {...rest} padding="12px 8px" $borderRadius="12px">
         <RowBetween>
           {children}
-          <CheckboxWrapper>
-            <Circle>
-              <ResponsiveCheck size={13} stroke={theme.white} />
-            </Circle>
-          </CheckboxWrapper>
         </RowBetween>
       </ActiveOutlined>
     )
@@ -518,7 +521,7 @@ const BaseThemeButton = styled.button<BaseThemeButtonProps>`
   }
 `
 
-interface ThemeButtonProps extends React.ComponentPropsWithoutRef<'button'>, BaseThemeButtonProps {}
+interface ThemeButtonProps extends React.ComponentPropsWithoutRef<'button'>, BaseThemeButtonProps { }
 
 export const ThemeButton = ({ children, ...rest }: ThemeButtonProps) => {
   return (
@@ -535,5 +538,51 @@ export const ButtonLight = ({ children, ...rest }: BaseButtonProps) => {
       <ButtonOverlay />
       {children}
     </BaseButtonLight>
+  )
+}
+
+
+const BaseButton1 = styled.div<BaseButtonProps>`
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  width: ${({ width }) => width ?? '100%'};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ gap }) => gap};
+  font-weight: 500;
+
+  text-decoration: none;
+`
+
+const DefaultButton = styled(BaseButton1)<BaseButtonProps>`
+  border: 1px solid ${({ theme }) => theme.primary};
+  border-radius: ${({ $borderRadius }) => $borderRadius ?? '15px'};
+
+  
+  padding: ${({ padding }) => padding ?? '12px 16px'};
+  background: #26143D;
+
+  color: ${({ theme }) => theme.primary};
+`
+
+const PrimaryButton = styled(BaseButton1)<BaseButtonProps>`
+  border: none;
+  border-radius: ${({ $borderRadius }) => $borderRadius ?? '15px'};
+
+  padding: ${({ padding }) => padding ?? '12px 24px'};
+  background: ${({ theme }) => theme.primary};
+
+  color: ${({ theme }) => theme.white};
+`
+
+export default function Button(props: Record<string, any>) {
+  if (props.type === 'primary') {
+    return <PrimaryButton {...props} />
+  }
+  return (
+    <DefaultButton {...props} />
   )
 }

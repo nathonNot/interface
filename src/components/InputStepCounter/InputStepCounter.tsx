@@ -33,11 +33,16 @@ const InputRow = styled.div`
 const SmallButton = styled(ButtonGray)`
   border-radius: 8px;
   padding: 4px;
+  border: none;
+  background: transparent;
 `
 
 const FocusedOutlineCard = styled(OutlineCard)<{ active?: boolean; pulsing?: boolean }>`
   border-color: ${({ active, theme }) => active && theme.accentAction};
-  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%);
+  padding: 12px 20px;
   animation: ${({ pulsing, theme }) => pulsing && pulse(theme.accentAction)} 0.8s linear;
 `
 
@@ -58,9 +63,15 @@ const StyledInput = styled(NumericalInput)<{ usePercent?: boolean }>`
 `
 
 const InputTitle = styled(ThemedText.DeprecatedSmall)`
-  color: ${({ theme }) => theme.textSecondary};
-  font-size: 12px;
+  color: #F4F4F4;
+  font-size: 18px;
   font-weight: 500;
+`
+
+const InputDesc = styled(ThemedText.DeprecatedSmall)`
+  color: #8E8E8E;
+  font-size: 14px;
+  font-weight: 400;
 `
 
 const ButtonLabel = styled(ThemedText.DeprecatedWhite)<{ disabled: boolean }>`
@@ -142,8 +153,8 @@ const StepCounter = ({
 
   return (
     <FocusedOutlineCard pulsing={pulsing} active={active} onFocus={handleOnFocus} onBlur={handleOnBlur} width={width}>
-      <AutoColumn gap="6px">
-        <InputTitle fontSize={12} textAlign="center">
+      <AutoColumn gap="11px">
+        <InputTitle fontSize={18} textAlign="center">
           {title}
         </InputTitle>
 
@@ -175,11 +186,11 @@ const StepCounter = ({
           )}
         </InputRow>
 
-        <InputTitle fontSize={12} textAlign="center">
+        <InputDesc fontSize={14} fontWeight={400} textAlign="center">
           <Trans>
             {tokenB} per {tokenA}
           </Trans>
-        </InputTitle>
+        </InputDesc>
       </AutoColumn>
     </FocusedOutlineCard>
   )

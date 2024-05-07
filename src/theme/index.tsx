@@ -112,10 +112,11 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
 
-export const ThemedGlobalStyle = createGlobalStyle`
+export const ThemedGlobalStyle = createGlobalStyle<{ fontSize?: number; isMobile?: boolean }>`
   html {
     color: ${({ theme }) => theme.textPrimary};
     background-color: ${({ theme }) => theme.background} !important;
+    font-size: ${({ fontSize }) => `${fontSize}px`}
   }
 
   summary::-webkit-details-marker {
