@@ -54,6 +54,7 @@ import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink'
 import { LoadingRows } from './styleds'
 import BackBtn from 'components/BackBtn'
 import HoverInlineText from 'components/HoverInlineText'
+import ToggleButton from 'components/ToggleButton'
 
 const getTokenLink = (chainId: SupportedChainId, address: string) => {
   if (isGqlSupportedChain(chainId)) {
@@ -186,6 +187,13 @@ const ContentBox = styled.div`
   flex: 1;
 `
 
+const DetailCard = styled(Card)`
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #2D2A61;
+
+`
+
 const RangeCard = styled(Card)`
   background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%);
   border-radius: 12px;
@@ -220,21 +228,6 @@ function CurrentPriceCard({
   }
 
   return (
-    // <LightCard padding="12px">
-    //   <AutoColumn gap="sm" justify="center">
-    //     <ExtentsText>
-    //       <Trans>Current price</Trans>
-    //     </ExtentsText>
-    //     <ThemedText.DeprecatedMediumHeader textAlign="center">
-    //       {formatPrice((inverted ? pool.token1Price : pool.token0Price) as any, NumberType.TokenTx)}
-    //     </ThemedText.DeprecatedMediumHeader>
-    //     <ExtentsText>
-    //       <Trans>
-    //         {currencyQuote?.symbol} per {currencyBase?.symbol}
-    //       </Trans>
-    //     </ExtentsText>
-    //   </AutoColumn>
-    // </LightCard>
     <AutoRow gap="4px" justify="center" fontWeight={500}>
       <Trans>
         {
@@ -256,8 +249,8 @@ function LinkedCurrency({ chainId, currency }: { chainId?: number; currency?: Cu
     return (
       <ExternalLink href={getTokenLink(chainId, address)}>
         <RowFixed>
-          <CurrencyLogo currency={currency} size="20px" style={{ marginRight: '0.5rem' }} />
-          <ThemedText.DeprecatedMain>{currency?.symbol} ↗</ThemedText.DeprecatedMain>
+          <CurrencyLogo currency={currency} size="32px" style={{ marginRight: 8 }} />
+          <ThemedText.UtilityBadge fontSize={18} color='#f4f4f4'>{currency?.symbol} ↗</ThemedText.UtilityBadge>
         </RowFixed>
       </ExternalLink>
     )
@@ -265,8 +258,8 @@ function LinkedCurrency({ chainId, currency }: { chainId?: number; currency?: Cu
 
   return (
     <RowFixed>
-      <CurrencyLogo currency={currency} size="20px" style={{ marginRight: '0.5rem' }} />
-      <ThemedText.DeprecatedMain>{currency?.symbol}</ThemedText.DeprecatedMain>
+      <CurrencyLogo currency={currency} size="32px" style={{ marginRight: 8 }} />
+      <ThemedText.UtilityBadge fontSize={18} color='#f4f4f4'>{currency?.symbol}</ThemedText.UtilityBadge>
     </RowFixed>
   )
 }
@@ -740,13 +733,15 @@ function PositionPageContent() {
                     <Trans>Price range</Trans>
                   </Label>
                   <RowFixed>
-                    {currencyBase && currencyQuote && (
-                      <RateToggle
-                        currencyA={currencyBase}
-                        currencyB={currencyQuote}
-                        handleRateToggle={() => setManuallyInverted(!manuallyInverted)}
-                      />
-                    )}
+                    {
+                      currencyQuote && (
+                        <ToggleButton
+                          text='View Price In'
+                          onClick={() => setManuallyInverted(!manuallyInverted)}
+                          symbol={currencyQuote.symbol!}
+                        />
+                      )
+                    }
                   </RowFixed>
                 </RowBetween>
 
@@ -821,40 +816,40 @@ function PositionPageContent() {
                       </ThemedText.DeprecatedLargeHeader>
                     )}
                   </AutoColumn>
-                  <LightCard padding="12px 16px">
-                    <AutoColumn gap="md">
+                  <DetailCard>
+                    <AutoColumn gap="16px">
                       <RowBetween>
                         <LinkedCurrency chainId={chainId} currency={currencyQuote} />
                         <RowFixed>
-                          <ThemedText.DeprecatedMain>
+                          <ThemedText.DeprecatedMain fontSize={18} color='#f4f4f4'>
                             {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
                           </ThemedText.DeprecatedMain>
-                          {typeof ratio === 'number' && !removed ? (
+                          {/* {typeof ratio === 'number' && !removed ? (
                             <Badge style={{ marginLeft: '10px' }}>
-                              <ThemedText.DeprecatedMain color={theme.textSecondary} fontSize={11}>
+                              <ThemedText.DeprecatedMain color='#f4f4f4' fontSize={18}>
                                 <Trans>{inverted ? ratio : 100 - ratio}%</Trans>
                               </ThemedText.DeprecatedMain>
                             </Badge>
-                          ) : null}
+                          ) : null} */}
                         </RowFixed>
                       </RowBetween>
                       <RowBetween>
                         <LinkedCurrency chainId={chainId} currency={currencyBase} />
                         <RowFixed>
-                          <ThemedText.DeprecatedMain>
+                          <ThemedText.DeprecatedMain fontSize={18} color='#f4f4f4'>
                             {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
                           </ThemedText.DeprecatedMain>
-                          {typeof ratio === 'number' && !removed ? (
+                          {/* {typeof ratio === 'number' && !removed ? (
                             <Badge style={{ marginLeft: '10px' }}>
                               <ThemedText.DeprecatedMain color={theme.textSecondary} fontSize={11}>
                                 <Trans>{inverted ? 100 - ratio : ratio}%</Trans>
                               </ThemedText.DeprecatedMain>
                             </Badge>
-                          ) : null}
+                          ) : null} */}
                         </RowFixed>
                       </RowBetween>
                     </AutoColumn>
-                  </LightCard>
+                  </DetailCard>
                 </AutoColumn>
               </ContentBox>
               <ContentBox>
@@ -915,16 +910,16 @@ function PositionPageContent() {
                       ) : null}
                     </RowBetween>
                   </AutoColumn>
-                  <LightCard padding="12px 16px">
-                    <AutoColumn gap="md">
+                  <DetailCard>
+                    <AutoColumn gap="16px">
                       <RowBetween>
                         <RowFixed>
                           <CurrencyLogo
                             currency={feeValueUpper?.currency}
-                            size="20px"
-                            style={{ marginRight: '0.5rem' }}
+                            size="32px"
+                            style={{ marginRight: 8 }}
                           />
-                          <ThemedText.DeprecatedMain>{feeValueUpper?.currency?.symbol}</ThemedText.DeprecatedMain>
+                          <ThemedText.UtilityBadge fontSize={18} color='#f4f4f4'>{feeValueUpper?.currency?.symbol}</ThemedText.UtilityBadge>
                         </RowFixed>
                         <RowFixed>
                           <ThemedText.DeprecatedMain>
@@ -936,10 +931,10 @@ function PositionPageContent() {
                         <RowFixed>
                           <CurrencyLogo
                             currency={feeValueLower?.currency}
-                            size="20px"
-                            style={{ marginRight: '0.5rem' }}
+                            size="32px"
+                            style={{ marginRight: 8 }}
                           />
-                          <ThemedText.DeprecatedMain>{feeValueLower?.currency?.symbol}</ThemedText.DeprecatedMain>
+                          <ThemedText.UtilityBadge fontSize={18} color='#f4f4f4'>{feeValueLower?.currency?.symbol}</ThemedText.UtilityBadge>
                         </RowFixed>
                         <RowFixed>
                           <ThemedText.DeprecatedMain>
@@ -948,21 +943,7 @@ function PositionPageContent() {
                         </RowFixed>
                       </RowBetween>
                     </AutoColumn>
-                  </LightCard>
-                  {showCollectAsWeth && (
-                    <AutoColumn gap="md">
-                      <RowBetween>
-                        <ThemedText.DeprecatedMain>
-                          <Trans>Collect as {nativeWrappedSymbol}</Trans>
-                        </ThemedText.DeprecatedMain>
-                        <Toggle
-                          id="receive-as-weth"
-                          isActive={receiveWETH}
-                          toggle={() => setReceiveWETH((receiveWETH) => !receiveWETH)}
-                        />
-                      </RowBetween>
-                    </AutoColumn>
-                  )}
+                  </DetailCard>
                 </AutoColumn>
               </ContentBox>
             </RowBetween>
