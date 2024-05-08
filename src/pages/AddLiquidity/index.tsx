@@ -652,7 +652,7 @@ function AddLiquidity() {
           hash={txHash}
           content={() => (
             <ConfirmationModalContent
-              title={<Trans>Add Liquidity111</Trans>}
+              title={<Trans>Overview</Trans>}
               onDismiss={handleDismissConfirmation}
               topContent={() => (
                 <Review

@@ -64,7 +64,7 @@ export function AdvancedSwapDetails({
 
   return !trade ? null : (
     <StyledCard>
-      <AutoColumn gap="sm">
+      <AutoColumn gap="10px">
         <RowBetween>
           <RowFixed>
             <MouseoverTooltip
@@ -106,7 +106,6 @@ export function AdvancedSwapDetails({
             </ThemedText.DeprecatedBlack>
           </TextWithLoadingPlaceholder>
         </RowBetween>
-        <Separator />
         <RowBetween>
           <RowFixed style={{ marginRight: '20px' }}>
             <MouseoverTooltip

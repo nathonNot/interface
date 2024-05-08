@@ -132,7 +132,6 @@ const DetailsSwapSection = styled(SwapSection)`
 `
 
 const SlippageBox = styled.div`
-  margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid #322E70;
 
@@ -731,15 +730,15 @@ export default function Swap({ className }: { className?: string }) {
                       </ButtonError>
                     )}
                     {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-                    {
-                      userSlippageTolerance !== 'auto' && (
-                        <SlippageBox>
-                          <div>Slippage Tolerance</div>
-                          <div style={{ color: theme.white }}>{userSlippageTolerance.toFixed(2)}%</div>
-                        </SlippageBox>
-                      )
-                    }
                   </div>
+                  {
+                    userSlippageTolerance !== 'auto' && (
+                      <SlippageBox>
+                        <div>Slippage Tolerance</div>
+                        <div style={{ color: theme.white }}>{userSlippageTolerance.toFixed(2)}%</div>
+                      </SlippageBox>
+                    )
+                  }
                 </AutoColumn>
               </SwapWrapper>
               {showDetailsDropdown && (

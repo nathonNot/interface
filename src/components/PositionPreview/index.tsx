@@ -2,20 +2,29 @@ import { Trans } from '@lingui/macro'
 import { Currency, Price, Token } from '@uniswap/sdk-core'
 import { Position } from '@uniswap/v3-sdk'
 import RangeBadge from 'components/Badge/RangeBadge'
-import { LightCard } from 'components/Card'
+import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import { Break } from 'components/earn/styled'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import RateToggle from 'components/RateToggle'
-import { RowBetween, RowFixed } from 'components/Row'
+import Row, { RowBetween, RowFixed } from 'components/Row'
 import JSBI from 'jsbi'
 import { ReactNode, useCallback, useState } from 'react'
 import { Bound } from 'state/mint/v3/actions'
+import styled from 'styled-components'
 import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { formatTickPrice } from 'utils/formatTickPrice'
 import { unwrappedToken } from 'utils/unwrappedToken'
+
+const LightCard = styled(Card)`
+  fontSize: ${({ fontSize }) => fontSize ? `${String(fontSize)}px` : '18px'};
+  border: 1px solid #7B7995;
+  border-radius: 12px;
+  padding: 12px;
+  background-color: transparent;
+`
 
 export const PositionPreview = ({
   position,
@@ -41,8 +50,8 @@ export const PositionPreview = ({
       ? baseCurrencyDefault === currency0
         ? currency0
         : baseCurrencyDefault === currency1
-        ? currency1
-        : currency0
+          ? currency1
+          : currency0
       : currency0
   )
 
@@ -52,7 +61,7 @@ export const PositionPreview = ({
   const price = sorted ? position.pool.priceOf(position.pool.token0) : position.pool.priceOf(position.pool.token1)
 
   const priceLower = (sorted ? position.token0PriceLower : position.token0PriceUpper.invert()) as unknown as Price<Token, Token>
-  const priceUpper = (sorted ? position.token0PriceUpper : position.token0PriceLower.invert())  as unknown as Price<Token, Token>
+  const priceUpper = (sorted ? position.token0PriceUpper : position.token0PriceLower.invert()) as unknown as Price<Token, Token>
 
   const handleRateChange = useCallback(() => {
     setBaseCurrency(quoteCurrency)
@@ -61,125 +70,95 @@ export const PositionPreview = ({
   const removed = position?.liquidity && JSBI.equal(position?.liquidity, JSBI.BigInt(0))
 
   return (
-    <AutoColumn gap="md" style={{ marginTop: '0.5rem' }}>
-      <RowBetween style={{ marginBottom: '0.5rem' }}>
-        <RowFixed>
-          <DoubleCurrencyLogo
-            currency0={currency0 ?? undefined}
-            currency1={currency1 ?? undefined}
-            size={24}
-            margin={true}
-          />
-          <ThemedText.DeprecatedLabel ml="10px" fontSize="24px">
-            {currency0?.symbol} / {currency1?.symbol}
-          </ThemedText.DeprecatedLabel>
-        </RowFixed>
-        <RangeBadge removed={removed} inRange={inRange} />
-      </RowBetween>
-
+    <AutoColumn gap="27px">
       <LightCard>
-        <AutoColumn gap="md">
-          <RowBetween>
-            <RowFixed>
-              <CurrencyLogo currency={currency0} />
-              <ThemedText.DeprecatedLabel ml="8px">{currency0?.symbol}</ThemedText.DeprecatedLabel>
-            </RowFixed>
-            <RowFixed>
-              <ThemedText.DeprecatedLabel mr="8px">{position.amount0.toSignificant(4)}</ThemedText.DeprecatedLabel>
-            </RowFixed>
-          </RowBetween>
-          <RowBetween>
-            <RowFixed>
-              <CurrencyLogo currency={currency1} />
-              <ThemedText.DeprecatedLabel ml="8px">{currency1?.symbol}</ThemedText.DeprecatedLabel>
-            </RowFixed>
-            <RowFixed>
-              <ThemedText.DeprecatedLabel mr="8px">{position.amount1.toSignificant(4)}</ThemedText.DeprecatedLabel>
-            </RowFixed>
-          </RowBetween>
-          <Break />
-          <RowBetween>
-            <ThemedText.DeprecatedLabel>
-              <Trans>Fee Tier</Trans>
-            </ThemedText.DeprecatedLabel>
-            <ThemedText.DeprecatedLabel>
-              <Trans>{position?.pool?.fee / 10000}%</Trans>
-            </ThemedText.DeprecatedLabel>
-          </RowBetween>
-        </AutoColumn>
-      </LightCard>
-
-      <AutoColumn gap="md">
         <RowBetween>
-          {title ? <ThemedText.DeprecatedMain>{title}</ThemedText.DeprecatedMain> : <div />}
-          <RateToggle
-            currencyA={sorted ? currency0 : currency1}
-            currencyB={sorted ? currency1 : currency0}
-            handleRateToggle={handleRateChange}
-          />
+          <Row gap='8px'>
+            <DoubleCurrencyLogo
+              currency0={currency0 ?? undefined}
+              currency1={currency1 ?? undefined}
+              size={24}
+              margin={true}
+            />
+            <ThemedText.DeprecatedLabel fontSize="24px">
+              {currency0?.symbol} / {currency1?.symbol}
+            </ThemedText.DeprecatedLabel>
+          </Row>
+          <ThemedText.DeprecatedLabel>
+            <Trans>{position?.pool?.fee / 10000}%</Trans>
+          </ThemedText.DeprecatedLabel>
         </RowBetween>
+      </LightCard>
+      <AutoColumn gap="8px">
+        <ThemedText.DeprecatedBody color='white'>Pool Current Price</ThemedText.DeprecatedBody>
+        <LightCard>
+          <RowBetween>
+            <ThemedText.DeprecatedMain fontSize="14px">
+              <Trans>1 {baseCurrency.symbol} = {`${position.pool.priceOf(position.pool.token0).toSignificant(5)} `}{quoteCurrency.symbol}</Trans>
+            </ThemedText.DeprecatedMain>
+            <ThemedText.DeprecatedMain fontSize="14px">
+              <Trans>1 {quoteCurrency.symbol} = {`${position.pool.priceOf(position.pool.token1).toSignificant(5)} `}{baseCurrency.symbol}</Trans>
+            </ThemedText.DeprecatedMain>
+          </RowBetween>
+        </LightCard>
+      </AutoColumn>
 
-        <RowBetween>
-          <LightCard width="48%" padding="8px">
-            <AutoColumn gap="4px" justify="center">
-              <ThemedText.DeprecatedMain fontSize="12px">
-                <Trans>Min Price</Trans>
-              </ThemedText.DeprecatedMain>
-              <ThemedText.DeprecatedMediumHeader textAlign="center">
-                {formatTickPrice({
-                  price: priceLower,
+      <AutoColumn gap="8px">
+        <ThemedText.DeprecatedBody color='white'>Price Range</ThemedText.DeprecatedBody>
+        <LightCard>
+          <AutoColumn gap="10px">
+            <Row gap='8px'>
+              <CurrencyLogo hideL2Icon currency={currency0} size='24px' />
+              <ThemedText.SubHeaderSmall color='white'>
+                <Trans>1 {baseCurrency.symbol} = {formatTickPrice({
+                  price: position.token0PriceLower as unknown as Price<Token, Token>,
                   atLimit: ticksAtLimit,
                   direction: Bound.LOWER,
-                })}
-              </ThemedText.DeprecatedMediumHeader>
-              <ThemedText.DeprecatedMain textAlign="center" fontSize="12px">
-                <Trans>
-                  {quoteCurrency.symbol} per {baseCurrency.symbol}
-                </Trans>
-              </ThemedText.DeprecatedMain>
-              <ThemedText.DeprecatedSmall textAlign="center" color={theme.textTertiary} style={{ marginTop: '4px' }}>
-                <Trans>Your position will be 100% composed of {baseCurrency?.symbol} at this price</Trans>
-              </ThemedText.DeprecatedSmall>
-            </AutoColumn>
-          </LightCard>
-
-          <LightCard width="48%" padding="8px">
-            <AutoColumn gap="4px" justify="center">
-              <ThemedText.DeprecatedMain fontSize="12px">
-                <Trans>Max Price</Trans>
-              </ThemedText.DeprecatedMain>
-              <ThemedText.DeprecatedMediumHeader textAlign="center">
-                {formatTickPrice({
-                  price: priceUpper,
+                })} - {formatTickPrice({
+                  price: position.token0PriceUpper as unknown as Price<Token, Token>,
                   atLimit: ticksAtLimit,
                   direction: Bound.UPPER,
-                })}
-              </ThemedText.DeprecatedMediumHeader>
-              <ThemedText.DeprecatedMain textAlign="center" fontSize="12px">
-                <Trans>
-                  {quoteCurrency.symbol} per {baseCurrency.symbol}
-                </Trans>
-              </ThemedText.DeprecatedMain>
-              <ThemedText.DeprecatedSmall textAlign="center" color={theme.textTertiary} style={{ marginTop: '4px' }}>
-                <Trans>Your position will be 100% composed of {quoteCurrency?.symbol} at this price</Trans>
-              </ThemedText.DeprecatedSmall>
-            </AutoColumn>
-          </LightCard>
-        </RowBetween>
-        <LightCard padding="12px ">
-          <AutoColumn gap="4px" justify="center">
-            <ThemedText.DeprecatedMain fontSize="12px">
-              <Trans>Current price</Trans>
-            </ThemedText.DeprecatedMain>
-            <ThemedText.DeprecatedMediumHeader>{`${price.toSignificant(5)} `}</ThemedText.DeprecatedMediumHeader>
-            <ThemedText.DeprecatedMain textAlign="center" fontSize="12px">
-              <Trans>
-                {quoteCurrency.symbol} per {baseCurrency.symbol}
-              </Trans>
-            </ThemedText.DeprecatedMain>
+                })} {quoteCurrency.symbol}</Trans>
+              </ThemedText.SubHeaderSmall>
+            </Row>
+            <Row gap='8px'>
+              <CurrencyLogo hideL2Icon currency={currency1} size='24px' />
+              <ThemedText.SubHeaderSmall color='white'>
+                <Trans>1 {quoteCurrency.symbol} = {formatTickPrice({
+                  price: position.token0PriceUpper.invert() as unknown as Price<Token, Token>,
+                  atLimit: ticksAtLimit,
+                  direction: Bound.LOWER,
+                })} - {formatTickPrice({
+                  price: position.token0PriceLower.invert() as unknown as Price<Token, Token>,
+                  atLimit: ticksAtLimit,
+                  direction: Bound.UPPER,
+                })} {baseCurrency.symbol}</Trans>
+              </ThemedText.SubHeaderSmall>
+            </Row>
           </AutoColumn>
         </LightCard>
       </AutoColumn>
+
+      <AutoColumn gap="8px">
+        <ThemedText.DeprecatedBody color='white'>Amount</ThemedText.DeprecatedBody>
+        <LightCard>
+            <Row gap='10px'>
+              <ThemedText.DeprecatedLabel>{position.amount0.toSignificant(4)}</ThemedText.DeprecatedLabel>
+              <Row gap='4px' width='auto'>
+                <CurrencyLogo currency={currency0} />
+                <ThemedText.DeprecatedLabel>{currency0?.symbol}</ThemedText.DeprecatedLabel>
+              </Row>
+              <div>+</div>
+              <ThemedText.DeprecatedLabel>{position.amount1.toSignificant(4)}</ThemedText.DeprecatedLabel>
+              <Row gap='4px' width='auto'>
+                <CurrencyLogo currency={currency1} />
+                <ThemedText.DeprecatedLabel>{currency1?.symbol}</ThemedText.DeprecatedLabel>
+              </Row>
+            </Row>
+        </LightCard>
+      </AutoColumn>
+
+      <ThemedText.BodySmall color='#8E8E8E'>Please pay attention to whether the current price deviates significantlyfrom the market price. if so, it may present arbitrage opportunities thatcould result in asset losses.</ThemedText.BodySmall>
     </AutoColumn>
   )
 }

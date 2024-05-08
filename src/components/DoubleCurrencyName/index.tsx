@@ -1,29 +1,32 @@
 import { Currency } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 
-const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`
+const Wrapper = styled.div<{ margin: boolean; sizeraw: number; fontSize: number; fontWeight?: number; }>`
   position: relative;
   display: flex;
   flex-direction: row;
-  margin-left: ${({ sizeraw, margin }) => margin && (sizeraw / 3 + 8).toString() + 'px'};
-  color: ${({ theme }) => theme.white}
+  color: ${({ theme }) => theme.white};
+  font-size: ${({ fontSize }) => `${fontSize}px`};
+  font-weight: ${({ fontWeight }) => fontWeight ?? 500};
 `
 
-interface DoubleCurrencyLogoProps {
-  margin?: boolean
-  size?: number
-  currency0?: Currency
-  currency1?: Currency
+interface DoubleCurrencyNameProps {
+  margin?: boolean;
+  size?: number;
+  fontWeight?: number;
+  currency0?: Currency;
+  currency1?: Currency;
 }
 
 export default function DoubleCurrencyName({
   currency0,
   currency1,
   size = 24,
+  fontWeight = 500,
   margin = false,
-}: DoubleCurrencyLogoProps) {
+}: DoubleCurrencyNameProps) {
   return (
-    <Wrapper sizeraw={size} margin={margin}>
+    <Wrapper sizeraw={size} fontSize={size} fontWeight={fontWeight} margin={margin}>
       &nbsp;{currency1?.symbol}&nbsp;/&nbsp;{currency0?.symbol}
     </Wrapper>
   )
