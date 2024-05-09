@@ -107,7 +107,7 @@ export const FALLBACK_URLS = {
     // "Safe" URLs
     'https://cyber.alt.technology',
   ],
-  [SupportedChainId.Linea]: [
+  [SupportedChainId.LINEA]: [
     // "Safe" URLs
     'https://linea.decubate.com',
     'https://linea.drpc.org'
@@ -116,6 +116,16 @@ export const FALLBACK_URLS = {
     // "Safe" URLs
     'https://linea-sepolia.blockpi.network/v1/rpc/public',
     'https://rpc.sepolia.linea.build'
+  ],
+  [SupportedChainId.BASE]: [
+    // "Safe" URLs
+    'https://base-rpc.publicnode.com',
+    'https://base.drpc.org',
+    'https://mainnet.base.org',
+  ],
+  [SupportedChainId.BASE_GOERLI]: [
+    // "Safe" URLs
+    'https://goerli.base.org',
   ],
 }
 
@@ -153,6 +163,6 @@ export const RPC_URLS = {
   [SupportedChainId.BITLAYER_TESTNET]: [...FALLBACK_URLS[SupportedChainId.BITLAYER_TESTNET]],
   [SupportedChainId.CYBER]: [...FALLBACK_URLS[SupportedChainId.CYBER]],
   [SupportedChainId.CYBER_TESTNET]: [...FALLBACK_URLS[SupportedChainId.CYBER_TESTNET]],
-  [SupportedChainId.Linea]: [...FALLBACK_URLS[SupportedChainId.Linea]],
+  [SupportedChainId.LINEA]: [...FALLBACK_URLS[SupportedChainId.LINEA]],
   [SupportedChainId.LINEA_SEPOLIA]: [...FALLBACK_URLS[SupportedChainId.LINEA_SEPOLIA]],
 }

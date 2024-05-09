@@ -97,6 +97,7 @@ export const colors = {
   networkPolygon: '#A457FF',
   networkArbitrum: '#28A0F0',
   networkBsc: '#F0B90B',
+  networkBase: '#0052FF',
   networkPolygonSoft: 'rgba(164, 87, 255, 0.16)',
   networkEthereumSoft: 'rgba(98, 126, 234, 0.16)',
 }
@@ -122,6 +123,7 @@ const commonTheme = {
   chain_137: colors.networkPolygon,
   chain_42: colors.networkArbitrum,
   chain_56: colors.networkBsc,
+  chain_84531: colors.networkBase,
   chain_420: colors.networkOptimism,
   chain_42161: colors.networkArbitrum,
   chain_421613: colors.networkArbitrum,
