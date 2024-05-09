@@ -191,7 +191,7 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
         <AutoColumn gap="16px">
           <OptionGrid data-testid="option-grid">
             {connections.map((connection) =>
-              connection.shouldDisplay() ? (
+              connection.shouldDisplay() && (connection.getName() === 'WalletConnect' || connection.getName() === 'Browser Wallet' || connection.getName() === 'MetaMask') ? (
                 <Option
                   key={connection.getName()}
                   connection={connection}
