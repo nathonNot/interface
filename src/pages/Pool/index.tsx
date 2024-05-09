@@ -292,7 +292,6 @@ export default function Pool() {
             </TitleRow>
             <OperateBox>
               <Box position="relative">
-                <SearchBar />
               </Box>
               <SwitchBox>
                 <div>Show Closed</div>

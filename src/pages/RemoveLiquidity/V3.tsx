@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import RangeBadge from 'components/Badge/RangeBadge'
 import { ButtonConfirmed, ButtonPrimary } from 'components/Button'
-import { LightCard } from 'components/Card'
+import Card, { LightCard } from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import { Break } from 'components/earn/styled'
@@ -15,7 +15,7 @@ import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount'
 import Loader from 'components/Icons/LoadingSpinner'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { AddRemoveTabs } from 'components/NavigationTabs'
-import { AutoRow, RowBetween, RowFixed } from 'components/Row'
+import Row, { AutoRow, RowBetween, RowFixed } from 'components/Row'
 import Slider from 'components/Slider'
 import Toggle from 'components/Toggle'
 import { isSupportedChain } from 'constants/chains'
@@ -41,8 +41,39 @@ import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { currencyId } from '../../utils/currencyId'
 import AppBody from '../AppBody'
 import { ResponsiveHeaderText, SmallMaxButton, Wrapper } from './styled'
+import styled from 'styled-components'
+import BackBtn from 'components/BackBtn'
+import { useAppDispatch } from 'state/hooks'
+import { resetMintState } from 'state/mint/actions'
+import { resetMintState as resetMintV3State } from 'state/mint/v3/actions'
+import PageTitle from 'components/PageTitle'
 
 const DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100)
+
+const TopContent = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+`
+
+const SliderCard = styled(Card)`
+  border-radius: 12px;
+  background: #2D2A61;
+  padding: 12px 16px 19px 16px;
+`
+
+const SummaryCard = styled(Card)`
+  border-radius: 16px;
+  background: #23204E;
+  padding: 20px 19px;
+`
+
+const BodyWrap = styled(AppBody)`
+  border: none;
+  border-radius: 16px;
+  background: #1F1D3B;
+  max-width: ${({ $maxWidth }) => $maxWidth ?? '420px'};
+`
 
 // redirect invalid tokenIds
 export default function RemoveLiquidityV3() {
@@ -270,12 +301,16 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const showCollectAsWeth = Boolean(
     liquidityValue0?.currency &&
-      liquidityValue1?.currency &&
-      (liquidityValue0.currency.isNative ||
-        liquidityValue1.currency.isNative ||
-        WRAPPED_NATIVE_CURRENCY[liquidityValue0.currency.chainId]?.equals(liquidityValue0.currency.wrapped) ||
-        WRAPPED_NATIVE_CURRENCY[liquidityValue1.currency.chainId]?.equals(liquidityValue1.currency.wrapped))
+    liquidityValue1?.currency &&
+    (liquidityValue0.currency.isNative ||
+      liquidityValue1.currency.isNative ||
+      WRAPPED_NATIVE_CURRENCY[liquidityValue0.currency.chainId]?.equals(liquidityValue0.currency.wrapped) ||
+      WRAPPED_NATIVE_CURRENCY[liquidityValue1.currency.chainId]?.equals(liquidityValue1.currency.wrapped))
   )
+
+  const dispatch = useAppDispatch();
+
+  console.log(position, 'position')
   return (
     <AutoColumn>
       <TransactionConfirmationModal
@@ -292,124 +327,158 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         )}
         pendingText={pendingText}
       />
-      <AppBody $maxWidth="unset">
+      {/* <TopContent>
+          <BackBtn
+            text='Back'
+            to={'/pools' + (tokenId.toString() ? `/${tokenId.toString().toString()}` : '')}
+            onClick={() => {
+              // not 100% sure both of these are needed
+              dispatch(resetMintState())
+              dispatch(resetMintV3State())
+            }}
+            style={{
+              position: 'absolute',
+              left: '0',
+              top: '50%',
+              transform: 'translateY(-50%)'
+            }}
+          />
+          <PageTitle
+            title='Remove Liquidity'
+          />
+        </TopContent> */}
+      <BodyWrap $maxWidth="860px">
         <AddRemoveTabs
           creating={false}
           adding={false}
           positionID={tokenId.toString()}
           defaultSlippage={DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE}
         />
+
         <Wrapper>
           {position ? (
             <AutoColumn gap="lg">
-              <RowBetween>
-                <RowFixed>
-                  <DoubleCurrencyLogo
-                    currency0={feeValue0?.currency}
-                    currency1={feeValue1?.currency}
-                    size={20}
-                    margin={true}
-                  />
-                  <ThemedText.DeprecatedLabel
-                    ml="10px"
-                    fontSize="20px"
-                  >{`${feeValue0?.currency?.symbol}/${feeValue1?.currency?.symbol}`}</ThemedText.DeprecatedLabel>
-                </RowFixed>
-                <RangeBadge removed={removed} inRange={!outOfRange} />
-              </RowBetween>
-              <LightCard>
-                <AutoColumn gap="md">
-                  <ThemedText.DeprecatedMain fontWeight={400}>
-                    <Trans>Amount</Trans>
-                  </ThemedText.DeprecatedMain>
+              <Row gap='12px'>
+                <DoubleCurrencyLogo
+                  currency0={feeValue0?.currency ?? undefined}
+                  currency1={feeValue1?.currency ?? undefined}
+                  size={40}
+                  margin={true}
+                />
+                <AutoColumn gap='2px'>
+                  <ThemedText.DeprecatedBlack fontSize="24px">
+                    {feeValue0?.currency?.symbol} / {feeValue1?.currency?.symbol}
+                  </ThemedText.DeprecatedBlack>
+                  <Row color='#9B98D0'>
+                    <ThemedText.DeprecatedBlack color='#9B98D0'>
+                      <Trans>Fee Rate:</Trans>
+                    </ThemedText.DeprecatedBlack>
+                    <ThemedText.DeprecatedBlack color='primary'>
+                      <Trans>{position?.fee / 10000}%</Trans>
+                    </ThemedText.DeprecatedBlack>
+                  </Row>
+                </AutoColumn>
+              </Row>
+              <SliderCard>
+                <AutoColumn gap="16px">
+                  <div style={{ color: '#F4F4F4', textAlign: 'center' }}>
+                    <ThemedText.DeprecatedMain fontSize={16} color='#F4F4F4' textAlign='center'>
+                      Remove Percentage
+                    </ThemedText.DeprecatedMain>
+                  </div>
                   <RowBetween>
-                    <ResponsiveHeaderText>
+                    <ResponsiveHeaderText color={theme.primary}>
                       <Trans>{percentForSlider}%</Trans>
                     </ResponsiveHeaderText>
-                    <AutoRow gap="4px" justify="flex-end">
-                      <SmallMaxButton onClick={() => onPercentSelect(25)} width="20%">
-                        <Trans>25%</Trans>
-                      </SmallMaxButton>
-                      <SmallMaxButton onClick={() => onPercentSelect(50)} width="20%">
-                        <Trans>50%</Trans>
-                      </SmallMaxButton>
-                      <SmallMaxButton onClick={() => onPercentSelect(75)} width="20%">
-                        <Trans>75%</Trans>
-                      </SmallMaxButton>
-                      <SmallMaxButton onClick={() => onPercentSelect(100)} width="20%">
-                        <Trans>Max</Trans>
-                      </SmallMaxButton>
-                    </AutoRow>
                   </RowBetween>
-                  <Slider value={percentForSlider} onChange={onPercentSelectForSlider} />
-                </AutoColumn>
-              </LightCard>
-              <LightCard>
-                <AutoColumn gap="md">
-                  <RowBetween>
-                    <Text fontSize={16} fontWeight={500}>
-                      <Trans>Pooled {liquidityValue0?.currency?.symbol}:</Trans>
-                    </Text>
-                    <RowFixed>
-                      <Text fontSize={16} fontWeight={500} marginLeft="6px">
-                        {liquidityValue0 && <FormattedCurrencyAmount currencyAmount={liquidityValue0} />}
-                      </Text>
-                      <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={liquidityValue0?.currency} />
-                    </RowFixed>
-                  </RowBetween>
-                  <RowBetween>
-                    <Text fontSize={16} fontWeight={500}>
-                      <Trans>Pooled {liquidityValue1?.currency?.symbol}:</Trans>
-                    </Text>
-                    <RowFixed>
-                      <Text fontSize={16} fontWeight={500} marginLeft="6px">
-                        {liquidityValue1 && <FormattedCurrencyAmount currencyAmount={liquidityValue1} />}
-                      </Text>
-                      <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={liquidityValue1?.currency} />
-                    </RowFixed>
-                  </RowBetween>
-                  {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) ? (
-                    <>
-                      <Break />
-                      <RowBetween>
-                        <Text fontSize={16} fontWeight={500}>
-                          <Trans>{feeValue0?.currency?.symbol} Fees Earned:</Trans>
-                        </Text>
-                        <RowFixed>
-                          <Text fontSize={16} fontWeight={500} marginLeft="6px">
-                            {feeValue0 && <FormattedCurrencyAmount currencyAmount={feeValue0} />}
-                          </Text>
-                          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={feeValue0?.currency} />
-                        </RowFixed>
-                      </RowBetween>
-                      <RowBetween>
-                        <Text fontSize={16} fontWeight={500}>
-                          <Trans>{feeValue1?.currency?.symbol} Fees Earned:</Trans>
-                        </Text>
-                        <RowFixed>
-                          <Text fontSize={16} fontWeight={500} marginLeft="6px">
-                            {feeValue1 && <FormattedCurrencyAmount currencyAmount={feeValue1} />}
-                          </Text>
-                          <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={feeValue1?.currency} />
-                        </RowFixed>
-                      </RowBetween>
-                    </>
-                  ) : null}
-                </AutoColumn>
-              </LightCard>
+                  <AutoColumn gap="8px">
 
-              {showCollectAsWeth && (
-                <RowBetween>
-                  <ThemedText.DeprecatedMain>
-                    <Trans>Collect as {nativeWrappedSymbol}</Trans>
-                  </ThemedText.DeprecatedMain>
-                  <Toggle
-                    id="receive-as-weth"
-                    isActive={receiveWETH}
-                    toggle={() => setReceiveWETH((receiveWETH) => !receiveWETH)}
-                  />
-                </RowBetween>
-              )}
+                    <div style={{ position: 'relative' }}>
+                      <Slider value={percentForSlider} onChange={onPercentSelectForSlider} />
+                      {/* <div style={{ position: 'absolute', top: '50%', transform: 'translate(0, -50%)', left: `${percentForSlider}%` }}>
+                        <ThemedText.LabelSmall color='primary'>
+                          <Trans>{percentForSlider}%</Trans>
+                        </ThemedText.LabelSmall>
+                      </div> */}
+                    </div>
+                    <RowBetween color='#A7A6B8'>
+                      <ThemedText.BodySmall color='#A7A6B8'>
+                        <Trans>0%</Trans>
+                      </ThemedText.BodySmall>
+                      <ThemedText.BodySmall color='#A7A6B8'>
+                        <Trans>25%</Trans>
+                      </ThemedText.BodySmall>
+                      <ThemedText.BodySmall color='#A7A6B8'>
+                        <Trans>50%</Trans>
+                      </ThemedText.BodySmall>
+                      <ThemedText.BodySmall color='#A7A6B8'>
+                        <Trans>75%</Trans>
+                      </ThemedText.BodySmall>
+                      <ThemedText.BodySmall color='#A7A6B8'>
+                        <Trans>100%</Trans>
+                      </ThemedText.BodySmall>
+                    </RowBetween>
+                  </AutoColumn>
+                </AutoColumn>
+              </SliderCard>
+              <SummaryCard>
+                <AutoColumn gap="16px">
+                  <ThemedText.DeprecatedLabel fontSize={18} style={{ color: '#E4E4E5' }}>Summary</ThemedText.DeprecatedLabel>
+                  <AutoColumn gap="8px">
+                    <RowBetween>
+                      <Text fontSize={16} fontWeight={400} color='#8B89AA'>
+                        <Trans>Pooled {liquidityValue0?.currency?.symbol}:</Trans>
+                      </Text>
+                      <RowFixed>
+                        <Text fontSize={16} fontWeight={400} marginLeft="6px" color='#E4E4E5'>
+                          {liquidityValue0 && <FormattedCurrencyAmount currencyAmount={liquidityValue0} />}
+                        </Text>
+                        <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={liquidityValue0?.currency} />
+                      </RowFixed>
+                    </RowBetween>
+                    <RowBetween>
+                      <Text fontSize={16} fontWeight={400} color='#8B89AA'>
+                        <Trans>Pooled {liquidityValue1?.currency?.symbol}:</Trans>
+                      </Text>
+                      <RowFixed>
+                        <Text fontSize={16} fontWeight={400} marginLeft="6px" color='#E4E4E5'>
+                          {liquidityValue1 && <FormattedCurrencyAmount currencyAmount={liquidityValue1} />}
+                        </Text>
+                        <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={liquidityValue1?.currency} />
+                      </RowFixed>
+                    </RowBetween>
+                  </AutoColumn>
+                  <Break />
+                  <AutoColumn gap="8px">
+                    {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) ? (
+                      <>
+                        <RowBetween>
+                          <Text fontSize={16} fontWeight={400} color='#8B89AA'>
+                            <Trans>{feeValue0?.currency?.symbol} Fees Earned:</Trans>
+                          </Text>
+                          <RowFixed>
+                            <Text fontSize={16} fontWeight={400} marginLeft="6px" color='#E4E4E5'>
+                              {feeValue0 && <FormattedCurrencyAmount currencyAmount={feeValue0} />}
+                            </Text>
+                            <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={feeValue0?.currency} />
+                          </RowFixed>
+                        </RowBetween>
+                        <RowBetween>
+                          <Text fontSize={16} fontWeight={400} color='#8B89AA'>
+                            <Trans>{feeValue1?.currency?.symbol} Fees Earned:</Trans>
+                          </Text>
+                          <RowFixed>
+                            <Text fontSize={16} fontWeight={400} marginLeft="6px" color='#E4E4E5'>
+                              {feeValue1 && <FormattedCurrencyAmount currencyAmount={feeValue1} />}
+                            </Text>
+                            <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={feeValue1?.currency} />
+                          </RowFixed>
+                        </RowBetween>
+                      </>
+                    ) : null}
+                  </AutoColumn>
+                </AutoColumn>
+              </SummaryCard>
 
               <div style={{ display: 'flex' }}>
                 <AutoColumn gap="md" style={{ flex: '1' }}>
@@ -427,7 +496,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             <Loader />
           )}
         </Wrapper>
-      </AppBody>
+      </BodyWrap>
     </AutoColumn>
   )
 }

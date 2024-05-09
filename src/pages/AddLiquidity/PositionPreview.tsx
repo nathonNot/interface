@@ -65,7 +65,7 @@ export const PositionPreview = ({
       <DoubleCurrencyLogo
         currency0={currency0 ?? undefined}
         currency1={currency1 ?? undefined}
-        size={24}
+        size={40}
         margin={true}
       />
       <AutoColumn gap='2px'>
