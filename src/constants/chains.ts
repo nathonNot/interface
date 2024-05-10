@@ -28,8 +28,10 @@ export enum SupportedChainId {
   CYBER = 7560,
   CYBER_TESTNET = 111557560,
 
-  Linea = 59144,
-  LINEA_SEPOLIA = 59141
+  LINEA = 59144,
+  LINEA_SEPOLIA = 59141,
+  BASE = 8453,
+  BASE_GOERLI = 84531
 }
 
 export const CHAIN_IDS_TO_NAMES = {
@@ -48,8 +50,10 @@ export const CHAIN_IDS_TO_NAMES = {
   [SupportedChainId.BITLAYER_TESTNET]: 'bitlayer_testnet',
   [SupportedChainId.CYBER]: 'cyber',
   [SupportedChainId.CYBER_TESTNET]: 'cyber_testnet',
-  [SupportedChainId.Linea]: 'linea',
+  [SupportedChainId.LINEA]: 'linea',
   [SupportedChainId.LINEA_SEPOLIA]: 'linea_sepolia',
+  [SupportedChainId.BASE]: 'base',
+  [SupportedChainId.BASE_GOERLI]: 'base_goerli',
 }
 
 /**
@@ -70,11 +74,13 @@ export const SUPPORTED_GAS_ESTIMATE_CHAIN_IDS = [
   SupportedChainId.OPTIMISM,
   SupportedChainId.ARBITRUM_ONE,
   SupportedChainId.BNB,
+  SupportedChainId.BASE,
+  SupportedChainId.BASE_GOERLI,
   SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER,
   SupportedChainId.CYBER_TESTNET,
-  SupportedChainId.Linea,
+  SupportedChainId.LINEA,
   SupportedChainId.LINEA_SEPOLIA,
 ] as const
 
@@ -86,12 +92,14 @@ export const UNSUPPORTED_V2POOL_CHAIN_IDS = [
   SupportedChainId.OPTIMISM,
   SupportedChainId.ARBITRUM_ONE,
   SupportedChainId.BNB,
+  SupportedChainId.BASE,
+  SupportedChainId.BASE_GOERLI,
   SupportedChainId.ARBITRUM_GOERLI,
   SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER,
   SupportedChainId.CYBER_TESTNET,
-  SupportedChainId.Linea,
+  SupportedChainId.LINEA,
   SupportedChainId.LINEA_SEPOLIA,
 ] as const
 
@@ -103,6 +111,7 @@ export const TESTNET_CHAIN_IDS = [
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER_TESTNET,
   SupportedChainId.LINEA_SEPOLIA,
+  SupportedChainId.BASE_GOERLI,
 ] as const
 
 export type SupportedTestnetChainId = typeof TESTNET_CHAIN_IDS[number]
@@ -133,8 +142,10 @@ export const L2_CHAIN_IDS = [
   SupportedChainId.OPTIMISM_GOERLI,
   SupportedChainId.BITLAYER,
   SupportedChainId.CYBER,
-  SupportedChainId.Linea,
+  SupportedChainId.LINEA,
   SupportedChainId.LINEA_SEPOLIA,
+  SupportedChainId.BASE,
+  SupportedChainId.BASE_GOERLI,
 ] as const
 
 export type SupportedL2ChainId = typeof L2_CHAIN_IDS[number]

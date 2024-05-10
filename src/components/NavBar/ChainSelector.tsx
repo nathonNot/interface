@@ -27,11 +27,12 @@ const NETWORK_SELECTOR_CHAINS = [
   SupportedChainId.ARBITRUM_ONE,
   SupportedChainId.CELO,
   SupportedChainId.BNB,
+  SupportedChainId.BASE,
   SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
   SupportedChainId.CYBER,
   SupportedChainId.CYBER_TESTNET,
-  SupportedChainId.Linea,
+  SupportedChainId.LINEA,
   SupportedChainId.LINEA_SEPOLIA,
 ]
 

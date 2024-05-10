@@ -460,8 +460,8 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'WETH',
     'Wrapped ETH'
   ),
-  [SupportedChainId.Linea]: new Token(
-    SupportedChainId.CYBER_TESTNET,
+  [SupportedChainId.LINEA]: new Token(
+    SupportedChainId.LINEA,
     '0x4200000000000000000000000000000000000006',
     18,
     'WETH',
@@ -470,6 +470,20 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
   [SupportedChainId.LINEA_SEPOLIA]: new Token(
     SupportedChainId.LINEA_SEPOLIA,
     '0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.BASE]: new Token(
+    SupportedChainId.BASE,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WETH',
+    'Wrapped ETH'
+  ),
+  [SupportedChainId.BASE_GOERLI]: new Token(
+    SupportedChainId.BASE_GOERLI,
+    '0x4200000000000000000000000000000000000006',
     18,
     'WETH',
     'Wrapped ETH'
@@ -579,6 +593,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in SupportedCha
     [SupportedChainId.CELO_ALFAJORES]: PORTAL_USDC_CELO.address,
     [SupportedChainId.GOERLI]: USDC_GOERLI.address,
     [SupportedChainId.BITLAYER]: USDC_GOERLI.address,
-    [SupportedChainId.LINEA_SEPOLIA]: USDC_GOERLI.address,
+    [SupportedChainId.LINEA]: USDC_GOERLI.address,
   },
 }
