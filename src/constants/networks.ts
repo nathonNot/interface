@@ -165,4 +165,7 @@ export const RPC_URLS = {
   [SupportedChainId.CYBER_TESTNET]: [...FALLBACK_URLS[SupportedChainId.CYBER_TESTNET]],
   [SupportedChainId.LINEA]: [...FALLBACK_URLS[SupportedChainId.LINEA]],
   [SupportedChainId.LINEA_SEPOLIA]: [...FALLBACK_URLS[SupportedChainId.LINEA_SEPOLIA]],
+  [SupportedChainId.BASE]: [...FALLBACK_URLS[SupportedChainId.BASE]],
+  [SupportedChainId.BASE_GOERLI]: [...FALLBACK_URLS[SupportedChainId.BASE_GOERLI]],
+
 }
