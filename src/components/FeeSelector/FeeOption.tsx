@@ -12,8 +12,9 @@ import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL } from './shared'
 
 const ResponsiveText = styled(ThemedText.DeprecatedLabel)`
-  line-height: 16px;
-  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500 !important;
+  color: #F4F4F4;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
     font-size: 12px;
@@ -32,20 +33,9 @@ interface FeeOptionProps {
 export function FeeOption({ feeAmount, active, poolState, distributions, onClick }: FeeOptionProps) {
   return (
     <ButtonRadioChecked active={active} onClick={onClick}>
-      <AutoColumn gap="sm" justify="flex-start">
-        <AutoColumn justify="flex-start" gap="6px">
-          <ResponsiveText>
-            <Trans>{FEE_AMOUNT_DETAIL[feeAmount].label}%</Trans>
-          </ResponsiveText>
-          <ThemedText.DeprecatedMain fontWeight={400} fontSize="12px" textAlign="left">
-            {FEE_AMOUNT_DETAIL[feeAmount].description}
-          </ThemedText.DeprecatedMain>
-        </AutoColumn>
-
-        {distributions && (
-          <FeeTierPercentageBadge distributions={distributions} feeAmount={feeAmount} poolState={poolState} />
-        )}
-      </AutoColumn>
+      <ResponsiveText>
+        <Trans>{Number(FEE_AMOUNT_DETAIL[feeAmount].label)?.toFixed(2)}%</Trans>
+      </ResponsiveText>
     </ButtonRadioChecked>
   )
 }

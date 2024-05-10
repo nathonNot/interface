@@ -26,6 +26,8 @@ import LogsUpdater from './state/logs/updater'
 import TransactionUpdater from './state/transactions/updater'
 import ThemeProvider, { ThemedGlobalStyle } from './theme'
 import RadialGradientByChainUpdater from './theme/components/RadialGradientByChainUpdater'
+import { useIsMobile } from 'nft/hooks'
+import { fontSize, isMobile } from 'utils/userAgent'
 
 if (window.ethereum) {
   window.ethereum.autoRefreshOnNetworkChange = false
@@ -61,7 +63,7 @@ createRoot(container).render(
                   <BlockNumberProvider>
                     <Updaters />
                     <ThemeProvider>
-                      <ThemedGlobalStyle />
+                      <ThemedGlobalStyle fontSize={fontSize} />
                       <App />
                     </ThemeProvider>
                   </BlockNumberProvider>

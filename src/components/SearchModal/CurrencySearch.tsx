@@ -22,7 +22,7 @@ import { UserAddedToken } from 'types/tokens'
 import { useDefaultActiveTokens, useIsUserAddedToken, useSearchInactiveTokenLists, useToken } from '../../hooks/Tokens'
 import { CloseIcon, ThemedText } from '../../theme'
 import { isAddress } from '../../utils'
-import Column from '../Column'
+import Column, { AutoColumn } from '../Column'
 import Row, { RowBetween } from '../Row'
 import CommonBases from './CommonBases'
 import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
@@ -30,12 +30,14 @@ import CurrencyList from './CurrencyList'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 
 const ContentWrapper = styled(Column)`
-  background-color: ${({ theme }) => theme.backgroundSurface};
+  // background-color: ${({ theme }) => theme.backgroundSurface};
+  border-radius: 16px;
+  background: #1F1D3B;
   width: 100%;
   overflow: hidden;
   flex: 1 1;
   position: relative;
-  border-radius: 20px;
+  padding: 24px;
 `
 
 interface CurrencySearchProps {
@@ -95,19 +97,19 @@ export function CurrencySearch({
     () =>
       !balancesAreLoading
         ? filteredTokens
-            .filter((token) => {
-              if (onlyShowCurrenciesWithBalance) {
-                return balances[token.address]?.greaterThan(0)
-              }
+          .filter((token) => {
+            if (onlyShowCurrenciesWithBalance) {
+              return balances[token.address]?.greaterThan(0)
+            }
 
-              // If there is no query, filter out unselected user-added tokens with no balance.
-              if (!debouncedQuery && token instanceof UserAddedToken) {
-                if (selectedCurrency?.equals(token) || otherSelectedCurrency?.equals(token)) return true
-                return balances[token.address]?.greaterThan(0)
-              }
-              return true
-            })
-            .sort(tokenComparator.bind(null, balances))
+            // If there is no query, filter out unselected user-added tokens with no balance.
+            if (!debouncedQuery && token instanceof UserAddedToken) {
+              if (selectedCurrency?.equals(token) || otherSelectedCurrency?.equals(token)) return true
+              return balances[token.address]?.greaterThan(0)
+            }
+            return true
+          })
+          .sort(tokenComparator.bind(null, balances))
         : [],
     [
       balances,
@@ -216,9 +218,9 @@ export function CurrencySearch({
         modal={InterfaceModalName.TOKEN_SELECTOR}
         shouldLogImpression
       >
-        <PaddedColumn gap="16px">
+        <AutoColumn gap="27px" style={{ marginBottom: 27 }}>
           <RowBetween>
-            <Text fontWeight={500} fontSize={16}>
+            <Text fontWeight={600} fontSize={24} color='#F4F4F4'>
               <Trans>Select a token</Trans>
             </Text>
             <CloseIcon onClick={onDismiss} />
@@ -236,16 +238,19 @@ export function CurrencySearch({
             />
           </Row>
           {showCommonBases && (
-            <CommonBases
-              chainId={chainId}
-              onSelect={handleCurrencySelect}
-              selectedCurrency={selectedCurrency}
-              searchQuery={searchQuery}
-              isAddressSearch={isAddressSearch}
-            />
+            <AutoColumn gap='8px'>
+              <Text fontSize={14} fontWeight={600} color='#F4F4F4'>Hot Tokens</Text>
+              <CommonBases
+                chainId={chainId}
+                onSelect={handleCurrencySelect}
+                selectedCurrency={selectedCurrency}
+                searchQuery={searchQuery}
+                isAddressSearch={isAddressSearch}
+              />
+            </AutoColumn>
+
           )}
-        </PaddedColumn>
-        <Separator />
+        </AutoColumn>
         {searchToken && !searchTokenIsAdded ? (
           <Column style={{ padding: '20px 0', height: '100%' }}>
             <CurrencyRow
@@ -264,25 +269,30 @@ export function CurrencySearch({
             />
           </Column>
         ) : searchCurrencies?.length > 0 || filteredInactiveTokens?.length > 0 || isLoading ? (
-          <div style={{ flex: '1' }}>
-            <AutoSizer disableWidth>
-              {({ height }) => (
-                <CurrencyList
-                  height={height}
-                  currencies={searchCurrencies}
-                  otherListTokens={filteredInactiveTokens}
-                  onCurrencySelect={handleCurrencySelect}
-                  otherCurrency={otherSelectedCurrency}
-                  selectedCurrency={selectedCurrency}
-                  fixedListRef={fixedList}
-                  showCurrencyAmount={showCurrencyAmount}
-                  isLoading={isLoading}
-                  searchQuery={searchQuery}
-                  isAddressSearch={isAddressSearch}
-                />
-              )}
-            </AutoSizer>
-          </div>
+          <>
+            <Text fontSize={14} fontWeight={600} color='#F4F4F4' style={{ marginBottom: 8 }}>Token Name</Text>
+            <div style={{ flex: '1' }}>
+              <AutoSizer disableWidth>
+                {({ height }) => (
+                  <CurrencyList
+                    height={height}
+                    currencies={searchCurrencies}
+                    otherListTokens={filteredInactiveTokens}
+                    onCurrencySelect={handleCurrencySelect}
+                    otherCurrency={otherSelectedCurrency}
+                    selectedCurrency={selectedCurrency}
+                    fixedListRef={fixedList}
+                    showCurrencyAmount={showCurrencyAmount}
+                    isLoading={isLoading}
+                    searchQuery={searchQuery}
+                    isAddressSearch={isAddressSearch}
+                  />
+                )}
+              </AutoSizer>
+
+            </div>
+          </>
+
         ) : (
           <Column style={{ padding: '20px', height: '100%' }}>
             <ThemedText.DeprecatedMain color={theme.textTertiary} textAlign="center" mb="20px">

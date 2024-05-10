@@ -1,10 +1,13 @@
 import bnbCircleLogoUrl from 'assets/images/bnbCircle.svg'
+import lineaCircleLogoUrl from 'assets/images/lineaCircle.svg'
 import celoCircleLogoUrl from 'assets/images/celoCircle.png'
 import ethereumLogoUrl from 'assets/images/ethereum-logo.png'
 import polygonCircleLogoUrl from 'assets/images/polygonCircle.png'
 import { default as arbitrumCircleLogoUrl, default as arbitrumLogoUrl } from 'assets/svg/arbitrum_logo.svg'
 import bnbSquareLogoUrl from 'assets/svg/bnb_square_logo.svg'
 import bnbLogo from 'assets/svg/bnb-logo.svg'
+import lineaLogo from 'assets/svg/linea-logo.svg'
+import baseLogo from 'assets/svg/base-logo.svg'
 import celoLogo from 'assets/svg/celo_logo.svg'
 import celoSquareLogoUrl from 'assets/svg/celo_square_logo.svg'
 import optimismSquareLogoUrl from 'assets/svg/optimism_square_logo.svg'
@@ -16,7 +19,7 @@ import ms from 'ms.macro'
 import { darkTheme } from 'theme/colors'
 
 import { SupportedL1ChainId, SupportedL2ChainId } from './chains'
-import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST,BITLAYER_LIST } from './lists'
+import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST,BITLAYER_LIST, BASE_LIST } from './lists'
 
 export const AVERAGE_L1_BLOCK_TIME = ms`12s`
 
@@ -214,6 +217,36 @@ const CHAIN_INFO: ChainInfoMap = {
     color: darkTheme.chain_56,
     backgroundColor: darkTheme.chain_56_background,
   },
+  [SupportedChainId.BASE]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms`25m`,
+    bridge: 'https://bridge.base.org/deposit',
+    docs: 'https://docs.base.org',
+    explorer: 'https://basescan.org/',
+    infoLink: 'https://info.uniswap.org/#/base/',
+    label: 'Base',
+    logoUrl: baseLogo,
+    circleLogoUrl: baseLogo,
+    squareLogoUrl: baseLogo,
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    defaultListUrl: OPTIMISM_LIST,
+    color: darkTheme.chain_84531,
+  },
+  [SupportedChainId.BASE_GOERLI]: {
+    networkType: NetworkType.L2,
+    blockWaitMsBeforeWarning: ms`25m`,
+    bridge: 'https://bridge.base.org/deposit',
+    docs: 'https://docs.base.org',
+    explorer: 'https://basescan.org/',
+    infoLink: 'https://info.uniswap.org/#/base/',
+    label: 'Base Goerli',
+    logoUrl: bnbLogo,
+    circleLogoUrl: bnbCircleLogoUrl,
+    squareLogoUrl: bnbSquareLogoUrl,
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    defaultListUrl: BASE_LIST,
+    color: darkTheme.chain_84531,
+  },
   [SupportedChainId.BITLAYER]: {
     networkType: NetworkType.L2,
     blockWaitMsBeforeWarning: ms`10m`,
@@ -278,17 +311,17 @@ const CHAIN_INFO: ChainInfoMap = {
     color: darkTheme.chain_56,
     backgroundColor: darkTheme.chain_56_background,
   },
-  [SupportedChainId.Linea]: {
+  [SupportedChainId.LINEA]: {
     networkType: NetworkType.L2,
     blockWaitMsBeforeWarning: ms`10m`,
     bridge: 'https://cyber-testnet-bridge.alt.technology/deposit',
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://lineascan.build/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Line Mainnet Chain',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    label: 'Linea Mainnet Chain',
+    logoUrl: lineaLogo,
+    circleLogoUrl: lineaCircleLogoUrl,
+    squareLogoUrl: lineaCircleLogoUrl,
     nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
     defaultListUrl: BITLAYER_LIST,
     color: darkTheme.chain_56,
@@ -302,9 +335,9 @@ const CHAIN_INFO: ChainInfoMap = {
     explorer: 'https://sepolia.lineascan.build/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
     label: 'Linea sepolia chain',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    logoUrl: lineaLogo,
+    circleLogoUrl: lineaCircleLogoUrl,
+    squareLogoUrl: lineaCircleLogoUrl,
     nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
     defaultListUrl: BITLAYER_LIST,
     color: darkTheme.chain_56,

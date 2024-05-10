@@ -24,11 +24,11 @@ import { RowBetween, RowFixed } from '../Row'
 import AnimatedConfirmation from './AnimatedConfirmation'
 
 const Wrapper = styled.div`
-  background-color: ${({ theme }) => theme.backgroundSurface};
-  border-radius: 20px;
-  outline: 1px solid ${({ theme }) => theme.backgroundOutline};
+  background-color: ${({ theme }) => theme.toast2};
+  border-radius: 16px;
+  outline: none;
   width: 100%;
-  padding: 1rem;
+  padding: 24px;
 `
 const Section = styled(AutoColumn)<{ inline?: boolean }>`
   padding: ${({ inline }) => (inline ? '0' : '0')};
@@ -184,16 +184,16 @@ export function ConfirmationModalContent({
 }) {
   return (
     <Wrapper>
-      <Section>
+      <Section gap='27px'>
         <RowBetween>
-          <Text fontWeight={500} fontSize={16}>
+          <Text color='#F4F4F4' fontWeight={600} fontSize={24}>
             {title}
           </Text>
           <CloseIcon onClick={onDismiss} data-cy="confirmation-close-icon" />
         </RowBetween>
         {topContent()}
+        {bottomContent && <BottomSection gap="12px">{bottomContent()}</BottomSection>}
       </Section>
-      {bottomContent && <BottomSection gap="12px">{bottomContent()}</BottomSection>}
     </Wrapper>
   )
 }
@@ -255,12 +255,13 @@ function L2Content({
       <Section inline={inline}>
         {!inline && (
           <RowBetween mb="16px">
-            <Badge>
+            {/* <Badge>
               <RowFixed>
                 <StyledLogo src={info.logoUrl} style={{ margin: '0 8px 0 0' }} />
                 {info.label}
               </RowFixed>
-            </Badge>
+            </Badge> */}
+            <div></div>
             <CloseIcon onClick={onDismiss} />
           </RowBetween>
         )}

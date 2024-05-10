@@ -3,7 +3,7 @@ import { Trace, TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName, InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
 import { useToggleAccountDrawer } from 'components/AccountDrawer'
-import { ButtonGray, ButtonPrimary, ButtonText } from 'components/Button'
+import Button, { BaseButton, ButtonGray, ButtonPrimary, ButtonText } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { FlyoutAlignment, Menu } from 'components/Menu'
 import PositionList from 'components/PositionList'
@@ -23,6 +23,11 @@ import { PositionDetails } from 'types/position'
 import { V2_FACTORY_ADDRESSES } from '../../constants/addresses'
 import CTACards from './CTACards'
 import { LoadingRows } from './styleds'
+import Empty from 'components/Empty'
+import Toggle from 'components/Toggle'
+import { SearchBar } from 'components/NavBar/SearchBar'
+import { Box } from 'nft/components/Box'
+import PageTitle from 'components/PageTitle'
 
 const PageWrapper = styled(AutoColumn)`
   padding: 68px 8px 0px;
@@ -118,30 +123,29 @@ const NetworkIcon = styled(AlertTriangle)`
   ${IconStyle}
 `
 
-const InboxIcon = styled(Inbox)`
-  ${IconStyle}
-`
-
-const ResponsiveButtonPrimary = styled(ButtonPrimary)`
-  border-radius: 12px;
-  font-size: 16px;
-  padding: 6px 8px;
-  width: fit-content;
-  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
-    flex: 1 1 auto;
-    width: 100%;
-  `};
-`
-
 const MainContentWrapper = styled.main`
-  background-color: ${({ theme }) => theme.backgroundSurface};
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
+  // background-color: ${({ theme }) => theme.backgroundSurface};
+  // border: 1px solid ${({ theme }) => theme.backgroundOutline};
+  border: none;
   padding: 0;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
+`
+
+const OperateBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const SwitchBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: ${({ theme }) => theme.textDefault};
 `
 
 function PositionsLoadingPlaceholder() {
@@ -263,13 +267,13 @@ export default function Pool() {
     <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression>
       <PageWrapper>
         <AutoColumn gap="lg" justify="center">
-          <AutoColumn gap="lg" style={{ width: '100%' }}>
+          <AutoColumn gap="32px" style={{ width: '100%' }}>
             <TitleRow padding="0">
               <ThemedText.LargeHeader>
-                <Trans>Pools</Trans>
+                <PageTitle title='Manage Liquidity' desc='Manage your assets here' />
               </ThemedText.LargeHeader>
               <ButtonRow>
-                {showV2Features && (
+                {/* {showV2Features && (
                   <PoolMenu
                     menuItems={menuItems}
                     flyoutAlignment={FlyoutAlignment.LEFT}
@@ -282,12 +286,23 @@ export default function Pool() {
                       </MoreOptionsButton>
                     )}
                   />
-                )}
-                <ResponsiveButtonPrimary data-cy="join-pool-button" id="join-pool-button" as={Link} to="/add/ETH">
-                  + <Trans>New Position</Trans>
-                </ResponsiveButtonPrimary>
+                )} */}
+                <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
               </ButtonRow>
             </TitleRow>
+            <OperateBox>
+              <Box position="relative">
+              </Box>
+              <SwitchBox>
+                <div>Show Closed</div>
+                <Toggle
+                  id="show-closed"
+                  isActive={!userHideClosedPositions}
+                  toggle={() => setUserHideClosedPositions(!userHideClosedPositions)}
+                />
+              </SwitchBox>
+              
+            </OperateBox>
 
             <MainContentWrapper>
               {positionsLoading ? (
@@ -295,25 +310,12 @@ export default function Pool() {
               ) : filteredPositions && closedPositions && filteredPositions.length > 0 ? (
                 <PositionList
                   positions={filteredPositions}
-                  setUserHideClosedPositions={setUserHideClosedPositions}
-                  userHideClosedPositions={userHideClosedPositions}
                 />
               ) : (
                 <ErrorContainer>
                   <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
-                    <InboxIcon strokeWidth={1} style={{ marginTop: '2em' }} />
-                    <div>
-                      <Trans>Your active V3 liquidity positions will appear here.</Trans>
-                    </div>
+                    <Empty />
                   </ThemedText.DeprecatedBody>
-                  {!showConnectAWallet && closedPositions.length > 0 && (
-                    <ButtonText
-                      style={{ marginTop: '.5rem' }}
-                      onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
-                    >
-                      <Trans>Show closed positions</Trans>
-                    </ButtonText>
-                  )}
                   {showConnectAWallet && (
                     <TraceEvent
                       events={[BrowserEvent.onClick]}
@@ -332,9 +334,9 @@ export default function Pool() {
                 </ErrorContainer>
               )}
             </MainContentWrapper>
-            <HideSmall>
+            {/* <HideSmall>
               <CTACards />
-            </HideSmall>
+            </HideSmall> */}
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>

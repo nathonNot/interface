@@ -17,7 +17,7 @@ import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
 import { useConnectedWallets } from 'state/wallets/hooks'
 import styled from 'styled-components/macro'
-import { ThemedText } from 'theme'
+import { CloseIcon, ThemedText } from 'theme'
 import { flexColumnNoWrap } from 'theme/styles'
 
 import ConnectionErrorView from './ConnectionErrorView'
@@ -181,7 +181,7 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
     <Wrapper data-testid="wallet-modal">
       <AutoRow justify="space-between" width="100%" marginBottom="16px">
         <ThemedText.SubHeader fontWeight={600} fontSize={24}>Connect a wallet</ThemedText.SubHeader>
-        <IconButton Icon={Circle} onClick={closeModal} data-testid="wallet-close" />
+        <CloseIcon onClick={closeModal} data-cy="wallet-close" />
       </AutoRow>
       {pendingError ? (
         pendingConnection && (
@@ -191,7 +191,7 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
         <AutoColumn gap="16px">
           <OptionGrid data-testid="option-grid">
             {connections.map((connection) =>
-              connection.shouldDisplay() ? (
+              connection.shouldDisplay() && (connection.getName() === 'WalletConnect' || connection.getName() === 'Browser Wallet' || connection.getName() === 'MetaMask') ? (
                 <Option
                   key={connection.getName()}
                   connection={connection}

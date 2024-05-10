@@ -41,9 +41,9 @@ const FocusedOutlineCard = styled(Card)<{ pulsing: boolean }>`
 
 const Select = styled.div`
   align-items: flex-start;
-  display: grid;
+  display: flex;
   grid-auto-flow: column;
-  grid-gap: 8px;
+  grid-gap: 18px;
 `
 
 export default function FeeSelector({
@@ -142,45 +142,10 @@ export default function FeeSelector({
   }, [previousFeeAmount, feeAmount])
 
   return (
-    <AutoColumn gap="16px">
-      <DynamicSection gap="md" disabled={disabled}>
-        <FocusedOutlineCard pulsing={pulsing} onAnimationEnd={() => setPulsing(false)}>
-          <RowBetween>
-            <AutoColumn id="add-liquidity-selected-fee">
-              {!feeAmount ? (
-                <>
-                  <ThemedText.DeprecatedLabel>
-                    <Trans>Fee tier</Trans>
-                  </ThemedText.DeprecatedLabel>
-                  <ThemedText.DeprecatedMain fontWeight={400} fontSize="12px" textAlign="left">
-                    <Trans>The % you will earn in fees.</Trans>
-                  </ThemedText.DeprecatedMain>
-                </>
-              ) : (
-                <>
-                  <ThemedText.DeprecatedLabel className="selected-fee-label">
-                    <Trans>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Trans>
-                  </ThemedText.DeprecatedLabel>
-                  <Box style={{ width: 'fit-content', marginTop: '8px' }} className="selected-fee-percentage">
-                    {distributions && (
-                      <FeeTierPercentageBadge
-                        distributions={distributions}
-                        feeAmount={feeAmount}
-                        poolState={poolsByFeeTier[feeAmount]}
-                      />
-                    )}
-                  </Box>
-                </>
-              )}
-            </AutoColumn>
-
-            <ButtonGray onClick={() => setShowOptions(!showOptions)} width="auto" padding="4px" $borderRadius="6px">
-              {showOptions ? <Trans>Hide</Trans> : <Trans>Edit</Trans>}
-            </ButtonGray>
-          </RowBetween>
-        </FocusedOutlineCard>
-
-        {chainId && showOptions && (
+    <AutoColumn>
+      <DynamicSection gap="18px" disabled={disabled}>
+        <div>Fees Tiers</div>
+        {chainId && (
           <Select>
             {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
               const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]

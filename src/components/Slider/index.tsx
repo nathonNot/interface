@@ -19,10 +19,10 @@ const StyledRangeInput = styled.input<{ size: number }>`
     -webkit-appearance: none;
     height: ${({ size }) => size}px;
     width: ${({ size }) => size}px;
-    background-color: ${({ theme }) => theme.accentAction};
+    background-color: #E5E9EB;
     border-radius: 100%;
     border: none;
-    transform: translateY(-50%);
+    // transform: translateY(-50%);
     color: ${({ theme }) => theme.deprecated_bg1};
 
     &:hover,
@@ -62,13 +62,17 @@ const StyledRangeInput = styled.input<{ size: number }>`
   }
 
   &::-webkit-slider-runnable-track {
-    background: linear-gradient(90deg, ${({ theme }) => theme.accentAction}, ${({ theme }) => theme.accentAction});
-    height: 2px;
+    background: linear-gradient(90deg, ${({ theme }) => theme.primary}, #4B4880);
+    // background: ${({ theme }) => theme.primary};
+    height: ${({ size }) => size}px;
+    border-radius: 1000px;
   }
 
   &::-moz-range-track {
-    background: linear-gradient(90deg, ${({ theme }) => theme.deprecated_bg5}, ${({ theme }) => theme.deprecated_bg3});
-    height: 2px;
+    background: linear-gradient(90deg, ${({ theme }) => theme.primary}, #4B4880);
+    // background: ${({ theme }) => theme.primary};
+    height: ${({ size }) => size}px;
+    border-radius: 1000px;
   }
 
   &::-ms-track {
@@ -102,7 +106,7 @@ export default function Slider({
   min = 0,
   step = 1,
   max = 100,
-  size = 28,
+  size = 44,
   ...rest
 }: InputSliderProps) {
   const changeCallback = useCallback(
@@ -118,7 +122,6 @@ export default function Slider({
       {...rest}
       type="range"
       value={value}
-      style={{ padding: '15px 0' }}
       onChange={changeCallback}
       aria-labelledby="input slider"
       step={step}

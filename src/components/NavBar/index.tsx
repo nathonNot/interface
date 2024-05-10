@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai/utils'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
 import { UniIcon } from 'nft/components/icons'
-import { useProfilePageState } from 'nft/hooks'
+import { useIsMobile, useProfilePageState } from 'nft/hooks'
 import { ProfilePageStateType } from 'nft/types'
 import { ReactNode } from 'react'
 import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
@@ -92,6 +92,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
   const isNftPage = useIsNftPage()
   const sellPageState = useProfilePageState((state) => state.state)
   const navigate = useNavigate()
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -101,8 +102,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
               <UniIcon
-                width="48"
-                height="48"
+                width={isMobile ? 70 : 116}
                 data-testid="uniswap-logo"
                 className={styles.logo}
                 // onClick={() => {
@@ -113,11 +113,11 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 // }}
               />
             </Box>
-            {!isNftPage && (
+            {/* {!isNftPage && (
               <Box display={{ sm: 'flex', lg: 'none' }}>
                 <ChainSelector leftAlign={true} />
               </Box>
-            )}
+            )} */}
             <Row display={{ sm: 'none', lg: 'flex' }}>
               <PageTabs />
             </Row>
@@ -126,13 +126,12 @@ const Navbar = ({ blur }: { blur: boolean }) => {
             <SearchBar />
           </Box> */}
           <Box className={styles.rightSideContainer}>
-            <Row gap="12">
+            <Row gap={`${isMobile ? 8 : 16}`}>
               {/* <Box position="relative" display={{ sm: 'flex', navSearchInputVisible: 'none' }}>
                 <SearchBar />
               </Box> */}
-              {isNftPage && sellPageState !== ProfilePageStateType.LISTING && <Bag />}
               {!isNftPage && (
-                <Box display={{ sm: 'none', lg: 'flex' }}>
+                <Box display={{ sm: 'flex', lg: 'flex' }}>
                   <ChainSelector />
                 </Box>
               )}

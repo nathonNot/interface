@@ -6,10 +6,14 @@ import { ThemedText } from 'theme'
 
 const Button = styled(ButtonOutlined).attrs(() => ({
   padding: '8px',
-  $borderRadius: '8px',
+  $borderRadius: '6px',
 }))`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.primary};
   flex: 1;
+  border: 1px solid ${({ theme }) => theme.primary};
+  background: #312E63;
+  height: 36px;
+  
 `
 
 interface PresetsButtonsProps {
@@ -20,9 +24,7 @@ export default function PresetsButtons({ onSetFullRange }: PresetsButtonsProps) 
   return (
     <AutoRow gap="4px" width="auto">
       <Button onClick={onSetFullRange}>
-        <ThemedText.DeprecatedBody fontSize={12}>
-          <Trans>Full Range</Trans>
-        </ThemedText.DeprecatedBody>
+        <Trans>Full Range</Trans>
       </Button>
     </AutoRow>
   )

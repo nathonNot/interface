@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { formatNumber, NumberType } from '@uniswap/conedison/format'
 import { Currency, Price } from '@uniswap/sdk-core'
-import CurrencyLogo from 'components/Logo/CurrencyLogo'
+import DoubleCurrencyName from 'components/DoubleCurrencyName'
+import DoubleCurrencyLogo from 'components/DoubleLogo'
 import { useUSDPrice } from 'hooks/useUSDPrice'
 import tryParseCurrencyAmount from 'lib/utils/tryParseCurrencyAmount'
 import { useCallback, useState } from 'react'
@@ -58,7 +59,10 @@ export default function TradePrice({ price }: TradePriceProps) {
 
   const text = `${'1 ' + labelInverted + ' = ' + formattedPrice ?? '-'} ${label}`
 
-  console.log(labelInverted, 'text', price.baseCurrency)
+  const info = {
+    currency0: showInverted ? price.quoteCurrency : price.baseCurrency,
+    currency1: showInverted ? price.baseCurrency : price.quoteCurrency
+  }
   return (
     <StyledPriceContainer
       onClick={(e) => {
@@ -67,11 +71,8 @@ export default function TradePrice({ price }: TradePriceProps) {
       }}
       title={text}
     >
-      <CurrencyLogoBox>
-        <CurrencyLogo currency={showInverted ? price.quoteCurrency : price.baseCurrency} size="24px" />
-        <CurrencyLogo style={{ marginLeft: '-8px' }} currency={showInverted ? price.baseCurrency : price.quoteCurrency} size="24px" />
-      </CurrencyLogoBox>
-      <ThemedText.BodySmall fontSize={20} fontWeight={600}>{label}/{labelInverted}</ThemedText.BodySmall>
+      <DoubleCurrencyLogo size={24} {...info}/>
+      <DoubleCurrencyName {...info} size={20} fontWeight={600} />
       <ThemedText.BodySmall fontSize={20} fontWeight={600} marginLeft='auto'>{text}</ThemedText.BodySmall>{' '}
       {usdPrice && (
         <ThemedText.DeprecatedDarkGray>

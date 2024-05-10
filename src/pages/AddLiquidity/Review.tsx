@@ -7,7 +7,6 @@ import styled from 'styled-components/macro'
 import { Bound, Field } from '../../state/mint/v3/actions'
 
 const Wrapper = styled.div`
-  padding-top: 12px;
 `
 
 export function Review({

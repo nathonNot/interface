@@ -5162,9 +5162,9 @@
     "@uniswap/v2-sdk" "^4.3.1"
     "@uniswap/v3-sdk" "^3.11.1"
 
-"@uniswap/router-sdk@https://github.com/nathonNot/router-sdk.git#bitlayer-v4":
+"@uniswap/router-sdk@https://github.com/space-group/iswap-router-sdk.git#bitlayer-v4":
   version "1.9.0"
-  resolved "https://github.com/nathonNot/router-sdk.git#233ad9ad84cedc7ae5666cb95f2c2c6f6e44973f"
+  resolved "https://github.com/space-group/iswap-router-sdk.git#233ad9ad84cedc7ae5666cb95f2c2c6f6e44973f"
   dependencies:
     "@ethersproject/abi" "^5.5.0"
     "@uniswap/sdk-core" "^4.2.0"
@@ -5196,9 +5196,9 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@uniswap/smart-order-router@^3.6.0", "@uniswap/smart-order-router@https://github.com/nathonNot/smart-order-router.git#linea-v2":
+"@uniswap/smart-order-router@^3.6.0", "@uniswap/smart-order-router@https://github.com/space-group/iswap-smart-order-router.git#linea":
   version "3.6.1"
-  resolved "https://github.com/nathonNot/smart-order-router.git#e1ab6a8e0f479a460cbc5477a6170fb129d8c140"
+  resolved "https://github.com/space-group/iswap-smart-order-router.git#9ebd2eb8ed5efc85c85e44ee03df85d3cc155a94"
   dependencies:
     "@uniswap/default-token-list" "^2.0.0"
     "@uniswap/permit2-sdk" "^1.2.0"
@@ -5276,9 +5276,9 @@
     bignumber.js "^9.0.2"
     ethers "^5.3.1"
 
-"@uniswap/universal-router-sdk@https://github.com/nathonNot/universal-router-sdk.git#linea-v2":
+"@uniswap/universal-router-sdk@https://github.com/space-group/iswap-universal-router-sdk.git#linea":
   version "1.9.0"
-  resolved "https://github.com/nathonNot/universal-router-sdk.git#ae7917079d1c2f2c252876b77b1c6f910e46938c"
+  resolved "https://github.com/space-group/iswap-universal-router-sdk.git#b983aa1bd65f75640849d3462ff56c4d40a3a564"
   dependencies:
     "@uniswap/permit2-sdk" "^1.2.0"
     "@uniswap/router-sdk" "^1.9.0"

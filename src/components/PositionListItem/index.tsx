@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Trans } from '@lingui/macro'
 import { Percent, Price, Token } from '@uniswap/sdk-core'
 import { Position } from '@uniswap/v3-sdk'
-import RangeBadge from 'components/Badge/RangeBadge'
+import RangeBadge from './RangeBadge'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import HoverInlineText from 'components/HoverInlineText'
 import Loader from 'components/Icons/LoadingSpinner'
@@ -19,17 +19,22 @@ import { formatTickPrice } from 'utils/formatTickPrice'
 import { unwrappedToken } from 'utils/unwrappedToken'
 
 import { DAI, USDC_MAINNET, USDT, WBTC, WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
+import DoubleCurrencyName from 'components/DoubleCurrencyName'
+import { AutoColumn } from 'components/Column'
 
 const LinkRow = styled(Link)`
-  align-items: center;
-  display: flex;
+  border-radius: 16px;
+  padding: 24px 32px;
+  background: ${({ theme }) => theme.main};
+
   cursor: pointer;
   user-select: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: ${({ theme }) => theme.textPrimary};
-  padding: 16px;
+  align-items: center;
+  gap: 12px;
+  color: #9B98D0;
   text-decoration: none;
   font-weight: 500;
 
@@ -58,8 +63,8 @@ const RangeLineItem = styled(DataLineItem)`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 4px;
   width: 100%;
+  color: #9B98D0 !important;
 `
 
 const DoubleArrow = styled.span`
@@ -69,18 +74,25 @@ const DoubleArrow = styled.span`
 `
 
 const RangeText = styled(ThemedText.Caption)`
-  font-size: 12px !important;
+  font-size: 16px !important;
   word-break: break-word;
   padding: 0.25rem 0.25rem;
   border-radius: 8px;
+  color: #9B98D0;
 `
 
 const FeeTierText = styled(ThemedText.UtilityBadge)`
-  font-size: 10px !important;
-  margin-left: 14px !important;
+  border-radius: 4px;
+  font-size: 14px !important;
+  padding: 4px 8px;
+  color: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => `${theme.primary}40`};
+
 `
 const ExtentsText = styled(ThemedText.Caption)`
-  color: ${({ theme }) => theme.textTertiary};
+  // color: ${({ theme }) => theme.textTertiary};
+  font-size: 16px !important;
+  color: #9B98D0;
   display: inline-block;
   line-height: 16px;
   margin-right: 4px !important;
@@ -93,9 +105,7 @@ const PrimaryPositionIdData = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  > * {
-    margin-right: 8px;
-  }
+  gap: 12px;
 `
 
 interface PositionListItemProps {
@@ -205,62 +215,65 @@ export default function PositionListItem({
   return (
     <LinkRow to={positionSummaryLink}>
       <RowBetween>
-        <PrimaryPositionIdData>
-          <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={18} margin />
-          <ThemedText.SubHeader>
-            &nbsp;{currencyQuote?.symbol}&nbsp;/&nbsp;{currencyBase?.symbol}
-          </ThemedText.SubHeader>
+        <AutoColumn gap='12px'>
+          <RowBetween>
+            <PrimaryPositionIdData>
+              <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={28} margin />
+              <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} />
 
-          <FeeTierText>
-            <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans>
-          </FeeTierText>
-        </PrimaryPositionIdData>
-        <RangeBadge removed={removed} inRange={!outOfRange} />
-      </RowBetween>
+              <FeeTierText>
+                <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans>
+              </FeeTierText>
+            </PrimaryPositionIdData>
+          </RowBetween>
 
-      {priceLower && priceUpper ? (
-        <RangeLineItem>
-          <RangeText>
-            <ExtentsText>
-              <Trans>Min: </Trans>
-            </ExtentsText>
-            <Trans>
-              <span>
-                {formatTickPrice({
-                  price: priceLower,
-                  atLimit: tickAtLimit,
-                  direction: Bound.LOWER,
-                })}{' '}
-              </span>
-              <HoverInlineText text={currencyQuote?.symbol} /> per <HoverInlineText text={currencyBase?.symbol ?? ''} />
-            </Trans>
-          </RangeText>{' '}
-          <HideSmall>
+          {priceLower && priceUpper ? (
+            <RangeLineItem>
+              <RangeText>
+                <ExtentsText>
+                  <Trans>Min: </Trans>
+                </ExtentsText>
+                <Trans>
+                  <span>
+                    {formatTickPrice({
+                      price: priceLower,
+                      atLimit: tickAtLimit,
+                      direction: Bound.LOWER,
+                    })}{' '}
+                  </span>
+                </Trans>
+              </RangeText>{' '}
+              {/* <HideSmall>
             <DoubleArrow>↔</DoubleArrow>{' '}
           </HideSmall>
           <SmallOnly>
             <DoubleArrow>↔</DoubleArrow>{' '}
-          </SmallOnly>
-          <RangeText>
-            <ExtentsText>
-              <Trans>Max:</Trans>
-            </ExtentsText>
-            <Trans>
-              <span>
-                {formatTickPrice({
-                  price: priceUpper,
-                  atLimit: tickAtLimit,
-                  direction: Bound.UPPER,
-                })}{' '}
-              </span>
-              <HoverInlineText text={currencyQuote?.symbol} /> per{' '}
-              <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
-            </Trans>
-          </RangeText>
-        </RangeLineItem>
-      ) : (
-        <Loader />
-      )}
+          </SmallOnly> */}
+              /
+              <RangeText>
+                <ExtentsText>
+                  <Trans>Max.</Trans>
+                </ExtentsText>
+                <Trans>
+                  <span>
+                    {formatTickPrice({
+                      price: priceUpper,
+                      atLimit: tickAtLimit,
+                      direction: Bound.UPPER,
+                    })}{' '}
+                  </span>
+                  <HoverInlineText text={currencyQuote?.symbol} /> per{' '}
+                  <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
+                </Trans>
+              </RangeText>
+              <DoubleArrow>↔</DoubleArrow>{' '}
+            </RangeLineItem>
+          ) : (
+            <Loader />
+          )}
+        </AutoColumn>
+        <RangeBadge removed={removed} inRange={!outOfRange} />
+      </RowBetween>
     </LinkRow>
   )
 }

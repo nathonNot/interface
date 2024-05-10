@@ -4,20 +4,9 @@ import Input from 'components/NumericalInput'
 import { BodyWrapper } from 'pages/AppBody'
 import styled from 'styled-components/macro'
 
-export const PageWrapper = styled(BodyWrapper)<{ wide: boolean }>`
-  max-width: ${({ wide }) => (wide ? '880px' : '480px')};
-  width: 100%;
-
-  padding: ${({ wide }) => (wide ? '10px' : '0')};
-
-  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
-    max-width: 480px;
-  `};
-`
-
 export const Wrapper = styled.div`
   position: relative;
-  padding: 26px 16px;
+  // padding: 26px 16px;
   min-width: 480px;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
@@ -68,15 +57,12 @@ export const StyledInput = styled(Input)`
 /* two-column layout where DepositAmount is moved at the very end on mobile. */
 export const ResponsiveTwoColumns = styled.div<{ wide: boolean }>`
   display: grid;
-  grid-column-gap: 50px;
-  grid-row-gap: 15px;
-  grid-template-columns: ${({ wide }) => (wide ? '1fr 1fr' : '1fr')};
+  // grid-column-gap: 50px;
+  // grid-row-gap: 15px;
+  // grid-template-columns: ${({ wide }) => (wide ? '1fr 1fr' : '1fr')};
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: max-content;
   grid-auto-flow: row;
-
-  padding-top: 20px;
-
-  border-top: 1px solid ${({ theme }) => theme.backgroundInteractive};
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
     grid-template-columns: 1fr;
@@ -88,7 +74,10 @@ export const ResponsiveTwoColumns = styled.div<{ wide: boolean }>`
 export const RightContainer = styled(AutoColumn)`
   grid-row: 1 / 3;
   grid-column: 2;
-  height: fit-content;
+  height: 100%;
+  padding: 24px;
+
+  border-left: 1px solid #312E63;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
   grid-row: 2 / 3;
