@@ -581,19 +581,23 @@ function AddLiquidity() {
               )}
             </RowBetween>
           )}
-        <ButtonError
-          onClick={() => {
-            expertMode ? onAdd() : setShowConfirm(true)
-          }}
-          disabled={
+        {
+          (
             !isValid ||
             (!argentWalletContract && approvalA !== ApprovalState.APPROVED && !depositADisabled) ||
             (!argentWalletContract && approvalB !== ApprovalState.APPROVED && !depositBDisabled)
-          }
-          error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
-        >
-          <Text fontWeight={500}>{errorMessage ? errorMessage : <Trans>Preview</Trans>}</Text>
-        </ButtonError>
+
+          ) ? (<></>) : (
+            <ButtonError
+              onClick={() => {
+                expertMode ? onAdd() : setShowConfirm(true)
+              }}
+              error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+            >
+              <Text fontWeight={500}>{errorMessage ? errorMessage : <Trans>Preview</Trans>}</Text>
+            </ButtonError>
+          )
+        }
       </AutoColumn>
     )
 
