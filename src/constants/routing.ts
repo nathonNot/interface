@@ -111,6 +111,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [SupportedChainId.BITLAYER_TESTNET]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER_TESTNET], USDT_BITLAYERTESTNET],
   [SupportedChainId.LINEA_SEPOLIA]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.LINEA_SEPOLIA]],
   [SupportedChainId.CYBER_TESTNET]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.CYBER_TESTNET]],
+  [SupportedChainId.BASE]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BASE]],
+  [SupportedChainId.BASE_GOERLI]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BASE_GOERLI]],
 }
 
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
@@ -221,6 +223,12 @@ export const COMMON_BASES: ChainCurrencyList = {
     nativeOnChain(SupportedChainId.LINEA_SEPOLIA),
     USDT_BITLAYERTESTNET,
   ],
+  [SupportedChainId.BASE]: [
+    nativeOnChain(SupportedChainId.BASE),
+  ],
+  [SupportedChainId.BASE_GOERLI]: [
+    nativeOnChain(SupportedChainId.BASE_GOERLI),
+  ],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -253,7 +261,14 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.LINEA_SEPOLIA],
     USDT_BITLAYERTESTNET,
   ],
+  [SupportedChainId.BASE]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BASE],
+  ],
+  [SupportedChainId.BASE_GOERLI]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BASE_GOERLI],
+  ],
 }
+
 export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
   [SupportedChainId.MAINNET]: [
     [
