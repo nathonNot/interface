@@ -546,7 +546,7 @@ const BaseButton1 = styled.div<BaseButtonProps>`
   cursor: pointer;
   position: relative;
   outline: none;
-  width: ${({ width }) => width ?? '100%'};
+  // width: ${({ width }) => width ?? '100%'};
 
   display: flex;
   align-items: center;

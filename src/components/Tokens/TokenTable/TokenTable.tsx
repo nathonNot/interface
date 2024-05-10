@@ -8,20 +8,19 @@ import styled from 'styled-components/macro'
 
 import { MAX_WIDTH_MEDIA_BREAKPOINT } from '../constants'
 import { HeaderRow, LoadedRow, LoadingRow } from './TokenRow'
+import { useWeb3React } from '@web3-react/core'
 
 const GridContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: ${MAX_WIDTH_MEDIA_BREAKPOINT};
-  background-color: ${({ theme }) => theme.backgroundSurface};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
+  // box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+  //   0px 24px 32px rgba(0, 0, 0, 0.01);
   margin-left: auto;
   margin-right: auto;
-  border-radius: 12px;
+  // border-radius: 12px;
   justify-content: center;
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
 `
 
 const TokenDataContainer = styled.div`
@@ -77,6 +76,9 @@ function LoadingTokenTable({ rowCount = PAGE_SIZE }: { rowCount?: number }) {
 
 export default function TokenTable() {
   const chainName = validateUrlChainParam(useParams<{ chainName?: string }>().chainName)
+  console.log(chainName, 'chainName')
+  const { chainId } = useWeb3React()
+  console.log(chainId, useWeb3React())
   const { tokens, tokenSortRank, loadingTokens, sparklines } = useTopTokens(chainName)
 
   /* loading and error state */

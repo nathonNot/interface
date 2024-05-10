@@ -67,10 +67,10 @@ export const PageTabs = () => {
         <PageTabIcon type='swap' active={pathname.startsWith('/swap')}></PageTabIcon>
         <Trans>Swap</Trans>
       </MenuItem>
-      {/* <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
+      <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
       </MenuItem>
-      {!shouldDisableNFTRoutes && (
+      {/* {!shouldDisableNFTRoutes && (
         <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
           <Trans>NFTs</Trans>
         </MenuItem>

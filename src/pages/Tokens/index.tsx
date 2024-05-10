@@ -1,6 +1,10 @@
 import { Trans } from '@lingui/macro'
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
+import Button from 'components/Button'
+import { AutoColumn } from 'components/Column'
+import PageTitle from 'components/PageTitle'
+import Row, { RowBetween } from 'components/Row'
 import { MAX_WIDTH_MEDIA_BREAKPOINT, MEDIUM_MEDIA_BREAKPOINT } from 'components/Tokens/constants'
 import { filterStringAtom } from 'components/Tokens/state'
 import NetworkFilter from 'components/Tokens/TokenTable/NetworkFilter'
@@ -11,8 +15,32 @@ import { MouseoverTooltip } from 'components/Tooltip'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import styled from 'styled-components/macro'
+import styled, { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
+import { Link } from 'react-router-dom'
+import { Text } from 'rebass'
+
+const PageWrapper = styled(AutoColumn)`
+  padding: 68px 8px 0px;
+  max-width: 870px;
+  width: 100%;
+
+  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
+    max-width: 800px;
+  `};
+
+  ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
+    max-width: 500px;
+  `};
+
+  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.md}px`}) {
+    padding-top: 48px;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
+    padding-top: 20px;
+  }
+`
 
 const ExploreContainer = styled.div`
   width: 100%;
@@ -44,7 +72,6 @@ const FiltersContainer = styled.div`
   }
 `
 const SearchContainer = styled(FiltersContainer)`
-  margin-left: 8px;
   width: 100%;
 
   @media only screen and (max-width: ${MEDIUM_MEDIA_BREAKPOINT}) {
@@ -66,6 +93,12 @@ const FiltersWrapper = styled.div`
   }
 `
 
+const SummaryBox = styled.div`
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: #26143D;
+`
+
 const Tokens = () => {
   const resetFilterString = useResetAtom(filterStringAtom)
   const location = useLocation()
@@ -74,30 +107,39 @@ const Tokens = () => {
     resetFilterString()
   }, [location, resetFilterString])
 
+  const theme = useTheme();
+
   return (
     <Trace page={InterfacePageName.TOKENS_PAGE} shouldLogImpression>
-      <ExploreContainer>
-        <TitleContainer>
-          <MouseoverTooltip
-            text={<Trans>This table contains the top tokens by Uniswap volume, sorted based on your input.</Trans>}
-            placement="bottom"
-          >
-            <ThemedText.LargeHeader>
-              <Trans>Top tokens on Uniswap</Trans>
-            </ThemedText.LargeHeader>
-          </MouseoverTooltip>
-        </TitleContainer>
-        <FiltersWrapper>
-          <FiltersContainer>
-            <NetworkFilter />
-            <TimeSelector />
-          </FiltersContainer>
-          <SearchContainer>
-            <SearchBar />
-          </SearchContainer>
-        </FiltersWrapper>
+      <PageWrapper gap='32px'>
+        <RowBetween>
+          <PageTitle
+            title='Pools'
+            desc='Search and find the best asset'
+          />
+          <Row gap='16px' width='auto'>
+            <Button>+ <Trans>Manage Liquidity</Trans></Button>
+            <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
+          </Row>
+        </RowBetween>
+        <SummaryBox>
+          <Row gap='10px'>
+            <Row gap='12px'>
+              <Text fontSize={16} fontWeight={500} color={theme.primary}>Liquidity</Text>
+              <Text fontSize={18} fontWeight={600} color='#F4F4F4'>$548,454,812</Text>
+            </Row>
+            <Row gap='12px'>
+              <Text fontSize={16} fontWeight={500} color={theme.primary}>Volume (24h)</Text>
+              <Text fontSize={18} fontWeight={600} color='#F4F4F4'>$548,454,812</Text>
+            </Row>
+          </Row>
+
+        </SummaryBox>
+        <SearchContainer>
+          <SearchBar />
+        </SearchContainer>
         <TokenTable />
-      </ExploreContainer>
+      </PageWrapper>
     </Trace>
   )
 }
