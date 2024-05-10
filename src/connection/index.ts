@@ -162,6 +162,13 @@ export function getConnections() {
   ]
 }
 
+export function getShowConnections() {
+  return [
+    injectedConnection,
+    walletConnectConnection,
+  ]
+}
+
 export function useGetConnection() {
   return useCallback((c: Connector | ConnectionType) => {
     if (c instanceof Connector) {

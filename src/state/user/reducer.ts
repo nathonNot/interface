@@ -63,7 +63,7 @@ export const initialState: UserState = {
   userLocale: null,
   userClientSideRouter: false,
   userHideClosedPositions: false,
-  userSlippageTolerance: 'auto',
+  userSlippageTolerance: 10,
   userSlippageToleranceHasBeenMigratedToAuto: true,
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},

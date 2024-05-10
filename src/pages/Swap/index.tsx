@@ -65,6 +65,7 @@ import { computeFiatValuePriceImpact } from '../../utils/computeFiatValuePriceIm
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeRealizedPriceImpact, warningSeverity } from '../../utils/prices'
 import { supportedChainId } from '../../utils/supportedChainId'
+import { useAccountDrawer } from 'components/AccountModal'
 const ArrowContainer = styled.div`
   display: inline-block;
   display: inline-flex;
@@ -212,6 +213,12 @@ export default function Swap({ className }: { className?: string }) {
 
   // toggle wallet when disconnected
   const toggleWalletDrawer = useToggleAccountDrawer()
+
+  const [, toggleAccountDrawer] = useAccountDrawer();
+  const handleWalletDropdownClick = useCallback(() => {
+    sendAnalyticsEvent(InterfaceEventName.ACCOUNT_DROPDOWN_BUTTON_CLICKED)
+    toggleAccountDrawer()
+  }, [toggleAccountDrawer])
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -635,9 +642,9 @@ export default function Swap({ className }: { className?: string }) {
                         properties={{ received_swap_quote: getIsValidSwapQuote(trade, tradeState, swapInputError) }}
                         element={InterfaceElementName.CONNECT_WALLET_BUTTON}
                       >
-                        <ButtonLight onClick={toggleWalletDrawer} fontWeight={600}>
+                        <ButtonPrimary onClick={handleWalletDropdownClick} fontWeight={600}>
                           <Trans>Connect Wallet</Trans>
-                        </ButtonLight>
+                        </ButtonPrimary>
                       </TraceEvent>
                     ) : showWrap ? (
                       <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap} fontWeight={600}>

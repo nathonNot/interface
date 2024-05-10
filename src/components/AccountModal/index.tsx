@@ -136,11 +136,12 @@ const AccountDrawerWrapper = styled.div<{ open: boolean }>`
     width: ${DRAWER_WIDTH_XL};
   }
 
-  border-radius: 12px;
   // width: ${DRAWER_WIDTH};
+  width: 450px;
+  border: none;
+  border-radius: 16px;
   font-size: 16px;
-  background-color: ${({ theme }) => theme.backgroundSurface};
-  border: ${({ theme }) => `1px solid ${theme.backgroundOutline}`};
+  background-color: ${({ theme }) => theme.toast2};
 
   box-shadow: ${({ theme }) => theme.deepShadow};
   transition: margin-right ${({ theme }) => theme.transition.duration.medium};

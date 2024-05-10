@@ -7,7 +7,7 @@ import { useAccountDrawer } from 'components/AccountDrawer'
 import IconButton from 'components/AccountDrawer/IconButton'
 import { sendEvent } from 'components/analytics'
 import { AutoColumn } from 'components/Column'
-import { AutoRow } from 'components/Row'
+import { AutoRow, RowBetween } from 'components/Row'
 import { Connection, ConnectionType, getConnections, networkConnection } from 'connection'
 import { useGetConnection } from 'connection'
 import { ErrorCode } from 'connection/utils'
@@ -18,7 +18,7 @@ import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
 import { useConnectedWallets } from 'state/wallets/hooks'
 import styled, { useTheme } from 'styled-components/macro'
-import { ThemedText } from 'theme'
+import { CloseIcon, ThemedText } from 'theme'
 import { flexColumnNoWrap } from 'theme/styles'
 
 import ConnectionErrorView from './ConnectionErrorView'
@@ -29,13 +29,16 @@ import { MouseoverTooltip } from 'components/Tooltip'
 import { Row } from 'nft/components/Flex'
 import { getChainInfo } from 'constants/chainInfo'
 import * as styles from './ChainSelector.css'
+// import Button from 'components/Button'
 
 const Wrapper = styled.div`
   ${flexColumnNoWrap};
-  background-color: ${({ theme }) => theme.backgroundSurface};
   width: 100%;
-  padding: 14px 16px 16px;
   flex: 1;
+
+  padding: 24px;
+  border-radius: 16px;
+  background: ${({ theme }) => theme.toast2};
 `
 
 const OptionGrid = styled.div`
@@ -70,7 +73,6 @@ const Container = styled.div`
 `;
 
 const Box = styled.div`
-  margin-bottom: 27px;
   font-size: 16px;
   color: ${({ theme }) => theme.title}
 `;
@@ -208,11 +210,11 @@ export default function WalletInfoModal({ closeModal }: { closeModal: () => void
 
   return (
     <Wrapper data-testid="wallet-modal">
-      <AutoRow justify="space-between" width="100%" marginBottom="16px">
-        <ThemedText.SubHeader fontWeight={600} fontSize={24}>Wallet</ThemedText.SubHeader>
-        <IconButton Icon={Circle} onClick={closeModal} data-testid="wallet-close" />
-      </AutoRow>
-      <Container>
+      <AutoColumn gap='27px'>
+        <RowBetween width="100%">
+          <ThemedText.SubHeader fontWeight={600} fontSize={24}>Wallet</ThemedText.SubHeader>
+          <CloseIcon onClick={closeModal} data-testid="wallet-close" />
+        </RowBetween>
         <Box>
           <Title>Your Address</Title>
           <Address>
@@ -236,9 +238,9 @@ export default function WalletInfoModal({ closeModal }: { closeModal: () => void
             )
           } */}
         </Box>
-      </Container>
+        <Button onClick={disconnect}>Disconnect Wallet</Button>
+      </AutoColumn>
 
-      <Button onClick={disconnect}>Disconnect Wallet</Button>
     </Wrapper>
   )
 }

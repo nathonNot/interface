@@ -537,9 +537,9 @@ function AddLiquidity() {
         properties={{ received_swap_quote: false }}
         element={InterfaceElementName.CONNECT_WALLET_BUTTON}
       >
-        <ButtonLight onClick={toggleWalletDrawer} $borderRadius="12px" padding="12px">
+        <ButtonPrimary onClick={toggleWalletDrawer} $borderRadius="12px" padding="12px">
           <Trans>Connect Wallet</Trans>
-        </ButtonLight>
+        </ButtonPrimary>
       </TraceEvent>
     ) : (
       <AutoColumn gap="md">

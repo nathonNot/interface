@@ -204,14 +204,6 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
           /> */}
         </RowFixed>
         <RowBetween>
-          {/* <Option
-            onClick={() => {
-              parseSlippageInput('')
-            }}
-            active={userSlippageTolerance === 'auto'}
-          >
-            <Trans>Auto</Trans>
-          </Option> */}
           {
             SlippageArr.map(item => {
               return (
