@@ -21,7 +21,7 @@ import ms from 'ms.macro'
 import { darkTheme } from 'theme/colors'
 
 import { SupportedL1ChainId, SupportedL2ChainId } from './chains'
-import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST,BITLAYER_LIST, BASE_LIST } from './lists'
+import { ARBITRUM_LIST, AVALANCHE_LIST, BASE_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST, BITLAYER_LIST } from './lists'
 
 export const AVERAGE_L1_BLOCK_TIME = ms`12s`
 
@@ -232,7 +232,7 @@ const CHAIN_INFO: ChainInfoMap = {
     squareLogoUrl: baseLogo,
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     defaultListUrl: OPTIMISM_LIST,
-    color: darkTheme.chain_84531,
+    color: darkTheme.chain_8453,
   },
   [SupportedChainId.BASE_GOERLI]: {
     networkType: NetworkType.L2,
@@ -242,12 +242,12 @@ const CHAIN_INFO: ChainInfoMap = {
     explorer: 'https://basescan.org/',
     infoLink: 'https://info.uniswap.org/#/base/',
     label: 'Base Goerli',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    logoUrl: baseLogo,
+    circleLogoUrl: baseLogo,
+    squareLogoUrl: baseLogo,
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     defaultListUrl: BASE_LIST,
-    color: darkTheme.chain_84531,
+    color: darkTheme.chain_8453,
   },
   [SupportedChainId.BITLAYER]: {
     networkType: NetworkType.L2,

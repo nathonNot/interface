@@ -119,9 +119,13 @@ export const FALLBACK_URLS = {
   ],
   [SupportedChainId.BASE]: [
     // "Safe" URLs
-    'https://base-rpc.publicnode.com',
-    'https://base.drpc.org',
-    'https://mainnet.base.org',
+    'https://mainnet.base.org/',
+    'https://developer-access-mainnet.base.org/',
+    'https://base.gateway.tenderly.co',
+    'https://base.publicnode.com',
+    // "Fallback" URLs
+    'https://1rpc.io/base',
+    'https://base.meowrpc.com',
   ],
   [SupportedChainId.BASE_GOERLI]: [
     // "Safe" URLs
