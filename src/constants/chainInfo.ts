@@ -14,12 +14,14 @@ import optimismSquareLogoUrl from 'assets/svg/optimism_square_logo.svg'
 import optimismLogoUrl from 'assets/svg/optimistic_ethereum.svg'
 import polygonSquareLogoUrl from 'assets/svg/polygon_square_logo.svg'
 import polygonMaticLogo from 'assets/svg/polygon-matic-logo.svg'
+import cyberLogo from 'assets/images/cyber_logo.jpg'
+import bitlayerLogo from 'assets/svg/bitlayer_logo.svg'
 import { SupportedChainId } from 'constants/chains'
 import ms from 'ms.macro'
 import { darkTheme } from 'theme/colors'
 
 import { SupportedL1ChainId, SupportedL2ChainId } from './chains'
-import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST,BITLAYER_LIST, BASE_LIST } from './lists'
+import { ARBITRUM_LIST, AVALANCHE_LIST, BASE_LIST, CELO_LIST, OPTIMISM_LIST, PLASMA_BNB_LIST, BITLAYER_LIST } from './lists'
 
 export const AVERAGE_L1_BLOCK_TIME = ms`12s`
 
@@ -230,7 +232,7 @@ const CHAIN_INFO: ChainInfoMap = {
     squareLogoUrl: baseLogo,
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     defaultListUrl: OPTIMISM_LIST,
-    color: darkTheme.chain_84531,
+    color: darkTheme.chain_8453,
   },
   [SupportedChainId.BASE_GOERLI]: {
     networkType: NetworkType.L2,
@@ -240,12 +242,12 @@ const CHAIN_INFO: ChainInfoMap = {
     explorer: 'https://basescan.org/',
     infoLink: 'https://info.uniswap.org/#/base/',
     label: 'Base Goerli',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    logoUrl: baseLogo,
+    circleLogoUrl: baseLogo,
+    squareLogoUrl: baseLogo,
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     defaultListUrl: BASE_LIST,
-    color: darkTheme.chain_84531,
+    color: darkTheme.chain_8453,
   },
   [SupportedChainId.BITLAYER]: {
     networkType: NetworkType.L2,
@@ -254,14 +256,12 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://bscscan.com/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Bitlayer Chain',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    label: 'Bitlayer',
+    logoUrl: bitlayerLogo,
+    circleLogoUrl: bitlayerLogo,
+    squareLogoUrl: bitlayerLogo,
     nativeCurrency: { name: 'BTC', symbol: 'BTC', decimals: 18 },
     defaultListUrl: PLASMA_BNB_LIST,
-    color: darkTheme.chain_56,
-    backgroundColor: darkTheme.chain_56_background,
   },
   [SupportedChainId.BITLAYER_TESTNET]: {
     networkType: NetworkType.L2,
@@ -270,14 +270,12 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://bscscan.com/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Bitlayer TestNet Chain',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    label: 'Bitlayer TestNet',
+    logoUrl: bitlayerLogo,
+    circleLogoUrl: bitlayerLogo,
+    squareLogoUrl: bitlayerLogo,
     nativeCurrency: { name: 'BTC', symbol: 'BTC', decimals: 18 },
     defaultListUrl: PLASMA_BNB_LIST,
-    color: darkTheme.chain_56,
-    backgroundColor: darkTheme.chain_56_background,
   },
   [SupportedChainId.CYBER]: {
     networkType: NetworkType.L2,
@@ -286,14 +284,12 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://bscscan.com/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Cyber Chain',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    label: 'Cyber',
+    logoUrl: cyberLogo,
+    circleLogoUrl: cyberLogo,
+    squareLogoUrl: cyberLogo,
     nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
     defaultListUrl: PLASMA_BNB_LIST,
-    color: darkTheme.chain_56,
-    backgroundColor: darkTheme.chain_56_background,
   },
   [SupportedChainId.CYBER_TESTNET]: {
     networkType: NetworkType.L2,
@@ -302,14 +298,12 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://testnet.cyberscan.co/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Cyber TestNet Chain',
-    logoUrl: bnbLogo,
-    circleLogoUrl: bnbCircleLogoUrl,
-    squareLogoUrl: bnbSquareLogoUrl,
+    label: 'Cyber TestNet',
+    logoUrl: cyberLogo,
+    circleLogoUrl: cyberLogo,
+    squareLogoUrl: cyberLogo,
     nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
     defaultListUrl: BITLAYER_LIST,
-    color: darkTheme.chain_56,
-    backgroundColor: darkTheme.chain_56_background,
   },
   [SupportedChainId.LINEA]: {
     networkType: NetworkType.L2,
@@ -318,14 +312,12 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://lineascan.build/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Linea Mainnet Chain',
+    label: 'Linea',
     logoUrl: lineaLogo,
     circleLogoUrl: lineaCircleLogoUrl,
     squareLogoUrl: lineaCircleLogoUrl,
     nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
     defaultListUrl: BITLAYER_LIST,
-    color: darkTheme.chain_56,
-    backgroundColor: darkTheme.chain_56_background,
   },
   [SupportedChainId.LINEA_SEPOLIA]: {
     networkType: NetworkType.L2,
@@ -334,14 +326,12 @@ const CHAIN_INFO: ChainInfoMap = {
     docs: 'https://docs.bnbchain.org/',
     explorer: 'https://sepolia.lineascan.build/',
     infoLink: 'https://info.uniswap.org/#/bnb/',
-    label: 'Linea sepolia chain',
+    label: 'Linea Sepolia',
     logoUrl: lineaLogo,
     circleLogoUrl: lineaCircleLogoUrl,
     squareLogoUrl: lineaCircleLogoUrl,
     nativeCurrency: { name: 'Ether', symbol: 'eth', decimals: 18 },
     defaultListUrl: BITLAYER_LIST,
-    color: darkTheme.chain_56,
-    backgroundColor: darkTheme.chain_56_background,
   },
 }
 
