@@ -19,10 +19,11 @@ import styled, { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
+import { useIsMobile } from 'nft/hooks'
 
 const PageWrapper = styled(AutoColumn)`
-  padding: 68px 8px 0px;
-  max-width: 870px;
+  padding: 68px 16px 0px;
+  max-width: 1200px;
   width: 100%;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
@@ -67,17 +68,17 @@ const FiltersContainer = styled.div`
   gap: 8px;
   height: 40px;
 
-  @media only screen and (max-width: ${MEDIUM_MEDIA_BREAKPOINT}) {
-    order: 2;
-  }
+  // @media only screen and (max-width: ${MEDIUM_MEDIA_BREAKPOINT}) {
+  //   order: 2;
+  // }
 `
 const SearchContainer = styled(FiltersContainer)`
   width: 100%;
 
-  @media only screen and (max-width: ${MEDIUM_MEDIA_BREAKPOINT}) {
-    margin: 0px;
-    order: 1;
-  }
+  // @media only screen and (max-width: ${MEDIUM_MEDIA_BREAKPOINT}) {
+  //   margin: 0px;
+  //   order: 1;
+  // }
 `
 const FiltersWrapper = styled.div`
   display: flex;
@@ -102,12 +103,34 @@ const SummaryBox = styled.div`
 const Tokens = () => {
   const resetFilterString = useResetAtom(filterStringAtom)
   const location = useLocation()
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     resetFilterString()
   }, [location, resetFilterString])
 
   const theme = useTheme();
+
+  if (isMobile) {
+    return (
+      <Trace page={InterfacePageName.TOKENS_PAGE} shouldLogImpression>
+        <PageWrapper gap='16px'>
+          <PageTitle
+            title='Pools'
+            desc='Search and find the best asset'
+          />
+          <Row gap='16px' width='100%'>
+            <Button>+ <Trans>Manage Liquidity</Trans></Button>
+            <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
+          </Row>
+          <SearchContainer>
+            <SearchBar />
+          </SearchContainer>
+          <TokenTable />
+        </PageWrapper>
+      </Trace>
+    )
+  }
 
   return (
     <Trace page={InterfacePageName.TOKENS_PAGE} shouldLogImpression>
@@ -122,6 +145,7 @@ const Tokens = () => {
             <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
           </Row>
         </RowBetween>
+
         <SummaryBox>
           <Row gap='10px'>
             <Row gap='12px'>

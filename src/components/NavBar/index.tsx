@@ -22,6 +22,7 @@ import { MenuDropdown } from './MenuDropdown'
 import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
 import { PageTabIcon } from 'components/Icons/PageTabIcon'
+import { AutoColumn } from 'components/Column'
 
 const Nav = styled.nav`
   padding: 20px 12px;
@@ -61,14 +62,39 @@ export const PageTabs = () => {
 
   const shouldDisableNFTRoutes = useAtomValue(shouldDisableNFTRoutesAtom)
 
+  const isMobile = useIsMobile();
+
   return (
     <>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
-        <PageTabIcon type='swap' active={pathname.startsWith('/swap')}></PageTabIcon>
-        <Trans>Swap</Trans>
+        {
+          isMobile ? (
+            <AutoColumn gap='2px' justify='center'>
+              <PageTabIcon type='swap' active={pathname.startsWith('/swap')} />
+              <Trans>Swap</Trans>
+            </AutoColumn>
+          ) : (
+            <>
+              <PageTabIcon type='swap' active={pathname.startsWith('/swap')} />
+              <Trans>Swap</Trans>
+            </>
+          )
+        }
       </MenuItem>
-      <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
-        <Trans>Tokens</Trans>
+      <MenuItem href={`/tokens`} isActive={pathname.startsWith('/tokens')}>
+        {
+          isMobile ? (
+            <AutoColumn gap='2px' justify='center'>
+              <PageTabIcon type='pool' active={pathname.startsWith('/tokens')} />
+              <Trans>Tokens</Trans>
+            </AutoColumn>
+          ) : (
+            <>
+              <PageTabIcon type='pool' active={pathname.startsWith('/tokens')} />
+              <Trans>Tokens</Trans>
+            </>
+          )
+        }
       </MenuItem>
       {/* {!shouldDisableNFTRoutes && (
         <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
@@ -76,10 +102,21 @@ export const PageTabs = () => {
         </MenuItem>
       )} */}
       {/* <Box display={{ sm: 'flex', lg: 'none', xxl: 'flex' }} width="full"> */}
-        <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
-          <PageTabIcon type='pool' active={isPoolActive}></PageTabIcon>
-          <Trans>Pools</Trans>
-        </MenuItem>
+      <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
+        {
+          isMobile ? (
+            <AutoColumn gap='2px' justify='center'>
+              <PageTabIcon type='pool' active={isPoolActive} />
+              <Trans>Pools</Trans>
+            </AutoColumn>
+          ) : (
+            <>
+              <PageTabIcon type='pool' active={isPoolActive} />
+              <Trans>Pools</Trans>
+            </>
+          )
+        }
+      </MenuItem>
       {/* </Box> */}
       {/* <Box display={{ sm: 'none', md: 'none', lg: 'flex', xl: 'none' }} marginY={{ sm: '4', md: 'unset' }}>
         <MenuDropdown />
@@ -105,12 +142,12 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 width={isMobile ? 70 : 116}
                 data-testid="uniswap-logo"
                 className={styles.logo}
-                // onClick={() => {
-                //   navigate({
-                //     pathname: '/',
-                //     search: '?intro=true',
-                //   })
-                // }}
+              // onClick={() => {
+              //   navigate({
+              //     pathname: '/',
+              //     search: '?intro=true',
+              //   })
+              // }}
               />
             </Box>
             {/* {!isNftPage && (
@@ -118,7 +155,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
                 <ChainSelector leftAlign={true} />
               </Box>
             )} */}
-            <Row display={{ sm: 'none', lg: 'flex' }}>
+            <Row display={{ sm: 'none', lg: 'flex' }} gap='40'>
               <PageTabs />
             </Row>
           </Box>

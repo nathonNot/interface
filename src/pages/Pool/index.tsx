@@ -28,9 +28,10 @@ import Toggle from 'components/Toggle'
 import { SearchBar } from 'components/NavBar/SearchBar'
 import { Box } from 'nft/components/Box'
 import PageTitle from 'components/PageTitle'
+import { useIsMobile } from 'nft/hooks'
 
 const PageWrapper = styled(AutoColumn)`
-  padding: 68px 8px 0px;
+  padding: 68px 16px 0px;
   max-width: 870px;
   width: 100%;
 
@@ -131,8 +132,8 @@ const MainContentWrapper = styled.main`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
+  // box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+  //   0px 24px 32px rgba(0, 0, 0, 0.01);
 `
 
 const OperateBox = styled.div`
@@ -206,6 +207,8 @@ export default function Pool() {
   const theme = useTheme()
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
 
+  const isMobile = useIsMobile();
+
   const { positions, loading: positionsLoading } = useV3Positions(account)
 
   const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
@@ -263,35 +266,23 @@ export default function Pool() {
     },
   ]
 
+
   return (
     <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression>
       <PageWrapper>
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="32px" style={{ width: '100%' }}>
-            <TitleRow padding="0">
-              <ThemedText.LargeHeader>
-                <PageTitle title='Manage Liquidity' desc='Manage your assets here' />
-              </ThemedText.LargeHeader>
-              <ButtonRow>
-                {/* {showV2Features && (
-                  <PoolMenu
-                    menuItems={menuItems}
-                    flyoutAlignment={FlyoutAlignment.LEFT}
-                    ToggleUI={(props: any) => (
-                      <MoreOptionsButton {...props}>
-                        <MoreOptionsText>
-                          <Trans>More</Trans>
-                          <ChevronDown size={15} />
-                        </MoreOptionsText>
-                      </MoreOptionsButton>
-                    )}
-                  />
-                )} */}
-                <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
-              </ButtonRow>
-            </TitleRow>
+            <RowBetween>
+              <PageTitle title='Manage Liquidity' desc='Manage your assets here' />
+              {
+                !isMobile && <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
+              }
+            </RowBetween>
             <OperateBox>
               <Box position="relative">
+                {
+                  isMobile && <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
+                }
               </Box>
               <SwitchBox>
                 <div>Show Closed</div>
@@ -301,7 +292,7 @@ export default function Pool() {
                   toggle={() => setUserHideClosedPositions(!userHideClosedPositions)}
                 />
               </SwitchBox>
-              
+
             </OperateBox>
 
             <MainContentWrapper>
@@ -313,9 +304,7 @@ export default function Pool() {
                 />
               ) : (
                 <ErrorContainer>
-                  <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
-                    <Empty />
-                  </ThemedText.DeprecatedBody>
+                  <Empty />
                 </ErrorContainer>
               )}
             </MainContentWrapper>

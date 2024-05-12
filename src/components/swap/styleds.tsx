@@ -33,6 +33,11 @@ export const SwapWrapper = styled.main<{ chainId: number | undefined }>`
   box-shadow: ${({ chainId }) => !!chainId && chainId === SupportedChainId.BNB && '0px 40px 120px 0px #f0b90b29'};
   z-index: ${Z_INDEX.deprecated_content};
   transition: transform 250ms ease;
+
+  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
+
+    padding: 12px 12px 16px;
+  }
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
@@ -44,8 +49,8 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   // margin-bottom: -18px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 12px;
-  margin-bottom: 12px;
+  // margin-top: 12px;
+  // margin-bottom: 12px;
   background-color: ${({ theme }) => theme.primary};
   // border: 4px solid;
   // border-color: ${({ theme }) => theme.backgroundSurface};

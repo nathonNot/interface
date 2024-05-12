@@ -15,6 +15,7 @@ const LabelText = styled.div<{ color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: fit-content;
 
 `
 
@@ -43,7 +44,7 @@ export default function RangeBadge({
     }
 
     return {
-      text: 'Pending',
+      text: 'Out of range',
       color: '#D29404'
     }
   }, [removed, inRange])

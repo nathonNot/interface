@@ -51,4 +51,4 @@ cypress/screenshots
 src/graphql/data/__generated__/types-and-hooks.ts
 .gitignore
 
-/src/*.test.*
+/src/*.test
