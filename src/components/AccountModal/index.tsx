@@ -6,7 +6,7 @@ import { atom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect, useRef } from 'react'
 import { ChevronsRight } from 'react-feather'
-import styled from 'styled-components/macro'
+import styled, { useTheme } from 'styled-components/macro'
 import { BREAKPOINTS, ClickableStyle } from 'theme'
 import { Z_INDEX } from 'theme/zIndex'
 
@@ -17,6 +17,9 @@ import AuthenticatedHeader from './AuthenticatedHeader'
 import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
 import WalletInfoModal from 'components/WalletModal2/Info'
+import { useIsMobile } from 'nft/hooks'
+import { NavDropdown } from 'components/NavBar/NavDropdown'
+import { Portal } from 'nft/components/common/Portal'
 
 const DRAWER_WIDTH_XL = '390px'
 const DRAWER_WIDTH = '320px'
@@ -173,6 +176,8 @@ const CloseDrawer = styled.div`
 function AccountDrawer() {
   const { account } = useWeb3React()
   const [walletDrawerOpen, toggleWalletDrawer] = useAccountDrawer()
+  const isMobile = useIsMobile();
+  const theme = useTheme();
   const scrollRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!walletDrawerOpen) {
@@ -211,6 +216,25 @@ function AccountDrawer() {
       document.removeEventListener('keydown', escapeKeyDownHandler)
     }
   }, [walletDrawerOpen, toggleWalletDrawer])
+
+  if (isMobile && walletDrawerOpen) {
+    return (
+      <Portal>
+      <NavDropdown padding='24'>
+        {/* id used for child InfiniteScrolls to reference when it has reached the bottom of the component */}
+        <AccountDrawerScrollWrapper ref={scrollRef} id="wallet-dropdown-scroll-wrapper">
+          {
+            account ? (
+              <WalletInfoModal isMobile={isMobile} closeModal={toggleWalletDrawer} />
+            ) : (
+              <WalletModal isMobile={isMobile} closeModal={toggleWalletDrawer} />
+            )
+          }
+        </AccountDrawerScrollWrapper>
+      </NavDropdown>
+      </Portal>
+    )
+  }
 
   return (
     <Container open={walletDrawerOpen}>

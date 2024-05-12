@@ -969,6 +969,7 @@ function AddLiquidity() {
               <ConfirmationModalContent
                 title={<Trans>Overview</Trans>}
                 onDismiss={handleDismissConfirmation}
+                isMobile={isMobile}
                 topContent={() => (
                   <Review
                     parsedAmounts={parsedAmounts}

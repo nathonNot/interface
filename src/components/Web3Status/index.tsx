@@ -11,10 +11,10 @@ import { useGetConnection } from 'connection'
 import { Portal } from 'nft/components/common/Portal'
 import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { darken } from 'polished'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
-import styled from 'styled-components/macro'
+import styled, { useTheme } from 'styled-components/macro'
 import { colors } from 'theme/colors'
 import { flexRowNoWrap } from 'theme/styles'
 
@@ -29,6 +29,11 @@ import { Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { updateSelectedWallet } from 'state/user/reducer'
 import { useIsMobile } from 'nft/hooks'
+import { NavDropdown } from 'components/NavBar/NavDropdown'
+import { Column } from 'nft/components/Flex'
+import { useOnClickOutside } from 'hooks/useOnClickOutside'
+import { Box } from 'rebass'
+import { AutoColumn } from 'components/Column'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
@@ -174,12 +179,10 @@ const StyledConnectButton = styled.button<{ isMobile: boolean }>`
   
 `
 
-const WalletMenu = styled.div`
-  background: ${({ theme }) => theme.toast2};
+const WalletMenu = styled(AutoColumn)`
+  // background: ${({ theme }) => theme.toast2};
   padding: 12px;
-  border-radius: 8px;
-  position: absolute;
-  width: 228px;
+  // border-radius: 8px;
 `
 
 const Title = styled.div`
@@ -213,6 +216,7 @@ function Web3StatusInner() {
   const getConnection = useGetConnection()
   const connection = getConnection(connector)
   const dispatch = useAppDispatch()
+  const theme = useTheme();
   const [, toggleAccountDrawer] = useAccountDrawer()
   const handleWalletDropdownClick = useCallback(() => {
     sendAnalyticsEvent(InterfaceEventName.ACCOUNT_DROPDOWN_BUTTON_CLICKED)
@@ -220,8 +224,12 @@ function Web3StatusInner() {
   }, [toggleAccountDrawer])
 
   const isMobile = useIsMobile()
-
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const modalRef = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
+  useOnClickOutside(ref, () => setMenuOpen(false), [modalRef])
+
   const isClaimAvailable = useIsNftClaimAvailable((state) => state.isClaimAvailable)
 
   const error = useAppSelector((state) => state.connection.errorByConnectionType[getConnection(connector).type])
@@ -245,6 +253,31 @@ function Web3StatusInner() {
     dispatch(updateSelectedWallet({ wallet: undefined }))
   }, [connector, dispatch])
 
+  const dropdown = (
+    <NavDropdown top="56" left={'auto'} right={'0'} ref={modalRef}>
+      <WalletMenu>
+        <Title>Menu</Title>
+        <AutoColumn gap='5px'>
+          <Option onClick={handleWalletDropdownClick}><WalletLogo /> Wallet</Option>
+          <Option onClick={disconnect}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <g clip-path="url(#clip0_343_5566)">
+                <path d="M7 6C7.26522 6 7.51957 5.89464 7.70711 5.70711C7.89464 5.51957 8 5.26522 8 5C8 4.73478 7.89464 4.48043 7.70711 4.29289C7.51957 4.10536 7.26522 4 7 4H5C4.73478 4 4.48043 4.10536 4.29289 4.29289C4.10536 4.48043 4 4.73478 4 5V19C4 19.2652 4.10536 19.5196 4.29289 19.7071C4.48043 19.8946 4.73478 20 5 20H7C7.26522 20 7.51957 19.8946 7.70711 19.7071C7.89464 19.5196 8 19.2652 8 19C8 18.7348 7.89464 18.4804 7.70711 18.2929C7.51957 18.1054 7.26522 18 7 18H6V6H7Z" fill="white" />
+                <path d="M20.82 11.42L18 7.41995C17.8471 7.20436 17.615 7.05809 17.3545 7.01312C17.0941 6.96815 16.8264 7.02813 16.61 7.17995C16.5018 7.25574 16.4098 7.35219 16.3391 7.46376C16.2684 7.57532 16.2206 7.69977 16.1982 7.82994C16.1759 7.9601 16.1796 8.09339 16.2091 8.22212C16.2386 8.35085 16.2933 8.47247 16.37 8.57995L18.09 11H10C9.73478 11 9.48043 11.1053 9.29289 11.2928C9.10536 11.4804 9 11.7347 9 12C9 12.2652 9.10536 12.5195 9.29289 12.7071C9.48043 12.8946 9.73478 13 10 13H18L16.2 15.4C16.1212 15.505 16.0639 15.6246 16.0313 15.7518C15.9987 15.879 15.9915 16.0114 16.01 16.1414C16.0286 16.2714 16.0726 16.3964 16.1395 16.5094C16.2064 16.6224 16.2949 16.7212 16.4 16.7999C16.5731 16.9298 16.7836 17 17 17C17.1552 17 17.3084 16.9638 17.4472 16.8944C17.5861 16.8249 17.7069 16.7241 17.8 16.6L20.8 12.6C20.9281 12.4308 20.999 12.2253 21.0026 12.0132C21.0062 11.8011 20.9423 11.5933 20.82 11.42Z" fill="white" />
+              </g>
+              <defs>
+                <clipPath id="clip0_343_5566">
+                  <rect width="24" height="24" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+            Disconnect
+          </Option>
+        </AutoColumn>
+      </WalletMenu>
+    </NavDropdown>
+  )
+
   if (!chainId) {
     return null
   } else if (error) {
@@ -263,54 +296,45 @@ function Web3StatusInner() {
         name={InterfaceEventName.MINI_PORTFOLIO_TOGGLED}
         properties={{ type: 'open' }}
       >
-        <Web3StatusConnected
-          data-testid="web3-status-connected"
-          onClick={() => setMenuOpen(true)}
-          pending={hasPendingTransactions}
-          isClaimAvailable={isClaimAvailable}
-          isMobile={isMobile}
-        >
-          {/* {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />} */}
-          {hasPendingTransactions ? (
-            <RowBetween>
-              <Text>
-                <Trans>{pending?.length} Pending</Trans>
-              </Text>{' '}
-              <Loader stroke="white" />
-            </RowBetween>
-          ) : (
-            isMobile ? (
-              <Trans>{ENSName || shortenAddress(account, 3)}</Trans>
-            ) : (
-              <RowBetween gap='8px'>
-                <WalletLogo />
-                <Trans>{ENSName || shortenAddress(account)}</Trans>
+        <Box style={{ position: 'relative' }}>
+          <Web3StatusConnected
+            data-testid="web3-status-connected"
+            onClick={() => setMenuOpen(true)}
+            pending={hasPendingTransactions}
+            isClaimAvailable={isClaimAvailable}
+            isMobile={isMobile}
+            ref={ref}
+          >
+            {/* {!hasPendingTransactions && <StatusIcon size={24} connection={connection} showMiniIcons={false} />} */}
+            {hasPendingTransactions ? (
+              <RowBetween>
+                <Text>
+                  <Trans>{pending?.length} Pending</Trans>
+                </Text>{' '}
+                <Loader stroke="white" />
               </RowBetween>
+            ) : (
+              isMobile ? (
+                <Trans>{ENSName || shortenAddress(account, 3)}</Trans>
+              ) : (
+                <RowBetween gap='8px'>
+                  <WalletLogo />
+                  <Trans>{ENSName || shortenAddress(account)}</Trans>
+                </RowBetween>
+              )
+            )}
+          </Web3StatusConnected>
+          {
+            menuOpen && (
+              isMobile ? (
+                <Portal>{dropdown}</Portal>
+              ) : (
+                <>{dropdown}</>
+              )
             )
-          )}
-        </Web3StatusConnected>
-        {
-          menuOpen && (
-            <WalletMenu>
-              <Title>Menu</Title>
-              <Option onClick={handleWalletDropdownClick}><WalletLogo /> Wallet</Option>
-              <Option onClick={disconnect}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <g clip-path="url(#clip0_343_5566)">
-                    <path d="M7 6C7.26522 6 7.51957 5.89464 7.70711 5.70711C7.89464 5.51957 8 5.26522 8 5C8 4.73478 7.89464 4.48043 7.70711 4.29289C7.51957 4.10536 7.26522 4 7 4H5C4.73478 4 4.48043 4.10536 4.29289 4.29289C4.10536 4.48043 4 4.73478 4 5V19C4 19.2652 4.10536 19.5196 4.29289 19.7071C4.48043 19.8946 4.73478 20 5 20H7C7.26522 20 7.51957 19.8946 7.70711 19.7071C7.89464 19.5196 8 19.2652 8 19C8 18.7348 7.89464 18.4804 7.70711 18.2929C7.51957 18.1054 7.26522 18 7 18H6V6H7Z" fill="white" />
-                    <path d="M20.82 11.42L18 7.41995C17.8471 7.20436 17.615 7.05809 17.3545 7.01312C17.0941 6.96815 16.8264 7.02813 16.61 7.17995C16.5018 7.25574 16.4098 7.35219 16.3391 7.46376C16.2684 7.57532 16.2206 7.69977 16.1982 7.82994C16.1759 7.9601 16.1796 8.09339 16.2091 8.22212C16.2386 8.35085 16.2933 8.47247 16.37 8.57995L18.09 11H10C9.73478 11 9.48043 11.1053 9.29289 11.2928C9.10536 11.4804 9 11.7347 9 12C9 12.2652 9.10536 12.5195 9.29289 12.7071C9.48043 12.8946 9.73478 13 10 13H18L16.2 15.4C16.1212 15.505 16.0639 15.6246 16.0313 15.7518C15.9987 15.879 15.9915 16.0114 16.01 16.1414C16.0286 16.2714 16.0726 16.3964 16.1395 16.5094C16.2064 16.6224 16.2949 16.7212 16.4 16.7999C16.5731 16.9298 16.7836 17 17 17C17.1552 17 17.3084 16.9638 17.4472 16.8944C17.5861 16.8249 17.7069 16.7241 17.8 16.6L20.8 12.6C20.9281 12.4308 20.999 12.2253 21.0026 12.0132C21.0062 11.8011 20.9423 11.5933 20.82 11.42Z" fill="white" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_343_5566">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-                Disconnect
-              </Option>
-            </WalletMenu>
-          )
-        }
+          }
+        </Box>
+
       </TraceEvent>
     )
   } else {

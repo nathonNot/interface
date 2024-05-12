@@ -22,12 +22,15 @@ import { flexColumnNoWrap } from 'theme/styles'
 import ConnectionErrorView from './ConnectionErrorView'
 import Option from './Option'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isMobile: boolean }>`
   ${flexColumnNoWrap};
   width: 100%;
   flex: 1;
 
-  padding: 24px;
+  
+  padding: ${({ isMobile }) => !isMobile && '24px'};
+  border-radius: ${({ isMobile }) => !isMobile && '16px'};
+  background: ${({ theme, isMobile }) => !isMobile && theme.toast2};
 `
 
 const OptionGrid = styled.div`
@@ -77,7 +80,7 @@ function didUserReject(connection: Connection, error: any): boolean {
   )
 }
 
-export default function WalletModal({ closeModal }: { closeModal: () => void }) {
+export default function WalletModal({ closeModal, isMobile = false }: { closeModal: () => void; isMobile?: boolean }) {
   const dispatch = useAppDispatch()
   const { connector, account, chainId, provider } = useWeb3React()
   const [drawerOpen, toggleWalletDrawer] = useAccountDrawer()
@@ -175,7 +178,7 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
   )
 
   return (
-    <Wrapper data-testid="wallet-modal">
+    <Wrapper data-testid="wallet-modal" isMobile={isMobile}>
       <AutoColumn gap='27px'>
         <RowBetween width="100%">
           <ThemedText.SubHeader fontWeight={600} fontSize={24}>Connect a wallet</ThemedText.SubHeader>

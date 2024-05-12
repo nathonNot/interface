@@ -83,7 +83,6 @@ const baseMenuItem = style([
     // },
   },
   {
-    fontSize: 18,
     fontWeight: 400,
     width: 'auto'
   }

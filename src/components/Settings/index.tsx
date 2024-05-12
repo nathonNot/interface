@@ -21,6 +21,9 @@ import QuestionHelper from '../QuestionHelper'
 import { RowBetween, RowFixed } from '../Row'
 import Toggle from '../Toggle'
 import TransactionSettings from '../TransactionSettings'
+import { NavDropdown } from 'components/NavBar/NavDropdown'
+import { Portal } from 'nft/components/common/Portal'
+import { useIsMobile } from 'nft/hooks'
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -122,6 +125,7 @@ const ModalContentWrapper = styled.div`
 
 export default function SettingsTab({ placeholderSlippage }: { placeholderSlippage: Percent }) {
   const { chainId } = useWeb3React()
+  const isMobile = useIsMobile();
 
   const node = useRef<HTMLDivElement | null>(null)
   const open = useModalIsOpen(ApplicationModal.SETTINGS)
@@ -142,11 +146,22 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
         <StyledMenuIcon data-testid="swap-settings-button" />
       </StyledMenuButton>
       {open && (
-        <MenuFlyout>
-          <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <TransactionSettings placeholderSlippage={placeholderSlippage} />
-          </AutoColumn>
-        </MenuFlyout>
+        isMobile ? (
+          <Portal>
+            <NavDropdown top="56" left={'auto'} right={'0'} width='full'>
+              <AutoColumn gap="md" style={{ padding: '1rem' }}>
+                <TransactionSettings placeholderSlippage={placeholderSlippage} />
+              </AutoColumn>
+            </NavDropdown>
+          </Portal>
+        ) : (
+          <MenuFlyout>
+            <AutoColumn gap="md" style={{ padding: '1rem' }}>
+              <TransactionSettings placeholderSlippage={placeholderSlippage} />
+            </AutoColumn>
+          </MenuFlyout>
+        )
+
       )}
     </StyledMenu>
   )

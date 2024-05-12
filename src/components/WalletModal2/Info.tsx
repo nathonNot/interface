@@ -31,14 +31,15 @@ import { getChainInfo } from 'constants/chainInfo'
 import * as styles from './ChainSelector.css'
 // import Button from 'components/Button'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isMobile: boolean }>`
   ${flexColumnNoWrap};
   width: 100%;
   flex: 1;
 
-  padding: 24px;
-  border-radius: 16px;
-  background: ${({ theme }) => theme.toast2};
+  
+  padding: ${({ isMobile }) => !isMobile && '24px'};
+  border-radius: ${({ isMobile }) => !isMobile && '16px'};
+  background: ${({ theme, isMobile }) => !isMobile && theme.toast2};
 `
 
 const OptionGrid = styled.div`
@@ -147,7 +148,7 @@ function didUserReject(connection: Connection, error: any): boolean {
   )
 }
 
-export default function WalletInfoModal({ closeModal }: { closeModal: () => void }) {
+export default function WalletInfoModal({ closeModal, isMobile = false }: { closeModal: () => void; isMobile?: boolean }) {
   const dispatch = useAppDispatch()
   const { connector, account, chainId, provider, ENSName } = useWeb3React()
 
@@ -209,7 +210,7 @@ export default function WalletInfoModal({ closeModal }: { closeModal: () => void
   }, [connector, dispatch])
 
   return (
-    <Wrapper data-testid="wallet-modal">
+    <Wrapper data-testid="wallet-modal" isMobile={isMobile}>
       <AutoColumn gap='27px'>
         <RowBetween width="100%">
           <ThemedText.SubHeader fontWeight={600} fontSize={24}>Wallet</ThemedText.SubHeader>

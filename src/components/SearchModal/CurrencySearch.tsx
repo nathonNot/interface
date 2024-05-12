@@ -28,16 +28,18 @@ import CommonBases from './CommonBases'
 import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
 import CurrencyList from './CurrencyList'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
+import { useIsMobile } from 'nft/hooks'
 
-const ContentWrapper = styled(Column)`
+const ContentWrapper = styled(Column)<{ isMobile: boolean }>`
   // background-color: ${({ theme }) => theme.backgroundSurface};
-  border-radius: 16px;
-  background: #1F1D3B;
   width: 100%;
   overflow: hidden;
   flex: 1 1;
   position: relative;
+
   padding: 24px;
+  border-radius: ${({ isMobile }) => !isMobile && '16px'};
+  background: ${({ theme }) => theme.toast2};
 `
 
 interface CurrencySearchProps {
@@ -65,6 +67,7 @@ export function CurrencySearch({
 }: CurrencySearchProps) {
   const { chainId } = useWeb3React()
   const theme = useTheme()
+  const isMobile = useIsMobile();
 
   const [tokenLoaderTimerElapsed, setTokenLoaderTimerElapsed] = useState(false)
 
@@ -212,7 +215,7 @@ export function CurrencySearch({
   }, [])
 
   return (
-    <ContentWrapper>
+    <ContentWrapper isMobile={isMobile}>
       <Trace
         name={InterfaceEventName.TOKEN_SELECTOR_OPENED}
         modal={InterfaceModalName.TOKEN_SELECTOR}
