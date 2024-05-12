@@ -144,68 +144,14 @@ export default function TokenTable() {
           setTokens(json);
           return;
         }
-
-        setTokens([
-          {
-            "pool_address": "0x572a9e0a59006854126c1b35edaa4a042d0413b3",
-            "token0": "0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3",
-            "token0_price": "0",
-            "token1": "0xCA4E13EabFfd21c1Dc23B6dE1b377274531FFD32",
-            "token1_price": "0",
-            "liquidity_price": 0,
-            "fee": "10000",
-            "tickCurrent": "191751587355425709153259668337522",
-            "tickSpacing": "200",
-            "apy": 0,
-            "total_24h_value": "0"
-          },
-          {
-            "pool_address": "0x4a2ebf265ff33f2816cb0cd4dad0c99e6811a711",
-            "token0": "0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3",
-            "token0_price": "0",
-            "token1": "0xCA4E13EabFfd21c1Dc23B6dE1b377274531FFD32",
-            "token1_price": "0",
-            "liquidity_price": 0,
-            "fee": "500",
-            "tickCurrent": "191756990178320398671987043155599",
-            "tickSpacing": "10",
-            "apy": 0,
-            "total_24h_value": "0"
-          },
-          {
-            "pool_address": "0x8ead3bc281bd7a2d9fafdb91e835a0774c2df683",
-            "token0": "0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3",
-            "token0_price": "64.72559600000001",
-            "token1": "0xFD625D7780EA61bd998d6AF6F890a27ab973D2Bb",
-            "token1_price": "707.4628538938999",
-            "liquidity_price": 772.1884498938999,
-            "fee": "10000",
-            "tickCurrent": "191751587355425709153259668337522",
-            "tickSpacing": "200",
-            "apy": 0,
-            "total_24h_value": "0"
-          },
-          {
-            "pool_address": "0x1f206e028c07560ffa8ca70ca74d98e29382de3a",
-            "token0": "0x06565ed324Ee9fb4DB0FF80B7eDbE4Cb007555a3",
-            "token0_price": "3.514512",
-            "token1": "0xFD625D7780EA61bd998d6AF6F890a27ab973D2Bb",
-            "token1_price": "3.503160072950489",
-            "liquidity_price": 7.017672072950489,
-            "fee": "500",
-            "tickCurrent": "191756990178320398671987043155599",
-            "tickSpacing": "10",
-            "apy": 0,
-            "total_24h_value": "0"
-          }
-        ])
       })
-      .catch(err => console.log('Request Failed', err)).finally(() => {
+      .catch(err => console.log('Request Failed', err))
+      .finally(() => {
         setLoadingTokens(false);
       });
   }, [chainId])
 
-  // /* loading and error state */
+  /* loading and error state */
   // if (loadingTokens && !tokens) {
   //   return <LoadingTokenTable rowCount={PAGE_SIZE} />
   // } else if (!tokens) {
@@ -221,27 +167,6 @@ export default function TokenTable() {
   //   )
   // } else if (tokens?.length === 0) {
   //   return <NoTokensState message={<Trans>No tokens found</Trans>} />
-  // } else {
-  //   return (
-  //     <GridContainer>
-  //       <HeaderRow />
-  //       <TokenDataContainer>
-  //         {tokens.map(
-  //           (token, index) =>
-  //             token?.address && (
-  //               <LoadedRow
-  //                 key={token.address}
-  //                 tokenListIndex={index}
-  //                 tokenListLength={tokens.length}
-  //                 token={token}
-  //                 sparklineMap={sparklines}
-  //                 sortRank={tokenSortRank[token.address]}
-  //               />
-  //             )
-  //         )}
-  //       </TokenDataContainer>
-  //     </GridContainer>
-  //   )
   // }
 
   const [balances, balancesAreLoading] = useAllTokenBalances()

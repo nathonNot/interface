@@ -120,7 +120,7 @@ const Tokens = () => {
             desc='Search and find the best asset'
           />
           <Row gap='16px' width='100%'>
-            <Button>+ <Trans>Manage Liquidity</Trans></Button>
+            <Button as={Link} to="/pools">+ <Trans>Manage Liquidity</Trans></Button>
             <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
           </Row>
           <SearchContainer>
@@ -141,7 +141,7 @@ const Tokens = () => {
             desc='Search and find the best asset'
           />
           <Row gap='16px' width='auto'>
-            <Button>+ <Trans>Manage Liquidity</Trans></Button>
+            <Button as={Link} to="/pools">+ <Trans>Manage Liquidity</Trans></Button>
             <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
           </Row>
         </RowBetween>
