@@ -127,10 +127,7 @@ const DetailsSwapSection = styled(SwapSection)`
     border: none;
   }
 
-  margin-top: 31px;
-  border-top: 1px solid #322E70;
   padding: 0;
-  padding-top: 31px;
   border-radius: 0;
 `
 
@@ -532,7 +529,7 @@ export default function Swap({ className }: { className?: string }) {
               width="100%"
             />
           ) : (
-            <>
+            <AutoColumn gap={`${isMobile ? 24 : 32}px`}>
               <SwapWrapper chainId={chainId} className={className} id="swap-page">
                 <AutoColumn gap={`${isMobile ? 16 : 24}px`}>
                   <SwapHeader allowedSlippage={allowedSlippage} />
@@ -752,26 +749,21 @@ export default function Swap({ className }: { className?: string }) {
                 />
               </SwapWrapper>
               {showDetailsDropdown && (
-                <DetailsSwapSection>
+                <>
+                  <RowBetween height={1} backgroundColor='#322E70' />
                   <SwapDetailsDropdown
                     trade={trade}
                     syncing={routeIsSyncing}
                     loading={routeIsLoading}
                     allowedSlippage={allowedSlippage}
                   />
-                </DetailsSwapSection>
+                </>
               )}
-            </>
+            </AutoColumn>
           )}
           <NetworkAlert />
         </PageWrapper>
         <SwitchLocaleLink />
-        {!swapIsUnsupported ? null : (
-          <UnsupportedCurrencyFooter
-            show={swapIsUnsupported}
-            currencies={[currencies[Field.INPUT], currencies[Field.OUTPUT]]}
-          />
-        )}
       </>
     </Trace>
   )

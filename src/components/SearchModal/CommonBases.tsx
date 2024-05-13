@@ -62,36 +62,36 @@ export default function CommonBases({
   const bases = typeof chainId !== 'undefined' ? COMMON_BASES[chainId] ?? [] : []
 
   return bases.length > 0 ? (
-    <MobileWrapper gap="md">
-      <AutoRow gap="4px">
-        {bases.map((currency: Currency) => {
-          const isSelected = selectedCurrency?.equals(currency)
+    // <MobileWrapper gap="md">
+    <AutoRow gap="4px">
+      {bases.map((currency: Currency) => {
+        const isSelected = selectedCurrency?.equals(currency)
 
-          return (
-            <TraceEvent
-              events={[BrowserEvent.onClick, BrowserEvent.onKeyPress]}
-              name={InterfaceEventName.TOKEN_SELECTED}
-              properties={formatAnalyticsEventProperties(currency, searchQuery, isAddressSearch)}
-              element={InterfaceElementName.COMMON_BASES_CURRENCY_BUTTON}
+        return (
+          <TraceEvent
+            events={[BrowserEvent.onClick, BrowserEvent.onKeyPress]}
+            name={InterfaceEventName.TOKEN_SELECTED}
+            properties={formatAnalyticsEventProperties(currency, searchQuery, isAddressSearch)}
+            element={InterfaceElementName.COMMON_BASES_CURRENCY_BUTTON}
+            key={currencyId(currency)}
+          >
+            <BaseWrapper
+              tabIndex={0}
+              onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect(currency)}
+              onClick={() => !isSelected && onSelect(currency)}
+              disable={isSelected}
               key={currencyId(currency)}
             >
-              <BaseWrapper
-                tabIndex={0}
-                onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect(currency)}
-                onClick={() => !isSelected && onSelect(currency)}
-                disable={isSelected}
-                key={currencyId(currency)}
-              >
-                <CurrencyLogoFromList currency={currency} />
-                <Text fontWeight={500} fontSize={16}>
-                  {currency.symbol}
-                </Text>
-              </BaseWrapper>
-            </TraceEvent>
-          )
-        })}
-      </AutoRow>
-    </MobileWrapper>
+              <CurrencyLogoFromList currency={currency} />
+              <Text fontWeight={500} fontSize={16}>
+                {currency.symbol}
+              </Text>
+            </BaseWrapper>
+          </TraceEvent>
+        )
+      })}
+    </AutoRow>
+    // </MobileWrapper>
   ) : null
 }
 

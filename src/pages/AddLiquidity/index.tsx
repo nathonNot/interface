@@ -88,6 +88,7 @@ import PageTitle from 'components/PageTitle'
 import BackBtn from 'components/BackBtn'
 import ToggleButton from 'components/ToggleButton'
 import { useIsMobile } from 'nft/hooks'
+import { Column } from 'nft/components/Flex'
 
 const TopContent = styled.div`
   position: relative;
@@ -1334,9 +1335,9 @@ function AddLiquidity() {
               </ResponsiveTwoColumns>
             </Wrapper>
           </PageWrapper>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {/* <Column  style={{ maxWidth: 656 }}> */}
             <Buttons />
-          </div>
+          {/* </Column> */}
           {showOwnershipWarning && <OwnershipWarning ownerAddress={owner} />}
           {addIsUnsupported && (
             <UnsupportedCurrencyFooter

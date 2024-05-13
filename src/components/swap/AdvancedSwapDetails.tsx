@@ -15,6 +15,7 @@ import { AutoColumn } from '../Column'
 import { RowBetween, RowFixed } from '../Row'
 import { MouseoverTooltip } from '../Tooltip'
 import FormattedPriceImpact from './FormattedPriceImpact'
+import { useIsMobile } from 'nft/hooks'
 
 const StyledCard = styled(Card)`
   padding: 0;
@@ -54,6 +55,7 @@ export function AdvancedSwapDetails({
   const theme = useTheme()
   const { chainId } = useWeb3React()
   const nativeCurrency = useNativeCurrency()
+  const isMobile = useIsMobile();
 
   const { expectedOutputAmount, priceImpact } = useMemo(() => {
     return {
@@ -64,7 +66,7 @@ export function AdvancedSwapDetails({
 
   return !trade ? null : (
     <StyledCard>
-      <AutoColumn gap="10px">
+      <AutoColumn gap={`${isMobile ? 16 : 12}px`}>
         <RowBetween>
           <RowFixed>
             <MouseoverTooltip

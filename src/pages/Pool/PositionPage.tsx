@@ -700,7 +700,7 @@ function PositionPageContent() {
                 <ResponsiveRow>
                   <AutoColumn gap='12px'>
                     <Row gap='12px'>
-                      <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={32} margin={true} />
+                      <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={32} margin={true} diff />
                       <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} size={18} />
                     </Row>
                     <BadgeText>
@@ -984,7 +984,7 @@ function PositionPageContent() {
               <ResponsiveRow>
                 <AutoColumn gap='12px'>
                   <Row gap='12px'>
-                    <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={28} margin={true} />
+                    <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={28} margin={true} diff />
                     <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} />
                   </Row>
                   <BadgeText>

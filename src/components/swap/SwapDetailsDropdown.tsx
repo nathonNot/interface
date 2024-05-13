@@ -19,19 +19,20 @@ import { AdvancedSwapDetails } from './AdvancedSwapDetails'
 import GasEstimateBadge from './GasEstimateBadge'
 import SwapRoute from './SwapRoute'
 import TradePrice from './TradePrice'
+import { useIsMobile } from 'nft/hooks'
 
 const Wrapper = styled(Row)`
   width: 100%;
   justify-content: center;
   border-radius: inherit;
-  padding: 8px 12px;
+  // padding: 8px 12px;
   margin-top: 0;
   min-height: 32px;
 `
 
 const StyledCard = styled(OutlineCard)`
-  padding: 12px;
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
+  border: none;
+  background: ${({ theme }) => theme.main};
 `
 
 const StyledHeaderRow = styled(RowBetween) <{ disabled: boolean; open: boolean }>`
@@ -108,10 +109,11 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
   const theme = useTheme()
   const { chainId } = useWeb3React()
   const [showDetails, setShowDetails] = useState(false)
+  const isMobile = useIsMobile();
 
   return (
     <Wrapper style={{ marginTop: '0' }}>
-      <AutoColumn gap="sm" style={{ width: '100%', marginBottom: '-8px' }}>
+      <AutoColumn gap={`${isMobile ? 24 : 32}px`} style={{ width: '100%', marginBottom: '-8px' }}>
         <TraceEvent
           events={[BrowserEvent.onClick]}
           name={SwapEventName.SWAP_DETAILS_EXPANDED}
@@ -160,7 +162,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
         <AnimatedDropdown open={showDetails}>
           <AutoColumn gap="sm" style={{ padding: '0', paddingBottom: '8px' }}>
             {trade ? (
-              <StyledCard>
+              <StyledCard padding={isMobile ? '16px 12px' : '20px'}>
                 <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} syncing={syncing} />
               </StyledCard>
             ) : null}

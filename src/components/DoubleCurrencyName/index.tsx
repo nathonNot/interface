@@ -27,7 +27,7 @@ export default function DoubleCurrencyName({
 }: DoubleCurrencyNameProps) {
   return (
     <Wrapper sizeraw={size} fontSize={size} fontWeight={fontWeight} margin={margin}>
-      &nbsp;{currency1?.symbol}&nbsp;/&nbsp;{currency0?.symbol}
+      {currency1?.symbol}&nbsp;/&nbsp;{currency0?.symbol}
     </Wrapper>
   )
 }

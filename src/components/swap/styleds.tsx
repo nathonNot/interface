@@ -10,7 +10,7 @@ import { Z_INDEX } from 'theme/zIndex'
 import { AutoColumn } from '../Column'
 
 export const PageWrapper = styled.div`
-  padding: 68px 8px 0px;
+  padding: 68px 16px 0px;
   max-width: 685px;
   width: 100%;
 
