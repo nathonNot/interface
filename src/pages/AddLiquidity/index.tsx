@@ -30,7 +30,7 @@ import { addressesAreEquivalent } from 'utils/addressesAreEquivalent'
 import Button, { ButtonError, ButtonLight, ButtonPrimary, ButtonText } from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import CurrencyInputPanel from './CurrencyInputPanel'
 import FeeSelector from '../../components/FeeSelector'
 import HoverInlineText from '../../components/HoverInlineText'
 import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput'
@@ -671,7 +671,7 @@ function AddLiquidity() {
                               <Trans>Select Pair</Trans>
                             </Label>
                           </RowBetween>
-                          <RowBetween>
+                          <RowBetween gap='19px'>
                             <CurrencyDropdown
                               value={formattedAmounts[Field.CURRENCY_A]}
                               onUserInput={onFieldAInput}
@@ -686,7 +686,11 @@ function AddLiquidity() {
                               showCommonBases
                             />
 
-                            <div style={{ width: '12px' }} />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                              <g id="Group">
+                                <path id="Vector" d="M11 20C11 20.3978 11.158 20.7794 11.4393 21.0607C11.7206 21.342 12.1022 21.5 12.5 21.5C12.8978 21.5 13.2794 21.342 13.5607 21.0607C13.842 20.7794 14 20.3978 14 20V13.5H20.5C20.8978 13.5 21.2794 13.342 21.5607 13.0607C21.842 12.7794 22 12.3978 22 12C22 11.6022 21.842 11.2206 21.5607 10.9393C21.2794 10.658 20.8978 10.5 20.5 10.5H14V4C14 3.60218 13.842 3.22064 13.5607 2.93934C13.2794 2.65804 12.8978 2.5 12.5 2.5C12.1022 2.5 11.7206 2.65804 11.4393 2.93934C11.158 3.22064 11 3.60218 11 4V10.5H4.5C4.10218 10.5 3.72064 10.658 3.43934 10.9393C3.15804 11.2206 3 11.6022 3 12C3 12.3978 3.15804 12.7794 3.43934 13.0607C3.72064 13.342 4.10218 13.5 4.5 13.5H11V20Z" fill="#E4E4E5" />
+                              </g>
+                            </svg>
 
                             <CurrencyDropdown
                               value={formattedAmounts[Field.CURRENCY_B]}
@@ -1057,7 +1061,7 @@ function AddLiquidity() {
                             <Trans>Select Pair</Trans>
                           </Label>
                         </RowBetween>
-                        <RowBetween>
+                        <RowBetween gap='19px'>
                           <CurrencyDropdown
                             value={formattedAmounts[Field.CURRENCY_A]}
                             onUserInput={onFieldAInput}
@@ -1072,7 +1076,11 @@ function AddLiquidity() {
                             showCommonBases
                           />
 
-                          <div style={{ width: '12px' }} />
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                            <g id="Group">
+                              <path id="Vector" d="M11 20C11 20.3978 11.158 20.7794 11.4393 21.0607C11.7206 21.342 12.1022 21.5 12.5 21.5C12.8978 21.5 13.2794 21.342 13.5607 21.0607C13.842 20.7794 14 20.3978 14 20V13.5H20.5C20.8978 13.5 21.2794 13.342 21.5607 13.0607C21.842 12.7794 22 12.3978 22 12C22 11.6022 21.842 11.2206 21.5607 10.9393C21.2794 10.658 20.8978 10.5 20.5 10.5H14V4C14 3.60218 13.842 3.22064 13.5607 2.93934C13.2794 2.65804 12.8978 2.5 12.5 2.5C12.1022 2.5 11.7206 2.65804 11.4393 2.93934C11.158 3.22064 11 3.60218 11 4V10.5H4.5C4.10218 10.5 3.72064 10.658 3.43934 10.9393C3.15804 11.2206 3 11.6022 3 12C3 12.3978 3.15804 12.7794 3.43934 13.0607C3.72064 13.342 4.10218 13.5 4.5 13.5H11V20Z" fill="#E4E4E5" />
+                            </g>
+                          </svg>
 
                           <CurrencyDropdown
                             value={formattedAmounts[Field.CURRENCY_B]}
@@ -1336,7 +1344,7 @@ function AddLiquidity() {
             </Wrapper>
           </PageWrapper>
           {/* <Column  style={{ maxWidth: 656 }}> */}
-            <Buttons />
+          <Buttons />
           {/* </Column> */}
           {showOwnershipWarning && <OwnershipWarning ownerAddress={owner} />}
           {addIsUnsupported && (
