@@ -130,15 +130,13 @@ function LoadingTokenTable({ rowCount = PAGE_SIZE }: { rowCount?: number }) {
 import Button from 'components/Button'
 import { useIsMobile } from 'nft/hooks'
 import { useAllTokenBalances } from 'state/connection/hooks'
-import DoubleCurrencyLogo from 'components/DoubleLogo'
-import DoubleCurrencyName from 'components/DoubleCurrencyName'
 import Row, { RowBetween } from 'components/Row'
-import { Percent } from '@uniswap/sdk-core'
 import { AutoColumn } from 'components/Column'
 import SearchBar from './SearchBar'
 import { Text } from 'rebass'
 import { AlertTriangle } from 'react-feather'
 import Empty from 'components/Empty'
+import TokenInfo from './TokenInfo'
 export default function TokenTable() {
   const chainName = validateUrlChainParam(useParams<{ chainName?: string }>().chainName)
   const { chainId } = useWeb3React()
@@ -149,7 +147,7 @@ export default function TokenTable() {
 
   const isMobie = useIsMobile()
   const theme = useTheme();
-  // console.log(tokenSortRank, sparklines)
+
   useEffect(() => {
     if (!chainId) return;
     setLoadingTokens(true);
@@ -176,8 +174,6 @@ export default function TokenTable() {
         setLoadingTokens(false);
       });
   }, [chainId])
-
-  const [balances, balancesAreLoading] = useAllTokenBalances()
 
   const liquidity = tokens?.reduce((prev, next) => {
     const pre = typeof prev === 'number' ? prev : prev.liquidity_price;
@@ -217,13 +213,7 @@ export default function TokenTable() {
               return (
                 <tr>
                   <td>
-                    <Row gap='12px'>
-                      <DoubleCurrencyLogo currency0={balances[token.token0]?.currency} currency1={balances[token.token1]?.currency} size={20} margin diff />
-                      <DoubleCurrencyName currency0={balances[token.token0]?.currency} currency1={balances[token.token1]?.currency} size={16} />
-                      <FeeTierText>
-                        <Trans>{new Percent(token.fee, 1_000_000).toSignificant()}%</Trans>
-                      </FeeTierText>
-                    </Row>
+                    <TokenInfo token0={token.token0} token1={token.token1} fee={token.fee} />
                   </td>
                   <td width='15%'>${Number(token.liquidity_price)?.toFixed(2)}</td>
                   <td width='15%'>-{token.tickSpacing}% ~ {token.tickSpacing}%</td>
@@ -244,13 +234,7 @@ export default function TokenTable() {
       return (
         <>
           <AutoColumn gap='8px'>
-            <Row gap='6px'>
-              <DoubleCurrencyLogo currency0={balances[token.token0]?.currency} currency1={balances[token.token1]?.currency} size={20} margin diff />
-              <DoubleCurrencyName currency0={balances[token.token0]?.currency} currency1={balances[token.token1]?.currency} size={14} />
-              <FeeTierText isMobile={isMobie}>
-                <Trans>{new Percent(token.fee, 1_000_000).toSignificant()}%</Trans>
-              </FeeTierText>
-            </Row>
+            <TokenInfo token0={token.token0} token1={token.token1} fee={token.fee} isMobile />
             <Row gap='20px'>
               <ContentBox>
                 <div>Liquidity</div>
