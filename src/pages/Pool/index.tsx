@@ -308,6 +308,7 @@ export default function Pool() {
                   id="show-closed"
                   isActive={!userHideClosedPositions}
                   toggle={() => setUserHideClosedPositions(!userHideClosedPositions)}
+                  bgColor={theme.primary}
                 />
               </SwitchBox>
 
