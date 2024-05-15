@@ -761,7 +761,7 @@ export default function Swap({ className }: { className?: string }) {
               )}
             </AutoColumn>
           )}
-          <NetworkAlert />
+          {/* <NetworkAlert /> */}
         </PageWrapper>
         <SwitchLocaleLink />
       </>
