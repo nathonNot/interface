@@ -85,12 +85,12 @@ export const PageTabs = () => {
         {
           isMobile ? (
             <AutoColumn gap='2px' justify='center'>
-              <PageTabIcon type='pool' active={pathname.startsWith('/tokens')} />
+              <PageTabIcon type='tokens' active={pathname.startsWith('/tokens')} />
               <Trans>Tokens</Trans>
             </AutoColumn>
           ) : (
             <>
-              <PageTabIcon type='pool' active={pathname.startsWith('/tokens')} />
+              <PageTabIcon type='tokens' active={pathname.startsWith('/tokens')} />
               <Trans>Tokens</Trans>
             </>
           )

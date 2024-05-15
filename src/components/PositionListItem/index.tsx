@@ -69,9 +69,10 @@ const RangeLineItem = styled(DataLineItem)`
 `
 
 const DoubleArrow = styled.span`
-  font-size: 12px;
-  margin: 0 2px;
-  color: ${({ theme }) => theme.textTertiary};
+  // font-size: 12px;
+  // margin: 0 2px;
+  // color: ${({ theme }) => theme.textTertiary};
+  margin-left: 4px;
 `
 
 const RangeText = styled(ThemedText.Caption)`
@@ -261,7 +262,16 @@ export default function PositionListItem({
                   <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
                 </Trans>
               </RangeText>
-              <DoubleArrow>↔</DoubleArrow>{' '}
+              <DoubleArrow>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                  <g id="Swap">
+                    <path id="Stroke 1" d="M1.1343 11.9308L11.915 11.9308" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 3" d="M4.37695 15.1591L1.13376 11.9309L4.37695 8.70264" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 5" d="M14.0635 4.07067L3.28274 4.07068" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 7" d="M10.8208 0.84253L14.064 4.07077L10.8208 7.29901" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
+              </DoubleArrow>{' '}
             </RangeLineItem>
           ) : (
             <Loader />
@@ -326,7 +336,24 @@ export default function PositionListItem({
                   <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
                 </Trans>
               </RangeText>
-              <DoubleArrow>↔</DoubleArrow>{' '}
+              <DoubleArrow>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                  <g id="Swap">
+                    <path id="Stroke 1" d="M1.1343 11.9308L11.915 11.9308" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 3" d="M4.37695 15.1591L1.13376 11.9309L4.37695 8.70264" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 5" d="M14.0635 4.07067L3.28274 4.07068" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 7" d="M10.8208 0.84253L14.064 4.07077L10.8208 7.29901" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
+              </DoubleArrow>{' '}
+              {/* <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                <g id="Swap">
+                  <path id="Stroke 1" d="M1.1343 11.9308L11.915 11.9308" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  <path id="Stroke 3" d="M4.37695 15.1591L1.13376 11.9309L4.37695 8.70264" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  <path id="Stroke 5" d="M14.0635 4.07067L3.28274 4.07068" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  <path id="Stroke 7" d="M10.8208 0.84253L14.064 4.07077L10.8208 7.29901" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+              </svg> */}
             </RangeLineItem>
           ) : (
             <Loader />

@@ -772,7 +772,16 @@ function PositionPageContent() {
                         </InputDesc>
                       </AutoColumn>
                     </RangeCard>
-                    <DoubleArrow>⟷</DoubleArrow>
+                    <DoubleArrow>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                        <g id="Swap">
+                          <path id="Stroke 1" d="M17.5406 5.03429L3.92285 5.03429" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Stroke 3" d="M13.4448 0.956505L17.5415 5.03428L13.4448 9.11206" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Stroke 5" d="M1.20947 14.9625L14.8273 14.9625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Stroke 7" d="M5.30565 19.0403L1.20898 14.9625L5.30565 10.8847" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                      </svg>
+                    </DoubleArrow>
                     <RangeCard padding="12px" width="100%">
                       <AutoColumn gap="sm" justify="center">
                         <InputTitle>
@@ -1058,7 +1067,16 @@ function PositionPageContent() {
                       </InputDesc>
                     </AutoColumn>
                   </RangeCard>
-                  <DoubleArrow>⟷</DoubleArrow>
+                  <DoubleArrow>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                      <g id="Swap">
+                        <path id="Stroke 1" d="M17.5406 5.03429L3.92285 5.03429" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Stroke 3" d="M13.4448 0.956505L17.5415 5.03428L13.4448 9.11206" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Stroke 5" d="M1.20947 14.9625L14.8273 14.9625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Stroke 7" d="M5.30565 19.0403L1.20898 14.9625L5.30565 10.8847" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </DoubleArrow>
                   <RangeCard padding="12px" width="100%">
                     <AutoColumn gap="sm" justify="center">
                       <InputTitle>

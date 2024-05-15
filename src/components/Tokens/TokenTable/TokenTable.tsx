@@ -228,7 +228,7 @@ export default function TokenTable() {
                   <td width='15%'>${Number(token.liquidity_price)?.toFixed(2)}</td>
                   <td width='15%'>-{token.tickSpacing}% ~ {token.tickSpacing}%</td>
                   <td width='15%'>${Number(token.total_24h_value)?.toFixed(2)}</td>
-                  <td width='15%'>{token.apy}</td>
+                  <td width='15%'>{(Number(token.apy) / 100)?.toFixed(2)}%</td>
                   <td><Button padding='8px 16px' style={{ borderRadius: '6px', background: 'transparent' }} gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}`}><Trans>Add Liquidity</Trans></Button></td>
                 </tr>
               )
@@ -262,7 +262,7 @@ export default function TokenTable() {
               </ContentBox>
               <ContentBox>
                 <div>APR</div>
-                <div>{token.apy}</div>
+                <div>{(Number(token.apy) / 100)?.toFixed(2)}%</div>
               </ContentBox>
             </Row>
           </AutoColumn>
