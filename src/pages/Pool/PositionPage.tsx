@@ -215,6 +215,13 @@ const InputDesc = styled(ThemedText.DeprecatedSmall)`
   white-space: nowrap;
 `
 
+const PriceBox = styled(ThemedText.DeprecatedMediumHeader)`
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 function CurrentPriceCard({
   inverted,
   pool,
@@ -757,14 +764,14 @@ function PositionPageContent() {
                         <InputTitle>
                           <Trans>Low Price</Trans>
                         </InputTitle>
-                        <ThemedText.DeprecatedMediumHeader textAlign="center">
+                        <PriceBox>
                           {formatTickPrice({
                             price: priceLower,
                             atLimit: tickAtLimit,
                             direction: Bound.LOWER,
                             numberType: NumberType.TokenTx,
                           })}
-                        </ThemedText.DeprecatedMediumHeader>
+                        </PriceBox>
                         <InputDesc>
                           <Trans>
                             {currencyQuote?.symbol} per {currencyBase?.symbol}
@@ -787,14 +794,14 @@ function PositionPageContent() {
                         <InputTitle>
                           <Trans>High Price</Trans>
                         </InputTitle>
-                        <ThemedText.DeprecatedMediumHeader textAlign="center">
+                        <PriceBox>
                           {formatTickPrice({
                             price: priceUpper,
                             atLimit: tickAtLimit,
                             direction: Bound.UPPER,
                             numberType: NumberType.TokenTx,
                           })}
-                        </ThemedText.DeprecatedMediumHeader>
+                        </PriceBox>
                         <InputDesc>
                           <Trans>
                             {currencyQuote?.symbol} per {currencyBase?.symbol}
@@ -1052,14 +1059,14 @@ function PositionPageContent() {
                       <InputTitle>
                         <Trans>Low Price</Trans>
                       </InputTitle>
-                      <ThemedText.DeprecatedMediumHeader textAlign="center">
+                      <PriceBox>
                         {formatTickPrice({
                           price: priceLower,
                           atLimit: tickAtLimit,
                           direction: Bound.LOWER,
                           numberType: NumberType.TokenTx,
                         })}
-                      </ThemedText.DeprecatedMediumHeader>
+                      </PriceBox>
                       <InputDesc>
                         <Trans>
                           {currencyQuote?.symbol} per {currencyBase?.symbol}
@@ -1082,14 +1089,14 @@ function PositionPageContent() {
                       <InputTitle>
                         <Trans>High Price</Trans>
                       </InputTitle>
-                      <ThemedText.DeprecatedMediumHeader textAlign="center">
+                      <PriceBox>
                         {formatTickPrice({
                           price: priceUpper,
                           atLimit: tickAtLimit,
                           direction: Bound.UPPER,
                           numberType: NumberType.TokenTx,
                         })}
-                      </ThemedText.DeprecatedMediumHeader>
+                      </PriceBox>
                       <InputDesc>
                         <Trans>
                           {currencyQuote?.symbol} per {currencyBase?.symbol}
