@@ -26,11 +26,11 @@ const NETWORK_SELECTOR_CHAINS = [
   SupportedChainId.OPTIMISM,
   SupportedChainId.ARBITRUM_ONE,
   SupportedChainId.BASE,
-  SupportedChainId.BITLAYER,
+  // SupportedChainId.BITLAYER,
   SupportedChainId.BITLAYER_TESTNET,
-  SupportedChainId.CYBER,
+  // SupportedChainId.CYBER,
   SupportedChainId.CYBER_TESTNET,
-  SupportedChainId.LINEA,
+  // SupportedChainId.LINEA,
   SupportedChainId.LINEA_SEPOLIA,
 ]
 
