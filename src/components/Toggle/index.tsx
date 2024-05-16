@@ -1,10 +1,11 @@
 import { darken } from 'polished'
 import { useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
+import { opacify } from 'theme/utils';
 
 const Wrapper = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
   align-items: center;
-  background: ${({ isActive, theme }) => (isActive ? theme.accentActionSoft : 'transparent')};
+  background: ${({ isActive, theme }) => (isActive ? opacify(24, theme.primary) : 'transparent')};
   border: ${({ theme, isActive }) => (isActive ? '1px solid transparent' : `1px solid ${theme.backgroundOutline}`)};
   border-radius: 20px;
   cursor: pointer;

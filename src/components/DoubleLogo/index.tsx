@@ -7,12 +7,14 @@ const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`
   position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin-left: ${({ sizeraw, margin }) => margin && (sizeraw / 3 + 8).toString() + 'px'};
 `
 
 interface DoubleCurrencyLogoProps {
   margin?: boolean
   size?: number
+  diff?: boolean
   currency0?: Currency
   currency1?: Currency
 }
@@ -30,12 +32,13 @@ export default function DoubleCurrencyLogo({
   currency1,
   size = 16,
   margin = false,
+  diff = false
 }: DoubleCurrencyLogoProps) {
   return (
     <Wrapper sizeraw={size} margin={margin}>
       {currency0 && (
         <HigherLogoWrapper>
-          <CurrencyLogo hideL2Icon currency={currency0} size={size.toString() + 'px'} />
+          <CurrencyLogo hideL2Icon currency={currency0} size={(diff ? size * 1.4 : size).toString() + 'px'} />
         </HigherLogoWrapper>
       )}
       {currency1 && (

@@ -32,6 +32,7 @@ import {
   useSetSortMethod,
 } from '../state'
 import { ArrowCell, DeltaText, formatDelta, getDeltaArrow } from '../TokenDetails/PriceChart'
+import Button from 'components/Button'
 
 const Cell = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const StyledTokenRow = styled.div<{
   background-color: transparent;
   display: grid;
   font-size: 16px;
-  grid-template-columns: 1fr 7fr 4fr 4fr 4fr 4fr 5fr;
+  grid-template-columns: 5.5fr 4fr 4fr 4fr 3.5fr;
   line-height: 24px;
   max-width: ${MAX_WIDTH_MEDIA_BREAKPOINT};
   min-width: 390px;
@@ -58,28 +59,28 @@ const StyledTokenRow = styled.div<{
   padding-left: 12px;
   padding-right: 12px;
   transition: ${({
-    theme: {
-      transition: { duration, timing },
-    },
-  }) => css`background-color ${duration.medium} ${timing.ease}`};
+  theme: {
+    transition: { duration, timing },
+  },
+}) => css`background-color ${duration.medium} ${timing.ease}`};
   width: 100%;
   transition-duration: ${({ theme }) => theme.transition.duration.fast};
 
   &:hover {
     ${({ loading, theme }) =>
-      !loading &&
-      css`
+    !loading &&
+    css`
         background-color: ${theme.hoverDefault};
       `}
     ${({ last }) =>
-      last &&
-      css`
+    last &&
+    css`
         border-radius: 0px 0px 8px 8px;
       `}
   }
 
   @media only screen and (max-width: ${MAX_WIDTH_MEDIA_BREAKPOINT}) {
-    grid-template-columns: 1fr 6.5fr 4.5fr 4.5fr 4.5fr 4.5fr 1.7fr;
+    grid-template-columns: 6fr 4.5fr 4.5fr 4.5fr 4fr;
   }
 
   @media only screen and (max-width: ${LARGE_MEDIA_BREAKPOINT}) {
@@ -133,7 +134,7 @@ const StyledHeaderRow = styled(StyledTokenRow)`
   }
 `
 
-const ListNumberCell = styled(Cell)<{ header: boolean }>`
+const ListNumberCell = styled(Cell) <{ header: boolean }>`
   color: ${({ theme }) => theme.textSecondary};
   min-width: 32px;
   font-size: 14px;
@@ -142,15 +143,15 @@ const ListNumberCell = styled(Cell)<{ header: boolean }>`
     display: none;
   }
 `
-const DataCell = styled(Cell)<{ sortable: boolean }>`
-  justify-content: flex-end;
+const DataCell = styled(Cell) <{ sortable: boolean }>`
+  justify-content: flex-start;
   min-width: 80px;
   user-select: ${({ sortable }) => (sortable ? 'none' : 'unset')};
   transition: ${({
-    theme: {
-      transition: { duration, timing },
-    },
-  }) => css`background-color ${duration.medium} ${timing.ease}`};
+  theme: {
+    transition: { duration, timing },
+  },
+}) => css`background-color ${duration.medium} ${timing.ease}`};
 `
 const TvlCell = styled(DataCell)`
   padding-right: 8px;
@@ -166,8 +167,10 @@ const NameCell = styled(Cell)`
 `
 const PriceCell = styled(DataCell)`
   padding-right: 8px;
+  justify-content: flex-start;
 `
 const PercentChangeCell = styled(DataCell)`
+  justify-content: flex-start;
   padding-right: 8px;
   @media only screen and (max-width: ${SMALL_MEDIA_BREAKPOINT}) {
     display: none;
@@ -185,12 +188,12 @@ const PercentChangeInfoCell = styled(Cell)`
   }
 `
 const PriceInfoCell = styled(Cell)`
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex: 1;
 
   @media only screen and (max-width: ${SMALL_MEDIA_BREAKPOINT}) {
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
   }
 `
 
@@ -199,7 +202,7 @@ const HeaderCellWrapper = styled.span<{ onClick?: () => void }>`
   cursor: ${({ onClick }) => (onClick ? 'pointer' : 'unset')};
   display: flex;
   gap: 4px;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   width: 100%;
 
   &:hover {
@@ -257,6 +260,7 @@ const TokenSymbol = styled(Cell)`
 `
 const VolumeCell = styled(DataCell)`
   padding-right: 8px;
+  width: max-content;
   @media only screen and (max-width: ${LARGE_MEDIA_BREAKPOINT}) {
     display: none;
   }
@@ -293,9 +297,10 @@ export const HEADER_DESCRIPTIONS: Record<TokenSortMethod, ReactNode | undefined>
       Total value locked (TVL) is the aggregate amount of the asset available across all Uniswap v3 liquidity pools.
     </Trans>
   ),
-  [TokenSortMethod.VOLUME]: (
-    <Trans>Volume is the amount of the asset that has been traded on Uniswap v3 during the selected time frame.</Trans>
-  ),
+  // [TokenSortMethod.VOLUME]: (
+  //   <Trans>Volume is the amount of the asset that has been traded on Uniswap v3 during the selected time frame.</Trans>
+  // ),
+  [TokenSortMethod.VOLUME]: undefined,
 }
 
 /* Get singular header cell for header row */
@@ -344,6 +349,7 @@ function TokenRow({
   tvl,
   volume,
   sparkLine,
+  operate,
   ...rest
 }: {
   first?: boolean
@@ -358,10 +364,11 @@ function TokenRow({
   volume: ReactNode
   last?: boolean
   style?: CSSProperties
+  operate?: ReactNode
 }) {
   const rowCells = (
     <>
-      <ListNumberCell header={header}>{listNumber}</ListNumberCell>
+      {/* <ListNumberCell header={header}>{listNumber}</ListNumberCell> */}
       <NameCell data-testid="name-cell">{tokenInfo}</NameCell>
       <PriceCell data-testid="price-cell" sortable={header}>
         {price}
@@ -369,13 +376,16 @@ function TokenRow({
       <PercentChangeCell data-testid="percent-change-cell" sortable={header}>
         {percentChange}
       </PercentChangeCell>
-      <TvlCell data-testid="tvl-cell" sortable={header}>
+      {/* <TvlCell data-testid="tvl-cell" sortable={header}>
         {tvl}
-      </TvlCell>
+      </TvlCell> */}
       <VolumeCell data-testid="volume-cell" sortable={header}>
         {volume}
       </VolumeCell>
       <SparkLineCell>{sparkLine}</SparkLineCell>
+      <Cell>
+      {operate}
+      </Cell>
     </>
   )
   if (header) return <StyledHeaderRow data-testid="header-row">{rowCells}</StyledHeaderRow>
@@ -387,8 +397,8 @@ export function HeaderRow() {
   return (
     <TokenRow
       header={true}
-      listNumber="#"
-      tokenInfo={<Trans>Token name</Trans>}
+      listNumber=''
+      tokenInfo={<Trans>Name</Trans>}
       price={<HeaderCell category={TokenSortMethod.PRICE} />}
       percentChange={<HeaderCell category={TokenSortMethod.PERCENT_CHANGE} />}
       tvl={<HeaderCell category={TokenSortMethod.TOTAL_VALUE_LOCKED} />}
@@ -416,6 +426,7 @@ export function LoadingRow(props: { first?: boolean; last?: boolean }) {
       tvl={<LoadingBubble />}
       volume={<LoadingBubble />}
       sparkLine={<SparkLineLoadingBubble />}
+      operate={<LoadingBubble />}
       {...props}
     />
   )
@@ -456,70 +467,66 @@ export const LoadedRow = forwardRef((props: LoadedRowProps, ref: ForwardedRef<HT
   // TODO: currency logo sizing mobile (32px) vs. desktop (24px)
   return (
     <div ref={ref} data-testid={`token-table-row-${token.symbol}`}>
-      <StyledLink
-        to={getTokenDetailsURL(token)}
-        onClick={() =>
-          sendAnalyticsEvent(InterfaceEventName.EXPLORE_TOKEN_ROW_CLICKED, exploreTokenSelectedEventProperties)
+      <TokenRow
+        header={false}
+        listNumber={sortRank}
+        tokenInfo={
+          <ClickableName>
+            <QueryTokenLogo token={token} />
+            <TokenInfoCell>
+              <TokenName data-cy="token-name">{token.name}</TokenName>
+              <TokenSymbol>{token.symbol}</TokenSymbol>
+            </TokenInfoCell>
+          </ClickableName>
         }
-      >
-        <TokenRow
-          header={false}
-          listNumber={sortRank}
-          tokenInfo={
-            <ClickableName>
-              <QueryTokenLogo token={token} />
-              <TokenInfoCell>
-                <TokenName data-cy="token-name">{token.name}</TokenName>
-                <TokenSymbol>{token.symbol}</TokenSymbol>
-              </TokenInfoCell>
-            </ClickableName>
-          }
-          price={
-            <ClickableContent>
-              <PriceInfoCell>
-                {formatUSDPrice(token.market?.price?.value)}
-                <PercentChangeInfoCell>
-                  <ArrowCell>{smallArrow}</ArrowCell>
-                  <DeltaText delta={delta}>{formattedDelta}</DeltaText>
-                </PercentChangeInfoCell>
-              </PriceInfoCell>
-            </ClickableContent>
-          }
-          percentChange={
-            <ClickableContent>
-              <ArrowCell>{arrow}</ArrowCell>
-              <DeltaText delta={delta}>{formattedDelta}</DeltaText>
-            </ClickableContent>
-          }
-          tvl={
-            <ClickableContent>
-              {formatNumber(token.market?.totalValueLocked?.value, NumberType.FiatTokenStats)}
-            </ClickableContent>
-          }
-          volume={
-            <ClickableContent>{formatNumber(token.market?.volume?.value, NumberType.FiatTokenStats)}</ClickableContent>
-          }
-          sparkLine={
-            <SparkLine>
-              <ParentSize>
-                {({ width, height }) =>
-                  props.sparklineMap && (
-                    <SparklineChart
-                      width={width}
-                      height={height}
-                      tokenData={token}
-                      pricePercentChange={token.market?.pricePercentChange?.value}
-                      sparklineMap={props.sparklineMap}
-                    />
-                  )
-                }
-              </ParentSize>
-            </SparkLine>
-          }
-          first={tokenListIndex === 0}
-          last={tokenListIndex === tokenListLength - 1}
-        />
-      </StyledLink>
+        price={
+          <ClickableContent>
+            <PriceInfoCell>
+              {formatUSDPrice(token.market?.price?.value)}
+              <PercentChangeInfoCell>
+                <ArrowCell>{smallArrow}</ArrowCell>
+                <DeltaText delta={delta}>{formattedDelta}</DeltaText>
+              </PercentChangeInfoCell>
+            </PriceInfoCell>
+          </ClickableContent>
+        }
+        percentChange={
+          <ClickableContent>
+            <ArrowCell>{arrow}</ArrowCell>
+            <DeltaText delta={delta}>{formattedDelta}</DeltaText>
+          </ClickableContent>
+        }
+        tvl={
+          <ClickableContent>
+            {formatNumber(token.market?.totalValueLocked?.value, NumberType.FiatTokenStats)}
+          </ClickableContent>
+        }
+        volume={
+          <ClickableContent>{formatNumber(token.market?.volume?.value, NumberType.FiatTokenStats)}</ClickableContent>
+        }
+        sparkLine={
+          <SparkLine>
+            <ParentSize>
+              {({ width, height }) =>
+                props.sparklineMap && (
+                  <SparklineChart
+                    width={width}
+                    height={height}
+                    tokenData={token}
+                    pricePercentChange={token.market?.pricePercentChange?.value}
+                    sparklineMap={props.sparklineMap}
+                  />
+                )
+              }
+            </ParentSize>
+          </SparkLine>
+        }
+        first={tokenListIndex === 0}
+        last={tokenListIndex === tokenListLength - 1}
+        operate={
+          <Button padding='8px 16px' style={{ borderRadius: '6px', background: 'transparent' }} gap='8px' as={Link} to="/add/ETH"><Trans>Add Liquidity</Trans></Button>
+        }
+      />
     </div>
   )
 })

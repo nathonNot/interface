@@ -10,6 +10,7 @@ import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import RateToggle from 'components/RateToggle'
 import Row, { RowBetween, RowFixed } from 'components/Row'
 import JSBI from 'jsbi'
+import { useIsMobile } from 'nft/hooks'
 import { ReactNode, useCallback, useState } from 'react'
 import { Bound } from 'state/mint/v3/actions'
 import styled from 'styled-components'
@@ -40,6 +41,7 @@ export const PositionPreview = ({
   ticksAtLimit: { [bound: string]: boolean | undefined }
 }) => {
   const theme = useTheme()
+  const isMobile = useIsMobile()
 
   const currency0 = unwrappedToken(position.pool.token0)
   const currency1 = unwrappedToken(position.pool.token1)
@@ -73,12 +75,13 @@ export const PositionPreview = ({
     <AutoColumn gap="27px">
       <LightCard>
         <RowBetween>
-          <Row gap='8px'>
+          <Row gap='8px' flex='1'>
             <DoubleCurrencyLogo
               currency0={currency0 ?? undefined}
               currency1={currency1 ?? undefined}
               size={24}
               margin={true}
+              diff
             />
             <ThemedText.DeprecatedLabel fontSize="24px">
               {currency0?.symbol} / {currency1?.symbol}
@@ -92,14 +95,29 @@ export const PositionPreview = ({
       <AutoColumn gap="8px">
         <ThemedText.DeprecatedBody color='white'>Pool Current Price</ThemedText.DeprecatedBody>
         <LightCard>
-          <RowBetween>
-            <ThemedText.DeprecatedMain fontSize="14px">
-              <Trans>1 {baseCurrency.symbol} = {`${position.pool.priceOf(position.pool.token0).toSignificant(5)} `}{quoteCurrency.symbol}</Trans>
-            </ThemedText.DeprecatedMain>
-            <ThemedText.DeprecatedMain fontSize="14px">
-              <Trans>1 {quoteCurrency.symbol} = {`${position.pool.priceOf(position.pool.token1).toSignificant(5)} `}{baseCurrency.symbol}</Trans>
-            </ThemedText.DeprecatedMain>
-          </RowBetween>
+          {
+            isMobile ? (
+              <AutoColumn gap='12px' justify='center'>
+                <ThemedText.DeprecatedMain fontSize="14px">
+                  <Trans>1 {baseCurrency.symbol} = {`${position.pool.priceOf(position.pool.token0).toSignificant(5)} `}{quoteCurrency.symbol}</Trans>
+                </ThemedText.DeprecatedMain>
+                <RowBetween height={1} backgroundColor='#8E8E8E' />
+                <ThemedText.DeprecatedMain fontSize="14px">
+                  <Trans>1 {quoteCurrency.symbol} = {`${position.pool.priceOf(position.pool.token1).toSignificant(5)} `}{baseCurrency.symbol}</Trans>
+                </ThemedText.DeprecatedMain>
+              </AutoColumn>
+            ) : (
+              <RowBetween>
+                <ThemedText.DeprecatedMain fontSize="14px">
+                  <Trans>1 {baseCurrency.symbol} = {`${position.pool.priceOf(position.pool.token0).toSignificant(5)} `}{quoteCurrency.symbol}</Trans>
+                </ThemedText.DeprecatedMain>
+                <ThemedText.DeprecatedMain fontSize="14px">
+                  <Trans>1 {quoteCurrency.symbol} = {`${position.pool.priceOf(position.pool.token1).toSignificant(5)} `}{baseCurrency.symbol}</Trans>
+                </ThemedText.DeprecatedMain>
+              </RowBetween>
+            )
+          }
+
         </LightCard>
       </AutoColumn>
 
@@ -142,19 +160,19 @@ export const PositionPreview = ({
       <AutoColumn gap="8px">
         <ThemedText.DeprecatedBody color='white'>Amount</ThemedText.DeprecatedBody>
         <LightCard>
-            <Row gap='10px'>
-              <ThemedText.DeprecatedLabel>{position.amount0.toSignificant(4)}</ThemedText.DeprecatedLabel>
-              <Row gap='4px' width='auto'>
-                <CurrencyLogo currency={currency0} />
-                <ThemedText.DeprecatedLabel>{currency0?.symbol}</ThemedText.DeprecatedLabel>
-              </Row>
-              <div>+</div>
-              <ThemedText.DeprecatedLabel>{position.amount1.toSignificant(4)}</ThemedText.DeprecatedLabel>
-              <Row gap='4px' width='auto'>
-                <CurrencyLogo currency={currency1} />
-                <ThemedText.DeprecatedLabel>{currency1?.symbol}</ThemedText.DeprecatedLabel>
-              </Row>
+          <Row gap='10px'>
+            <ThemedText.DeprecatedLabel>{position.amount0.toSignificant(4)}</ThemedText.DeprecatedLabel>
+            <Row gap='4px' width='auto'>
+              <CurrencyLogo currency={currency0} />
+              <ThemedText.DeprecatedLabel>{currency0?.symbol}</ThemedText.DeprecatedLabel>
             </Row>
+            <div>+</div>
+            <ThemedText.DeprecatedLabel>{position.amount1.toSignificant(4)}</ThemedText.DeprecatedLabel>
+            <Row gap='4px' width='auto'>
+              <CurrencyLogo currency={currency1} />
+              <ThemedText.DeprecatedLabel>{currency1?.symbol}</ThemedText.DeprecatedLabel>
+            </Row>
+          </Row>
         </LightCard>
       </AutoColumn>
 

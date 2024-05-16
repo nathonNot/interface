@@ -16,7 +16,7 @@ import { AutoColumn } from 'components/Column'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import Loader from 'components/Icons/LoadingSpinner'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
-import { AutoRow, RowBetween, RowFixed } from 'components/Row'
+import Row, { AutoRow, RowBetween, RowFixed } from 'components/Row'
 import { Dots } from 'components/swap/styleds'
 import Toggle from 'components/Toggle'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
@@ -55,6 +55,8 @@ import { LoadingRows } from './styleds'
 import BackBtn from 'components/BackBtn'
 import HoverInlineText from 'components/HoverInlineText'
 import ToggleButton from 'components/ToggleButton'
+import { useIsMobile } from 'nft/hooks'
+import DoubleCurrencyName from 'components/DoubleCurrencyName'
 
 const getTokenLink = (chainId: SupportedChainId, address: string) => {
   if (isGqlSupportedChain(chainId)) {
@@ -180,15 +182,15 @@ const NFTImage = styled.img`
   z-index: 1;
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.div<{ isMobile?: boolean }>`
   border-radius: 16px;
-  padding: 24px;
+  padding: ${({ isMobile }) => `${isMobile ? 16 : 24}px`};
   background: ${({ theme }) => theme.main};
   flex: 1;
 `
 
-const DetailCard = styled(Card)`
-  padding: 12px 16px;
+const DetailCard = styled(Card) <{ isMobile?: boolean }>`
+  padding: ${({ isMobile }) => isMobile ? '12px' : '12px 16px'};
   border-radius: 12px;
   background: #2D2A61;
 
@@ -210,6 +212,14 @@ const InputDesc = styled(ThemedText.DeprecatedSmall)`
   color: #8E8E8E;
   font-size: 14px !important;
   font-weight: 400;
+  white-space: nowrap;
+`
+
+const PriceBox = styled(ThemedText.DeprecatedMediumHeader)`
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 function CurrentPriceCard({
@@ -408,6 +418,7 @@ function PositionPageContent() {
   const { tokenId: tokenIdFromUrl } = useParams<{ tokenId?: string }>()
   const { chainId, account, provider } = useWeb3React()
   const theme = useTheme()
+  const isMobile = useIsMobile();
 
   const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
   const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
@@ -649,23 +660,321 @@ function PositionPageContent() {
     return <PositionPageUnsupportedContent />
   }
 
-  return loading || poolState === PoolState.LOADING || !feeAmount ? (
-    <LoadingRows>
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-    </LoadingRows>
-  ) : (
-    <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression>
+  if (loading || poolState === PoolState.LOADING || !feeAmount) {
+    return (
+      <LoadingRows>
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+      </LoadingRows>
+    )
+  }
+
+  if (isMobile) {
+    return (
+      <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression >
+        <>
+          <PageWrapper>
+            <TransactionConfirmationModal
+              isOpen={showConfirm}
+              onDismiss={() => setShowConfirm(false)}
+              attemptingTxn={collecting}
+              hash={collectMigrationHash ?? ''}
+              content={() => (
+                <ConfirmationModalContent
+                  title={<Trans>Claim fees</Trans>}
+                  onDismiss={() => setShowConfirm(false)}
+                  topContent={modalHeader}
+                />
+              )}
+              pendingText={<Trans>Collecting fees</Trans>}
+            />
+            <AutoColumn gap='16px'>
+              <BackBtn
+                text='Back'
+                to="/pools"
+              />
+              <ContentBox isMobile={isMobile}>
+                <ResponsiveRow>
+                  <AutoColumn gap='12px'>
+                    <Row gap='12px'>
+                      <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={32} margin={true} diff />
+                      <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} size={18} />
+                    </Row>
+                    <BadgeText>
+                      <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans> Fee Tier
+                    </BadgeText>
+                  </AutoColumn>
+                  {ownsNFT && (
+                    <ActionButtonResponsiveRow gap='12px'>
+                      {currency0 && currency1 && feeAmount && tokenId ? (
+                        <Button
+                          type='primary'
+                          as={Link}
+                          to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
+                          width="135px"
+                        >
+                          <Trans>Add </Trans>
+                        </Button>
+                      ) : null}
+                      {tokenId && !removed ? (
+                        <Button
+                          as={Link}
+                          to={`/remove/${tokenId}`}
+                          width="135px"
+                        >
+                          <Trans>Remove</Trans>
+                        </Button>
+                      ) : null}
+                    </ActionButtonResponsiveRow>
+                  )}
+                </ResponsiveRow>
+              </ContentBox>
+              <ContentBox isMobile={isMobile}>
+                <AutoColumn gap="16px">
+                  <RowBetween>
+                    <Label>
+                      <Trans>Price range</Trans>
+                    </Label>
+                    <RowFixed>
+                      {
+                        currencyQuote && (
+                          <ToggleButton
+                            text='View Price In'
+                            onClick={() => setManuallyInverted(!manuallyInverted)}
+                            symbol={currencyQuote.symbol!}
+                          />
+                        )
+                      }
+                    </RowFixed>
+                  </RowBetween>
+
+                  <RowBetween gap='4px'>
+                    <RangeCard padding="12px" width="100%">
+                      <AutoColumn gap="sm" justify="center">
+                        <InputTitle>
+                          <Trans>Low Price</Trans>
+                        </InputTitle>
+                        <PriceBox>
+                          {formatTickPrice({
+                            price: priceLower,
+                            atLimit: tickAtLimit,
+                            direction: Bound.LOWER,
+                            numberType: NumberType.TokenTx,
+                          })}
+                        </PriceBox>
+                        <InputDesc>
+                          <Trans>
+                            {currencyQuote?.symbol} per {currencyBase?.symbol}
+                          </Trans>
+                        </InputDesc>
+                      </AutoColumn>
+                    </RangeCard>
+                    <DoubleArrow>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                        <g id="Swap">
+                          <path id="Stroke 1" d="M17.5406 5.03429L3.92285 5.03429" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Stroke 3" d="M13.4448 0.956505L17.5415 5.03428L13.4448 9.11206" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Stroke 5" d="M1.20947 14.9625L14.8273 14.9625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Stroke 7" d="M5.30565 19.0403L1.20898 14.9625L5.30565 10.8847" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                      </svg>
+                    </DoubleArrow>
+                    <RangeCard padding="12px" width="100%">
+                      <AutoColumn gap="sm" justify="center">
+                        <InputTitle>
+                          <Trans>High Price</Trans>
+                        </InputTitle>
+                        <PriceBox>
+                          {formatTickPrice({
+                            price: priceUpper,
+                            atLimit: tickAtLimit,
+                            direction: Bound.UPPER,
+                            numberType: NumberType.TokenTx,
+                          })}
+                        </PriceBox>
+                        <InputDesc>
+                          <Trans>
+                            {currencyQuote?.symbol} per {currencyBase?.symbol}
+                          </Trans>
+                        </InputDesc>
+                      </AutoColumn>
+                    </RangeCard>
+                  </RowBetween>
+                  <RowBetween style={{ borderBottom: '1px solid #312E63' }}></RowBetween>
+                  <CurrentPriceCard
+                    inverted={inverted}
+                    pool={pool}
+                    currencyQuote={currencyQuote}
+                    currencyBase={currencyBase}
+                  />
+                </AutoColumn>
+              </ContentBox>
+              <ContentBox isMobile={isMobile}>
+                <AutoColumn gap="16px" style={{ width: '100%' }}>
+                  <AutoColumn gap="4px">
+                    <Label>
+                      <Trans>Liquidity</Trans>
+                    </Label>
+                    {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100)) ? (
+                      <ThemedText.DeprecatedLargeHeader fontSize="28px" fontWeight={700} color={theme.white}>
+                        <Trans>${fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })}</Trans>
+                      </ThemedText.DeprecatedLargeHeader>
+                    ) : (
+                      <ThemedText.DeprecatedLargeHeader fontSize="28px" fontWeight={700} color={theme.white}>
+                        <Trans>$-</Trans>
+                      </ThemedText.DeprecatedLargeHeader>
+                    )}
+                  </AutoColumn>
+                  <DetailCard isMobile={isMobile}>
+                    <AutoColumn gap={`12px`}>
+                      <RowBetween>
+                        <LinkedCurrency chainId={chainId} currency={currencyQuote} />
+                        <RowFixed>
+                          <ThemedText.DeprecatedMain fontSize={18} color='#f4f4f4'>
+                            {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
+                          </ThemedText.DeprecatedMain>
+                          {/* {typeof ratio === 'number' && !removed ? (
+                            <Badge style={{ marginLeft: '10px' }}>
+                              <ThemedText.DeprecatedMain color='#f4f4f4' fontSize={18}>
+                                <Trans>{inverted ? ratio : 100 - ratio}%</Trans>
+                              </ThemedText.DeprecatedMain>
+                            </Badge>
+                          ) : null} */}
+                        </RowFixed>
+                      </RowBetween>
+                      <RowBetween>
+                        <LinkedCurrency chainId={chainId} currency={currencyBase} />
+                        <RowFixed>
+                          <ThemedText.DeprecatedMain fontSize={18} color='#f4f4f4'>
+                            {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
+                          </ThemedText.DeprecatedMain>
+                          {/* {typeof ratio === 'number' && !removed ? (
+                            <Badge style={{ marginLeft: '10px' }}>
+                              <ThemedText.DeprecatedMain color={theme.textSecondary} fontSize={11}>
+                                <Trans>{inverted ? 100 - ratio : ratio}%</Trans>
+                              </ThemedText.DeprecatedMain>
+                            </Badge>
+                          ) : null} */}
+                        </RowFixed>
+                      </RowBetween>
+                    </AutoColumn>
+                  </DetailCard>
+                </AutoColumn>
+              </ContentBox>
+              <ContentBox isMobile={isMobile}>
+                <AutoColumn gap="16px" style={{ width: '100%' }}>
+                  <AutoColumn gap="md">
+                    <RowBetween style={{ alignItems: 'flex-start' }}>
+                      <AutoColumn gap="4px">
+                        <Label>
+                          <Trans>Unclaimed fees</Trans>
+                        </Label>
+                        {fiatValueOfFees?.greaterThan(new Fraction(1, 100)) ? (
+                          <ThemedText.DeprecatedLargeHeader
+                            fontSize="28px"
+                            fontWeight={700}
+                            color={theme.white}
+                          >
+                            <Trans>${fiatValueOfFees.toFixed(2, { groupSeparator: ',' })}</Trans>
+                          </ThemedText.DeprecatedLargeHeader>
+                        ) : (
+                          <ThemedText.DeprecatedLargeHeader
+                            fontSize="28px"
+                            fontWeight={700}
+                            color={theme.white}
+                          >
+                            <Trans>$-</Trans>
+                          </ThemedText.DeprecatedLargeHeader>
+                        )}
+                      </AutoColumn>
+                      {ownsNFT &&
+                        (feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash) ? (
+                        <ResponsiveButtonConfirmed
+                          disabled={collecting || !!collectMigrationHash}
+                          confirmed={!!collectMigrationHash && !isCollectPending}
+                          width="fit-content"
+                          style={{ borderRadius: '12px' }}
+                          padding="4px 8px"
+                          onClick={() => setShowConfirm(true)}
+                        >
+                          {!!collectMigrationHash && !isCollectPending ? (
+                            <ThemedText.DeprecatedMain color={theme.textPrimary}>
+                              <Trans> Collected</Trans>
+                            </ThemedText.DeprecatedMain>
+                          ) : isCollectPending || collecting ? (
+                            <ThemedText.DeprecatedMain color={theme.textPrimary}>
+                              {' '}
+                              <Dots>
+                                <Trans>Collecting</Trans>
+                              </Dots>
+                            </ThemedText.DeprecatedMain>
+                          ) : (
+                            <>
+                              <ThemedText.DeprecatedMain color={theme.white}>
+                                <Trans>Collect fees</Trans>
+                              </ThemedText.DeprecatedMain>
+                            </>
+                          )}
+                        </ResponsiveButtonConfirmed>
+                      ) : null}
+                    </RowBetween>
+                  </AutoColumn>
+                  <DetailCard isMobile={isMobile}>
+                    <AutoColumn gap={`12px`}>
+                      <RowBetween>
+                        <RowFixed>
+                          <CurrencyLogo
+                            currency={feeValueUpper?.currency}
+                            size="32px"
+                            style={{ marginRight: 8 }}
+                          />
+                          <ThemedText.UtilityBadge fontSize={18} color='#f4f4f4'>{feeValueUpper?.currency?.symbol}</ThemedText.UtilityBadge>
+                        </RowFixed>
+                        <RowFixed>
+                          <ThemedText.DeprecatedMain>
+                            {feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4) : '-'}
+                          </ThemedText.DeprecatedMain>
+                        </RowFixed>
+                      </RowBetween>
+                      <RowBetween>
+                        <RowFixed>
+                          <CurrencyLogo
+                            currency={feeValueLower?.currency}
+                            size="32px"
+                            style={{ marginRight: 8 }}
+                          />
+                          <ThemedText.UtilityBadge fontSize={18} color='#f4f4f4'>{feeValueLower?.currency?.symbol}</ThemedText.UtilityBadge>
+                        </RowFixed>
+                        <RowFixed>
+                          <ThemedText.DeprecatedMain>
+                            {feeValueLower ? formatCurrencyAmount(feeValueLower, 4) : '-'}
+                          </ThemedText.DeprecatedMain>
+                        </RowFixed>
+                      </RowBetween>
+                    </AutoColumn>
+                  </DetailCard>
+                </AutoColumn>
+              </ContentBox>
+            </AutoColumn>
+          </PageWrapper>
+          <SwitchLocaleLink />
+        </>
+      </Trace >
+    )
+  }
+
+  return (
+    <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression >
       <>
         <PageWrapper>
           <TransactionConfirmationModal
@@ -682,7 +991,7 @@ function PositionPageContent() {
             )}
             pendingText={<Trans>Collecting fees</Trans>}
           />
-          <AutoColumn gap="32px">
+          <AutoColumn gap={`32px`}>
             <BackBtn
               text='Back'
               to="/pools"
@@ -690,25 +999,23 @@ function PositionPageContent() {
             <ContentBox>
               <ResponsiveRow>
                 <AutoColumn gap='12px'>
-                  <AutoRow>
-                    <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={28} margin={true} />
-                    <ThemedText.DeprecatedLabel fontSize="24px" mr="10px">
-                      &nbsp;{currencyQuote?.symbol}&nbsp;/&nbsp;{currencyBase?.symbol}
-                    </ThemedText.DeprecatedLabel>
-                  </AutoRow>
+                  <Row gap='12px'>
+                    <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={28} margin={true} diff />
+                    <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} />
+                  </Row>
                   <BadgeText>
                     <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans> Fee Tier
                   </BadgeText>
                 </AutoColumn>
                 {ownsNFT && (
-                  <ActionButtonResponsiveRow>
+                  <ActionButtonResponsiveRow gap='16px'>
                     {currency0 && currency1 && feeAmount && tokenId ? (
                       <Button
                         type='primary'
                         as={Link}
                         to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                         width="135px"
-                        style={{ marginRight: '16px' }}
+                        style={{ width: "135px" }}
                       >
                         <Trans>Add </Trans>
                       </Button>
@@ -718,6 +1025,7 @@ function PositionPageContent() {
                         as={Link}
                         to={`/remove/${tokenId}`}
                         width="135px"
+                        style={{ width: "135px" }}
                       >
                         <Trans>Remove</Trans>
                       </Button>
@@ -751,38 +1059,45 @@ function PositionPageContent() {
                       <InputTitle>
                         <Trans>Low Price</Trans>
                       </InputTitle>
-                      <ThemedText.DeprecatedMediumHeader textAlign="center">
+                      <PriceBox>
                         {formatTickPrice({
                           price: priceLower,
                           atLimit: tickAtLimit,
                           direction: Bound.LOWER,
                           numberType: NumberType.TokenTx,
                         })}
-                      </ThemedText.DeprecatedMediumHeader>
+                      </PriceBox>
                       <InputDesc>
-                        {' '}
                         <Trans>
                           {currencyQuote?.symbol} per {currencyBase?.symbol}
                         </Trans>
                       </InputDesc>
                     </AutoColumn>
                   </RangeCard>
-                  <DoubleArrow>⟷</DoubleArrow>
+                  <DoubleArrow>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" viewBox="0 0 19 20" fill="none">
+                      <g id="Swap">
+                        <path id="Stroke 1" d="M17.5406 5.03429L3.92285 5.03429" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Stroke 3" d="M13.4448 0.956505L17.5415 5.03428L13.4448 9.11206" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Stroke 5" d="M1.20947 14.9625L14.8273 14.9625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Stroke 7" d="M5.30565 19.0403L1.20898 14.9625L5.30565 10.8847" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                    </svg>
+                  </DoubleArrow>
                   <RangeCard padding="12px" width="100%">
                     <AutoColumn gap="sm" justify="center">
                       <InputTitle>
                         <Trans>High Price</Trans>
                       </InputTitle>
-                      <ThemedText.DeprecatedMediumHeader textAlign="center">
+                      <PriceBox>
                         {formatTickPrice({
                           price: priceUpper,
                           atLimit: tickAtLimit,
                           direction: Bound.UPPER,
                           numberType: NumberType.TokenTx,
                         })}
-                      </ThemedText.DeprecatedMediumHeader>
+                      </PriceBox>
                       <InputDesc>
-                        {' '}
                         <Trans>
                           {currencyQuote?.symbol} per {currencyBase?.symbol}
                         </Trans>
@@ -951,6 +1266,7 @@ function PositionPageContent() {
         </PageWrapper>
         <SwitchLocaleLink />
       </>
-    </Trace>
+    </Trace >
   )
+
 }

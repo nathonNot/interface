@@ -51,6 +51,7 @@ import {
   WETH_POLYGON_MUMBAI,
   WRAPPED_NATIVE_CURRENCY,
   USDT_BITLAYERTESTNET,
+  USDC_BASE,
 } from './tokens'
 
 type ChainTokenList = {
@@ -175,6 +176,7 @@ export const COMMON_BASES: ChainCurrencyList = {
     WBTC_OPTIMISM,
   ],
   [SupportedChainId.OPTIMISM_GOERLI]: [nativeOnChain(SupportedChainId.OPTIMISM_GOERLI)],
+  [SupportedChainId.BASE]: [nativeOnChain(SupportedChainId.BASE), WRAPPED_NATIVE_CURRENCY[SupportedChainId.BASE] as Token, USDC_BASE],
   [SupportedChainId.POLYGON]: [
     nativeOnChain(SupportedChainId.POLYGON),
     WETH_POLYGON,

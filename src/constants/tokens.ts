@@ -74,6 +74,15 @@ export const PORTAL_USDC_CELO = new Token(
   'USDCet',
   'USDC (Portal from Ethereum)'
 )
+
+export const USDC_BASE = new Token(
+  SupportedChainId.BASE,
+  '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+  6,
+  'USD Base Coin',
+  'USDbC'
+)
+
 export const AMPL = new Token(
   SupportedChainId.MAINNET,
   '0xD46bA6D942050d489DBd938a2C909A5d5039A161',

@@ -74,11 +74,13 @@ const MobileBottomBar = styled.div`
   right: 0;
   left: 0;
   width: 100vw;
-  justify-content: space-between;
-  padding: 4px 8px;
-  height: ${({ theme }) => theme.mobileBottomBarHeight}px;
-  background: ${({ theme }) => theme.backgroundSurface};
-  border-top: 1px solid ${({ theme }) => theme.backgroundOutline};
+  justify-content: space-around;
+  // padding: 4px 8px;
+  // height: ${({ theme }) => theme.mobileBottomBarHeight}px;
+  background: #18163B;
+  // border-top: 1px solid ${({ theme }) => theme.backgroundOutline};
+
+  padding: 8px 0;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoint.md}px) {
     display: none;

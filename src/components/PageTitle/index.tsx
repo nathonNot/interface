@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { fontSize } from "utils/userAgent";
+
 
 type CenterProps = 'left' | 'center' | 'right';
 
@@ -8,7 +10,7 @@ const Container = styled.div<{ center?: CenterProps }>`
 `
 
 const TitleContent = styled.div`
-  font-size: 32px;
+  font-size: ${fontSize * 2}px;
   font-weight: 600;
   line-height: 48px;
   color: ${({ theme }) => theme.white};
@@ -16,7 +18,7 @@ const TitleContent = styled.div`
 
 const DescContent = styled.div`
   margin-top: 4px;
-  font-size: 16px;
+  // font-size: 16px;
   font-weight: 400;
   line-height: 24px;
   color: ${({ theme }) => theme.white};

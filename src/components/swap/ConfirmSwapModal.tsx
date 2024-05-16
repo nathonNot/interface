@@ -13,6 +13,7 @@ import TransactionConfirmationModal, {
 } from '../TransactionConfirmationModal'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
+import { useIsMobile } from 'nft/hooks'
 
 export default function ConfirmSwapModal({
   trade,
@@ -106,6 +107,8 @@ export default function ConfirmSwapModal({
     </Trans>
   )
 
+  const isMobile = useIsMobile();
+
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (
@@ -116,9 +119,10 @@ export default function ConfirmSwapModal({
           onDismiss={onModalDismiss}
           topContent={modalHeader}
           bottomContent={modalBottom}
+          isMobile={isMobile}
         />
       ),
-    [onModalDismiss, modalBottom, modalHeader, swapErrorMessage]
+    [onModalDismiss, modalBottom, modalHeader, swapErrorMessage, isMobile]
   )
 
   return (

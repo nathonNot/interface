@@ -30,7 +30,7 @@ import { addressesAreEquivalent } from 'utils/addressesAreEquivalent'
 import Button, { ButtonError, ButtonLight, ButtonPrimary, ButtonText } from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import CurrencyInputPanel from './CurrencyInputPanel'
 import FeeSelector from '../../components/FeeSelector'
 import HoverInlineText from '../../components/HoverInlineText'
 import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput'
@@ -87,6 +87,8 @@ import { resetMintState as resetMintV3State } from 'state/mint/v3/actions'
 import PageTitle from 'components/PageTitle'
 import BackBtn from 'components/BackBtn'
 import ToggleButton from 'components/ToggleButton'
+import { useIsMobile } from 'nft/hooks'
+import { Column } from 'nft/components/Flex'
 
 const TopContent = styled.div`
   position: relative;
@@ -108,11 +110,13 @@ const PageWrapper = styled(BodyWrapper) <{ wide: boolean }>`
 
   border: none;
   border-radius: 24px;
-  background: ${({ theme }) => theme.main}
+  background: ${({ theme }) => theme.main};
+  margin-top: 0;
+
 `
 
-const ContentBox = styled.div`
-  padding: 24px;
+const ContentBox = styled.div<{ isMobile?: boolean }>`
+  padding: ${({ isMobile }) => `24px ${isMobile ? 16 : 24}px`};
 `
 
 const PairBox = styled(ContentBox)`
@@ -154,6 +158,7 @@ function AddLiquidity() {
 
   const dispatch = useAppDispatch()
   const location = useLocation()
+  const isMobile = useIsMobile();
 
   // detect if back should redirect to v3 or v2 pool page
   const poolLink = location.pathname.includes('add/v2')
@@ -537,9 +542,9 @@ function AddLiquidity() {
         properties={{ received_swap_quote: false }}
         element={InterfaceElementName.CONNECT_WALLET_BUTTON}
       >
-        <ButtonLight onClick={toggleWalletDrawer} $borderRadius="12px" padding="12px">
+        <ButtonPrimary onClick={toggleWalletDrawer} $borderRadius="12px" padding="12px">
           <Trans>Connect Wallet</Trans>
-        </ButtonLight>
+        </ButtonPrimary>
       </TraceEvent>
     ) : (
       <AutoColumn gap="md">
@@ -581,15 +586,32 @@ function AddLiquidity() {
               )}
             </RowBetween>
           )}
+        {/* {
+          (
+            !isValid ||
+            (!argentWalletContract && approvalA !== ApprovalState.APPROVED && !depositADisabled) ||
+            (!argentWalletContract && approvalB !== ApprovalState.APPROVED && !depositBDisabled)
+
+          ) ? (<></>) : (
+            <ButtonError
+              onClick={() => {
+                expertMode ? onAdd() : setShowConfirm(true)
+              }}
+              error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+            >
+              <Text fontWeight={500}>{errorMessage ? errorMessage : <Trans>Preview</Trans>}</Text>
+            </ButtonError>
+          )
+        } */}
         <ButtonError
           onClick={() => {
             expertMode ? onAdd() : setShowConfirm(true)
           }}
-          disabled={
+          disabled={(
             !isValid ||
             (!argentWalletContract && approvalA !== ApprovalState.APPROVED && !depositADisabled) ||
             (!argentWalletContract && approvalB !== ApprovalState.APPROVED && !depositBDisabled)
-          }
+          )}
           error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
         >
           <Text fontWeight={500}>{errorMessage ? errorMessage : <Trans>Preview</Trans>}</Text>
@@ -619,31 +641,721 @@ function AddLiquidity() {
     addressesAreEquivalent(owner, account) || addressesAreEquivalent(existingPositionDetails?.operator, account)
   const showOwnershipWarning = Boolean(hasExistingPosition && account && !ownsNFT)
 
+  if (isMobile) {
+    return (
+      <>
+        <ScrollablePage>
+          <AutoColumn gap={`16px`}>
+            <BackBtn
+              text='Back'
+              to={poolLink}
+              onClick={() => {
+                // not 100% sure both of these are needed
+                dispatch(resetMintState())
+                dispatch(resetMintV3State())
+              }}
+            />
+            <PageTitle
+              title='Add Pools'
+              desc='Search and find the best asset'
+            />
+            <PageWrapper wide={!hasExistingPosition}>
+              <Wrapper>
+                <ResponsiveTwoColumns wide={!hasExistingPosition}>
+                  <AutoColumn>
+                    {!hasExistingPosition && (
+                      <PairBox isMobile={isMobile}>
+                        <AutoColumn gap="16px">
+                          <RowBetween paddingBottom="20px">
+                            <Label>
+                              <Trans>Select Pair</Trans>
+                            </Label>
+                          </RowBetween>
+                          <RowBetween gap='19px'>
+                            <CurrencyDropdown
+                              value={formattedAmounts[Field.CURRENCY_A]}
+                              onUserInput={onFieldAInput}
+                              hideInput={true}
+                              onMax={() => {
+                                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                              }}
+                              onCurrencySelect={handleCurrencyASelect}
+                              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                              currency={currencies[Field.CURRENCY_A] ?? null}
+                              id="add-liquidity-input-tokena"
+                              showCommonBases
+                            />
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                              <g id="Group">
+                                <path id="Vector" d="M11 20C11 20.3978 11.158 20.7794 11.4393 21.0607C11.7206 21.342 12.1022 21.5 12.5 21.5C12.8978 21.5 13.2794 21.342 13.5607 21.0607C13.842 20.7794 14 20.3978 14 20V13.5H20.5C20.8978 13.5 21.2794 13.342 21.5607 13.0607C21.842 12.7794 22 12.3978 22 12C22 11.6022 21.842 11.2206 21.5607 10.9393C21.2794 10.658 20.8978 10.5 20.5 10.5H14V4C14 3.60218 13.842 3.22064 13.5607 2.93934C13.2794 2.65804 12.8978 2.5 12.5 2.5C12.1022 2.5 11.7206 2.65804 11.4393 2.93934C11.158 3.22064 11 3.60218 11 4V10.5H4.5C4.10218 10.5 3.72064 10.658 3.43934 10.9393C3.15804 11.2206 3 11.6022 3 12C3 12.3978 3.15804 12.7794 3.43934 13.0607C3.72064 13.342 4.10218 13.5 4.5 13.5H11V20Z" fill="#E4E4E5" />
+                              </g>
+                            </svg>
+
+                            <CurrencyDropdown
+                              value={formattedAmounts[Field.CURRENCY_B]}
+                              hideInput={true}
+                              onUserInput={onFieldBInput}
+                              onCurrencySelect={handleCurrencyBSelect}
+                              onMax={() => {
+                                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                              }}
+                              showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                              currency={currencies[Field.CURRENCY_B] ?? null}
+                              id="add-liquidity-input-tokenb"
+                              showCommonBases
+                            />
+                          </RowBetween>
+
+                          <FeeSelector
+                            disabled={!quoteCurrency || !baseCurrency}
+                            feeAmount={feeAmount}
+                            handleFeePoolSelect={handleFeePoolSelect}
+                            currencyA={baseCurrency ?? undefined}
+                            currencyB={quoteCurrency ?? undefined}
+                          />
+                        </AutoColumn>{' '}
+                      </PairBox>
+                    )}
+
+                    {hasExistingPosition && existingPosition && (
+                      <PairBox isMobile={isMobile}>
+                        <PositionPreview
+                          position={existingPosition}
+                          title={<Trans>Selected Range</Trans>}
+                          inRange={!outOfRange}
+                          ticksAtLimit={ticksAtLimit}
+                        />
+                      </PairBox>
+                    )}
+                  </AutoColumn>
+                  <ContentBox isMobile={isMobile}>
+                    <DynamicSection
+                      disabled={tickLower === undefined || tickUpper === undefined || invalidPool || invalidRange}
+                    >
+                      <AutoColumn gap="24px">
+                        <Label>
+                          {hasExistingPosition ? <Trans>Add more liquidity</Trans> : <Trans>Deposit Amounts</Trans>}
+                        </Label>
+
+                        <CurrencyInputPanel
+                          value={formattedAmounts[Field.CURRENCY_A]}
+                          onUserInput={onFieldAInput}
+                          onMax={() => {
+                            onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                          }}
+                          showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                          currency={currencies[Field.CURRENCY_A] ?? null}
+                          id="add-liquidity-input-tokena"
+                          fiatValue={currencyAFiat}
+                          showCommonBases
+                          locked={depositADisabled}
+                        />
+
+                        <CurrencyInputPanel
+                          value={formattedAmounts[Field.CURRENCY_B]}
+                          onUserInput={onFieldBInput}
+                          onMax={() => {
+                            onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                          }}
+                          showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                          fiatValue={currencyBFiat}
+                          currency={currencies[Field.CURRENCY_B] ?? null}
+                          id="add-liquidity-input-tokenb"
+                          showCommonBases
+                          locked={depositBDisabled}
+                        />
+                      </AutoColumn>
+                    </DynamicSection>
+                  </ContentBox>
+
+                  <>
+                    <RightContainer gap="16px" isMobile={isMobile}>
+                      <DynamicSection gap="16px" disabled={!feeAmount || invalidPool}>
+                        {!noLiquidity ? (
+                          <>
+                            <AutoColumn gap='12px'>
+                              <Label>
+                                <Trans>Set Price Range</Trans>
+                              </Label>
+                              {
+                                quoteCurrency && (
+                                  <ToggleButton
+                                    text='Set Price In'
+                                    onClick={() => {
+                                      if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                                        onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
+                                        onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                                        onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
+                                      }
+                                      navigate(
+                                        `/add/${currencyIdB as string}/${currencyIdA as string}${feeAmount ? '/' + feeAmount : ''}`
+                                      )
+                                    }}
+                                    symbol={quoteCurrency.symbol!}
+                                  />
+                                )}
+                            </AutoColumn>
+
+                            {price && baseCurrency && quoteCurrency && !noLiquidity && (
+                              <AutoRow gap="4px" justify="center" fontWeight={500}>
+                                <Trans>
+                                  {
+                                    `Current Price: 1 ${baseCurrency.symbol} = ${<HoverInlineText
+                                      maxCharacters={20}
+                                      text={invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
+                                    />
+                                    } ${quoteCurrency?.symbol}`
+                                  }
+                                </Trans>
+                              </AutoRow>
+                            )}
+
+                            <LiquidityChartRangeInput
+                              currencyA={baseCurrency ?? undefined}
+                              currencyB={quoteCurrency ?? undefined}
+                              feeAmount={feeAmount}
+                              ticksAtLimit={ticksAtLimit}
+                              price={
+                                price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
+                              }
+                              priceLower={priceLower}
+                              priceUpper={priceUpper}
+                              onLeftRangeInput={onLeftRangeInput}
+                              onRightRangeInput={onRightRangeInput}
+                              interactive={!hasExistingPosition}
+                            />
+                          </>
+                        ) : (
+                          <AutoColumn gap="md">
+                            <RowBetween>
+                              <Label>
+                                <Trans>Set Starting Price</Trans>
+                              </Label>
+                            </RowBetween>
+                            {noLiquidity && (
+                              <BlueCard
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  padding: '1rem 1rem',
+                                }}
+                              >
+                                <ThemedText.DeprecatedBody
+                                  fontSize={14}
+                                  style={{ fontWeight: 500 }}
+                                  textAlign="left"
+                                  color={theme.accentAction}
+                                >
+                                  <Trans>
+                                    This pool must be initialized before you can add liquidity. To initialize, select a
+                                    starting price for the pool. Then, enter your liquidity price range and deposit
+                                    amount. Gas fees will be higher than usual due to the initialization transaction.
+                                  </Trans>
+                                </ThemedText.DeprecatedBody>
+                              </BlueCard>
+                            )}
+                            <OutlineCard padding="12px">
+                              <StyledInput
+                                className="start-price-input"
+                                value={startPriceTypedValue}
+                                onUserInput={onStartPriceInput}
+                              />
+                            </OutlineCard>
+                            <RowBetween
+                              style={{ backgroundColor: theme.deprecated_bg1, padding: '12px', borderRadius: '12px' }}
+                            >
+                              <ThemedText.DeprecatedMain>
+                                <Trans>Current {baseCurrency?.symbol} Price:</Trans>
+                              </ThemedText.DeprecatedMain>
+                              <ThemedText.DeprecatedMain>
+                                {price ? (
+                                  <ThemedText.DeprecatedMain>
+                                    <RowFixed>
+                                      <HoverInlineText
+                                        maxCharacters={20}
+                                        text={invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)}
+                                      />{' '}
+                                      <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
+                                    </RowFixed>
+                                  </ThemedText.DeprecatedMain>
+                                ) : (
+                                  '-'
+                                )}
+                              </ThemedText.DeprecatedMain>
+                            </RowBetween>
+                          </AutoColumn>
+                        )}
+                      </DynamicSection>
+
+                      <DynamicSection
+                        gap="16px"
+                        disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
+                      >
+                        <StackedContainer>
+                          <StackedItem>
+                            <AutoColumn gap="16px">
+                              {noLiquidity && (
+                                <RowBetween>
+                                  <Label>
+                                    <Trans>Set Price Range</Trans>
+                                  </Label>
+                                </RowBetween>
+                              )}
+                              <RangeSelector
+                                priceLower={priceLower}
+                                priceUpper={priceUpper}
+                                getDecrementLower={getDecrementLower}
+                                getIncrementLower={getIncrementLower}
+                                getDecrementUpper={getDecrementUpper}
+                                getIncrementUpper={getIncrementUpper}
+                                onLeftRangeInput={onLeftRangeInput}
+                                onRightRangeInput={onRightRangeInput}
+                                currencyA={baseCurrency}
+                                currencyB={quoteCurrency}
+                                feeAmount={feeAmount}
+                                ticksAtLimit={ticksAtLimit}
+                              />
+                              {!noLiquidity && <PresetsButtons onSetFullRange={handleSetFullRange} />}
+                            </AutoColumn>
+                          </StackedItem>
+                        </StackedContainer>
+
+                        {outOfRange ? (
+                          <YellowCard padding="8px 12px" $borderRadius="12px">
+                            <RowBetween>
+                              <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                              <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
+                                <Trans>
+                                  Your position will not earn fees or be used in trades until the market price moves into
+                                  your range.
+                                </Trans>
+                              </ThemedText.DeprecatedYellow>
+                            </RowBetween>
+                          </YellowCard>
+                        ) : null}
+
+                        {invalidRange ? (
+                          <YellowCard padding="8px 12px" $borderRadius="12px">
+                            <RowBetween>
+                              <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                              <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
+                                <Trans>Invalid range selected. The min price must be lower than the max price.</Trans>
+                              </ThemedText.DeprecatedYellow>
+                            </RowBetween>
+                          </YellowCard>
+                        ) : null}
+                      </DynamicSection>
+                    </RightContainer>
+                  </>
+
+                </ResponsiveTwoColumns>
+              </Wrapper>
+            </PageWrapper>
+            <Buttons />
+            {showOwnershipWarning && <OwnershipWarning ownerAddress={owner} />}
+            {addIsUnsupported && (
+              <UnsupportedCurrencyFooter
+                show={addIsUnsupported}
+                currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]}
+              />
+            )}
+          </AutoColumn>
+
+
+
+          <TransactionConfirmationModal
+            isOpen={showConfirm}
+            onDismiss={handleDismissConfirmation}
+            attemptingTxn={attemptingTxn}
+            hash={txHash}
+            content={() => (
+              <ConfirmationModalContent
+                title={<Trans>Overview</Trans>}
+                onDismiss={handleDismissConfirmation}
+                isMobile={isMobile}
+                topContent={() => (
+                  <Review
+                    parsedAmounts={parsedAmounts}
+                    position={position}
+                    existingPosition={existingPosition}
+                    priceLower={priceLower}
+                    priceUpper={priceUpper}
+                    outOfRange={outOfRange}
+                    ticksAtLimit={ticksAtLimit}
+                  />
+                )}
+                bottomContent={() => (
+                  <ButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
+                    <Text fontWeight={500} fontSize={20}>
+                      <Trans>Add</Trans>
+                    </Text>
+                  </ButtonPrimary>
+                )}
+              />
+            )}
+            pendingText={pendingText}
+          />
+
+        </ScrollablePage>
+        <SwitchLocaleLink />
+      </>
+    )
+  }
   return (
     <>
       <ScrollablePage>
-        <TopContent>
-          <BackBtn
-            text='Back'
-            to={poolLink}
-            onClick={() => {
-              // not 100% sure both of these are needed
-              dispatch(resetMintState())
-              dispatch(resetMintV3State())
-            }}
-            style={{
-              position: 'absolute',
-              left: '0',
-              top: '50%',
-              transform: 'translateY(-50%)'
-            }}
-          />
-          <PageTitle
-            title='Add Pools'
-            desc='Search and find the best asset'
-            center='center'
-          />
-        </TopContent>
+        <AutoColumn gap={`${isMobile ? 16 : 32}px`}>
+          {
+            isMobile ? (
+              <>
+                <BackBtn
+                  text='Back'
+                  to={poolLink}
+                  onClick={() => {
+                    // not 100% sure both of these are needed
+                    dispatch(resetMintState())
+                    dispatch(resetMintV3State())
+                  }}
+                />
+                <PageTitle
+                  title='Add Pools'
+                  desc='Search and find the best asset'
+                />
+              </>
+            ) : (
+              <TopContent>
+                <BackBtn
+                  text='Back'
+                  to={poolLink}
+                  onClick={() => {
+                    // not 100% sure both of these are needed
+                    dispatch(resetMintState())
+                    dispatch(resetMintV3State())
+                  }}
+                  style={{
+                    position: 'absolute',
+                    left: '0',
+                    top: '50%',
+                    transform: 'translateY(-50%)'
+                  }}
+                />
+                <PageTitle
+                  title='Add Pools'
+                  desc='Search and find the best asset'
+                  center='center'
+                />
+              </TopContent>
+            )
+          }
+          <PageWrapper wide={!hasExistingPosition}>
+            <Wrapper>
+              <ResponsiveTwoColumns wide={!hasExistingPosition}>
+                <AutoColumn>
+                  {!hasExistingPosition && (
+                    <PairBox>
+                      <AutoColumn gap="24px">
+                        <RowBetween paddingBottom="20px">
+                          <Label>
+                            <Trans>Select Pair</Trans>
+                          </Label>
+                        </RowBetween>
+                        <RowBetween gap='19px'>
+                          <CurrencyDropdown
+                            value={formattedAmounts[Field.CURRENCY_A]}
+                            onUserInput={onFieldAInput}
+                            hideInput={true}
+                            onMax={() => {
+                              onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                            }}
+                            onCurrencySelect={handleCurrencyASelect}
+                            showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                            currency={currencies[Field.CURRENCY_A] ?? null}
+                            id="add-liquidity-input-tokena"
+                            showCommonBases
+                          />
+
+                          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                            <g id="Group">
+                              <path id="Vector" d="M11 20C11 20.3978 11.158 20.7794 11.4393 21.0607C11.7206 21.342 12.1022 21.5 12.5 21.5C12.8978 21.5 13.2794 21.342 13.5607 21.0607C13.842 20.7794 14 20.3978 14 20V13.5H20.5C20.8978 13.5 21.2794 13.342 21.5607 13.0607C21.842 12.7794 22 12.3978 22 12C22 11.6022 21.842 11.2206 21.5607 10.9393C21.2794 10.658 20.8978 10.5 20.5 10.5H14V4C14 3.60218 13.842 3.22064 13.5607 2.93934C13.2794 2.65804 12.8978 2.5 12.5 2.5C12.1022 2.5 11.7206 2.65804 11.4393 2.93934C11.158 3.22064 11 3.60218 11 4V10.5H4.5C4.10218 10.5 3.72064 10.658 3.43934 10.9393C3.15804 11.2206 3 11.6022 3 12C3 12.3978 3.15804 12.7794 3.43934 13.0607C3.72064 13.342 4.10218 13.5 4.5 13.5H11V20Z" fill="#E4E4E5" />
+                            </g>
+                          </svg>
+
+                          <CurrencyDropdown
+                            value={formattedAmounts[Field.CURRENCY_B]}
+                            hideInput={true}
+                            onUserInput={onFieldBInput}
+                            onCurrencySelect={handleCurrencyBSelect}
+                            onMax={() => {
+                              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                            }}
+                            showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                            currency={currencies[Field.CURRENCY_B] ?? null}
+                            id="add-liquidity-input-tokenb"
+                            showCommonBases
+                          />
+                        </RowBetween>
+
+                        <FeeSelector
+                          disabled={!quoteCurrency || !baseCurrency}
+                          feeAmount={feeAmount}
+                          handleFeePoolSelect={handleFeePoolSelect}
+                          currencyA={baseCurrency ?? undefined}
+                          currencyB={quoteCurrency ?? undefined}
+                        />
+                      </AutoColumn>{' '}
+                    </PairBox>
+                  )}
+
+                  {hasExistingPosition && existingPosition && (
+                    <PairBox>
+                      <PositionPreview
+                        position={existingPosition}
+                        title={<Trans>Selected Range</Trans>}
+                        inRange={!outOfRange}
+                        ticksAtLimit={ticksAtLimit}
+                      />
+                    </PairBox>
+                  )}
+                </AutoColumn>
+                <ContentBox>
+                  <DynamicSection
+                    disabled={tickLower === undefined || tickUpper === undefined || invalidPool || invalidRange}
+                  >
+                    <AutoColumn gap="24px">
+                      <Label>
+                        {hasExistingPosition ? <Trans>Add more liquidity</Trans> : <Trans>Deposit Amounts</Trans>}
+                      </Label>
+
+                      <CurrencyInputPanel
+                        value={formattedAmounts[Field.CURRENCY_A]}
+                        onUserInput={onFieldAInput}
+                        onMax={() => {
+                          onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                        }}
+                        showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                        currency={currencies[Field.CURRENCY_A] ?? null}
+                        id="add-liquidity-input-tokena"
+                        fiatValue={currencyAFiat}
+                        showCommonBases
+                        locked={depositADisabled}
+                      />
+
+                      <CurrencyInputPanel
+                        value={formattedAmounts[Field.CURRENCY_B]}
+                        onUserInput={onFieldBInput}
+                        onMax={() => {
+                          onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                        }}
+                        showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                        fiatValue={currencyBFiat}
+                        currency={currencies[Field.CURRENCY_B] ?? null}
+                        id="add-liquidity-input-tokenb"
+                        showCommonBases
+                        locked={depositBDisabled}
+                      />
+                    </AutoColumn>
+                  </DynamicSection>
+                </ContentBox>
+
+                <>
+                  <RightContainer gap="lg">
+                    <DynamicSection gap="24px" disabled={!feeAmount || invalidPool}>
+                      {!noLiquidity ? (
+                        <>
+                          <RowBetween>
+                            <Label>
+                              <Trans>Set Price Range</Trans>
+                            </Label>
+                            {
+                              quoteCurrency && (
+                                <ToggleButton
+                                  text='Set Price In'
+                                  onClick={() => {
+                                    if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                                      onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
+                                      onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                                      onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
+                                    }
+                                    navigate(
+                                      `/add/${currencyIdB as string}/${currencyIdA as string}${feeAmount ? '/' + feeAmount : ''}`
+                                    )
+                                  }}
+                                  symbol={quoteCurrency.symbol!}
+                                />
+                              )}
+                          </RowBetween>
+
+                          {price && baseCurrency && quoteCurrency && !noLiquidity && (
+                            <AutoRow gap="4px" justify="center" fontWeight={500}>
+                              <Trans>
+                                {
+                                  `Current Price: 1 ${baseCurrency.symbol} = ${<HoverInlineText
+                                    maxCharacters={20}
+                                    text={invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
+                                  />
+                                  } ${quoteCurrency?.symbol}`
+                                }
+                              </Trans>
+                            </AutoRow>
+                          )}
+
+                          <LiquidityChartRangeInput
+                            currencyA={baseCurrency ?? undefined}
+                            currencyB={quoteCurrency ?? undefined}
+                            feeAmount={feeAmount}
+                            ticksAtLimit={ticksAtLimit}
+                            price={
+                              price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
+                            }
+                            priceLower={priceLower}
+                            priceUpper={priceUpper}
+                            onLeftRangeInput={onLeftRangeInput}
+                            onRightRangeInput={onRightRangeInput}
+                            interactive={!hasExistingPosition}
+                          />
+                        </>
+                      ) : (
+                        <AutoColumn gap="md">
+                          <RowBetween>
+                            <Label>
+                              <Trans>Set Starting Price</Trans>
+                            </Label>
+                          </RowBetween>
+                          {noLiquidity && (
+                            <BlueCard
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                padding: '1rem 1rem',
+                              }}
+                            >
+                              <ThemedText.DeprecatedBody
+                                fontSize={14}
+                                style={{ fontWeight: 500 }}
+                                textAlign="left"
+                                color={theme.accentAction}
+                              >
+                                <Trans>
+                                  This pool must be initialized before you can add liquidity. To initialize, select a
+                                  starting price for the pool. Then, enter your liquidity price range and deposit
+                                  amount. Gas fees will be higher than usual due to the initialization transaction.
+                                </Trans>
+                              </ThemedText.DeprecatedBody>
+                            </BlueCard>
+                          )}
+                          <OutlineCard padding="12px">
+                            <StyledInput
+                              className="start-price-input"
+                              value={startPriceTypedValue}
+                              onUserInput={onStartPriceInput}
+                            />
+                          </OutlineCard>
+                          <RowBetween
+                            style={{ backgroundColor: theme.deprecated_bg1, padding: '12px', borderRadius: '12px' }}
+                          >
+                            <ThemedText.DeprecatedMain>
+                              <Trans>Current {baseCurrency?.symbol} Price:</Trans>
+                            </ThemedText.DeprecatedMain>
+                            <ThemedText.DeprecatedMain>
+                              {price ? (
+                                <ThemedText.DeprecatedMain>
+                                  <RowFixed>
+                                    <HoverInlineText
+                                      maxCharacters={20}
+                                      text={invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)}
+                                    />{' '}
+                                    <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
+                                  </RowFixed>
+                                </ThemedText.DeprecatedMain>
+                              ) : (
+                                '-'
+                              )}
+                            </ThemedText.DeprecatedMain>
+                          </RowBetween>
+                        </AutoColumn>
+                      )}
+                    </DynamicSection>
+
+                    <DynamicSection
+                      gap="24px"
+                      disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
+                    >
+                      <StackedContainer>
+                        <StackedItem>
+                          <AutoColumn gap="24px">
+                            {noLiquidity && (
+                              <RowBetween>
+                                <Label>
+                                  <Trans>Set Price Range</Trans>
+                                </Label>
+                              </RowBetween>
+                            )}
+                            <RangeSelector
+                              priceLower={priceLower}
+                              priceUpper={priceUpper}
+                              getDecrementLower={getDecrementLower}
+                              getIncrementLower={getIncrementLower}
+                              getDecrementUpper={getDecrementUpper}
+                              getIncrementUpper={getIncrementUpper}
+                              onLeftRangeInput={onLeftRangeInput}
+                              onRightRangeInput={onRightRangeInput}
+                              currencyA={baseCurrency}
+                              currencyB={quoteCurrency}
+                              feeAmount={feeAmount}
+                              ticksAtLimit={ticksAtLimit}
+                            />
+                            {!noLiquidity && <PresetsButtons onSetFullRange={handleSetFullRange} />}
+                          </AutoColumn>
+                        </StackedItem>
+                      </StackedContainer>
+
+                      {outOfRange ? (
+                        <YellowCard padding="8px 12px" $borderRadius="12px">
+                          <RowBetween>
+                            <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                            <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
+                              <Trans>
+                                Your position will not earn fees or be used in trades until the market price moves into
+                                your range.
+                              </Trans>
+                            </ThemedText.DeprecatedYellow>
+                          </RowBetween>
+                        </YellowCard>
+                      ) : null}
+
+                      {invalidRange ? (
+                        <YellowCard padding="8px 12px" $borderRadius="12px">
+                          <RowBetween>
+                            <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                            <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
+                              <Trans>Invalid range selected. The min price must be lower than the max price.</Trans>
+                            </ThemedText.DeprecatedYellow>
+                          </RowBetween>
+                        </YellowCard>
+                      ) : null}
+                    </DynamicSection>
+                  </RightContainer>
+                </>
+
+              </ResponsiveTwoColumns>
+            </Wrapper>
+          </PageWrapper>
+          {/* <Column  style={{ maxWidth: 656 }}> */}
+          <Buttons />
+          {/* </Column> */}
+          {showOwnershipWarning && <OwnershipWarning ownerAddress={owner} />}
+          {addIsUnsupported && (
+            <UnsupportedCurrencyFooter
+              show={addIsUnsupported}
+              currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]}
+            />
+          )}
+        </AutoColumn>
+
+
 
         <TransactionConfirmationModal
           isOpen={showConfirm}
@@ -676,341 +1388,7 @@ function AddLiquidity() {
           )}
           pendingText={pendingText}
         />
-        <PageWrapper wide={!hasExistingPosition}>
-          {/* <AddRemoveTabs
-            creating={false}
-            adding={true}
-            positionID={tokenId}
-            defaultSlippage={DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE}
-            showBackLink={!hasExistingPosition}
-          >
-            {!hasExistingPosition && (
-              <Row justifyContent="flex-end" style={{ width: 'fit-content', minWidth: 'fit-content' }}>
-                <MediumOnly>
-                  <ButtonText onClick={clearAll} margin="0 15px 0 0">
-                    <ThemedText.DeprecatedBlue fontSize="12px">
-                      <Trans>Clear All</Trans>
-                    </ThemedText.DeprecatedBlue>
-                  </ButtonText>
-                </MediumOnly>
-                {baseCurrency && quoteCurrency ? (
-                  <RateToggle
-                    currencyA={baseCurrency}
-                    currencyB={quoteCurrency}
-                    handleRateToggle={() => {
-                      if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                        onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
-                        onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
-                        onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
-                      }
-                      navigate(
-                        `/add/${currencyIdB as string}/${currencyIdA as string}${feeAmount ? '/' + feeAmount : ''}`
-                      )
-                    }}
-                  />
-                ) : null}
-              </Row>
-            )}
-          </AddRemoveTabs> */}
-          <Wrapper>
-            <ResponsiveTwoColumns wide={!hasExistingPosition}>
-              <AutoColumn>
-                {!hasExistingPosition && (
-                  <PairBox>
-                    <AutoColumn gap="24px">
-                      <RowBetween paddingBottom="20px">
-                        <Label>
-                          <Trans>Select Pair</Trans>
-                        </Label>
-                      </RowBetween>
-                      <RowBetween>
-                        <CurrencyDropdown
-                          value={formattedAmounts[Field.CURRENCY_A]}
-                          onUserInput={onFieldAInput}
-                          hideInput={true}
-                          onMax={() => {
-                            onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-                          }}
-                          onCurrencySelect={handleCurrencyASelect}
-                          showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-                          currency={currencies[Field.CURRENCY_A] ?? null}
-                          id="add-liquidity-input-tokena"
-                          showCommonBases
-                        />
 
-                        <div style={{ width: '12px' }} />
-
-                        <CurrencyDropdown
-                          value={formattedAmounts[Field.CURRENCY_B]}
-                          hideInput={true}
-                          onUserInput={onFieldBInput}
-                          onCurrencySelect={handleCurrencyBSelect}
-                          onMax={() => {
-                            onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-                          }}
-                          showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-                          currency={currencies[Field.CURRENCY_B] ?? null}
-                          id="add-liquidity-input-tokenb"
-                          showCommonBases
-                        />
-                      </RowBetween>
-
-                      <FeeSelector
-                        disabled={!quoteCurrency || !baseCurrency}
-                        feeAmount={feeAmount}
-                        handleFeePoolSelect={handleFeePoolSelect}
-                        currencyA={baseCurrency ?? undefined}
-                        currencyB={quoteCurrency ?? undefined}
-                      />
-                    </AutoColumn>{' '}
-                  </PairBox>
-                )}
-
-                {hasExistingPosition && existingPosition && (
-                  <PairBox>
-                    <PositionPreview
-                      position={existingPosition}
-                      title={<Trans>Selected Range</Trans>}
-                      inRange={!outOfRange}
-                      ticksAtLimit={ticksAtLimit}
-                    />
-                  </PairBox>
-                )}
-              </AutoColumn>
-              <ContentBox>
-                <DynamicSection
-                  disabled={tickLower === undefined || tickUpper === undefined || invalidPool || invalidRange}
-                >
-                  <AutoColumn gap="24px">
-                    <Label>
-                      {hasExistingPosition ? <Trans>Add more liquidity</Trans> : <Trans>Deposit Amounts</Trans>}
-                    </Label>
-
-                    <CurrencyInputPanel
-                      value={formattedAmounts[Field.CURRENCY_A]}
-                      onUserInput={onFieldAInput}
-                      onMax={() => {
-                        onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-                      }}
-                      showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-                      currency={currencies[Field.CURRENCY_A] ?? null}
-                      id="add-liquidity-input-tokena"
-                      fiatValue={currencyAFiat}
-                      showCommonBases
-                      locked={depositADisabled}
-                    />
-
-                    <CurrencyInputPanel
-                      value={formattedAmounts[Field.CURRENCY_B]}
-                      onUserInput={onFieldBInput}
-                      onMax={() => {
-                        onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-                      }}
-                      showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-                      fiatValue={currencyBFiat}
-                      currency={currencies[Field.CURRENCY_B] ?? null}
-                      id="add-liquidity-input-tokenb"
-                      showCommonBases
-                      locked={depositBDisabled}
-                    />
-                  </AutoColumn>
-                </DynamicSection>
-              </ContentBox>
-
-              <>
-                <RightContainer gap="lg">
-                  <DynamicSection gap="24px" disabled={!feeAmount || invalidPool}>
-                    {!noLiquidity ? (
-                      <>
-                        <RowBetween>
-                          <Label>
-                            <Trans>Set Price Range</Trans>
-                          </Label>
-                          {
-                            quoteCurrency && (
-                              <ToggleButton
-                                text='Set Price In'
-                                onClick={() => {
-                                  if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
-                                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
-                                    onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
-                                  }
-                                  navigate(
-                                    `/add/${currencyIdB as string}/${currencyIdA as string}${feeAmount ? '/' + feeAmount : ''}`
-                                  )
-                                }}
-                                symbol={quoteCurrency.symbol!}
-                              />
-                            )}
-                        </RowBetween>
-
-                        {price && baseCurrency && quoteCurrency && !noLiquidity && (
-                          <AutoRow gap="4px" justify="center" fontWeight={500}>
-                            <Trans>
-                              {
-                                `Current Price: 1 ${baseCurrency.symbol} = ${<HoverInlineText
-                                  maxCharacters={20}
-                                  text={invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
-                                />
-                                } ${quoteCurrency?.symbol}`
-                              }
-                            </Trans>
-                          </AutoRow>
-                        )}
-
-                        <LiquidityChartRangeInput
-                          currencyA={baseCurrency ?? undefined}
-                          currencyB={quoteCurrency ?? undefined}
-                          feeAmount={feeAmount}
-                          ticksAtLimit={ticksAtLimit}
-                          price={
-                            price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined
-                          }
-                          priceLower={priceLower}
-                          priceUpper={priceUpper}
-                          onLeftRangeInput={onLeftRangeInput}
-                          onRightRangeInput={onRightRangeInput}
-                          interactive={!hasExistingPosition}
-                        />
-                      </>
-                    ) : (
-                      <AutoColumn gap="md">
-                        <RowBetween>
-                          <Label>
-                            <Trans>Set Starting Price</Trans>
-                          </Label>
-                        </RowBetween>
-                        {noLiquidity && (
-                          <BlueCard
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              padding: '1rem 1rem',
-                            }}
-                          >
-                            <ThemedText.DeprecatedBody
-                              fontSize={14}
-                              style={{ fontWeight: 500 }}
-                              textAlign="left"
-                              color={theme.accentAction}
-                            >
-                              <Trans>
-                                This pool must be initialized before you can add liquidity. To initialize, select a
-                                starting price for the pool. Then, enter your liquidity price range and deposit
-                                amount. Gas fees will be higher than usual due to the initialization transaction.
-                              </Trans>
-                            </ThemedText.DeprecatedBody>
-                          </BlueCard>
-                        )}
-                        <OutlineCard padding="12px">
-                          <StyledInput
-                            className="start-price-input"
-                            value={startPriceTypedValue}
-                            onUserInput={onStartPriceInput}
-                          />
-                        </OutlineCard>
-                        <RowBetween
-                          style={{ backgroundColor: theme.deprecated_bg1, padding: '12px', borderRadius: '12px' }}
-                        >
-                          <ThemedText.DeprecatedMain>
-                            <Trans>Current {baseCurrency?.symbol} Price:</Trans>
-                          </ThemedText.DeprecatedMain>
-                          <ThemedText.DeprecatedMain>
-                            {price ? (
-                              <ThemedText.DeprecatedMain>
-                                <RowFixed>
-                                  <HoverInlineText
-                                    maxCharacters={20}
-                                    text={invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)}
-                                  />{' '}
-                                  <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
-                                </RowFixed>
-                              </ThemedText.DeprecatedMain>
-                            ) : (
-                              '-'
-                            )}
-                          </ThemedText.DeprecatedMain>
-                        </RowBetween>
-                      </AutoColumn>
-                    )}
-                  </DynamicSection>
-
-                  <DynamicSection
-                    gap="24px"
-                    disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
-                  >
-                    <StackedContainer>
-                      <StackedItem>
-                        <AutoColumn gap="24px">
-                          {noLiquidity && (
-                            <RowBetween>
-                              <Label>
-                                <Trans>Set Price Range</Trans>
-                              </Label>
-                            </RowBetween>
-                          )}
-                          <RangeSelector
-                            priceLower={priceLower}
-                            priceUpper={priceUpper}
-                            getDecrementLower={getDecrementLower}
-                            getIncrementLower={getIncrementLower}
-                            getDecrementUpper={getDecrementUpper}
-                            getIncrementUpper={getIncrementUpper}
-                            onLeftRangeInput={onLeftRangeInput}
-                            onRightRangeInput={onRightRangeInput}
-                            currencyA={baseCurrency}
-                            currencyB={quoteCurrency}
-                            feeAmount={feeAmount}
-                            ticksAtLimit={ticksAtLimit}
-                          />
-                          {!noLiquidity && <PresetsButtons onSetFullRange={handleSetFullRange} />}
-                        </AutoColumn>
-                      </StackedItem>
-                    </StackedContainer>
-
-                    {outOfRange ? (
-                      <YellowCard padding="8px 12px" $borderRadius="12px">
-                        <RowBetween>
-                          <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
-                          <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
-                            <Trans>
-                              Your position will not earn fees or be used in trades until the market price moves into
-                              your range.
-                            </Trans>
-                          </ThemedText.DeprecatedYellow>
-                        </RowBetween>
-                      </YellowCard>
-                    ) : null}
-
-                    {invalidRange ? (
-                      <YellowCard padding="8px 12px" $borderRadius="12px">
-                        <RowBetween>
-                          <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
-                          <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
-                            <Trans>Invalid range selected. The min price must be lower than the max price.</Trans>
-                          </ThemedText.DeprecatedYellow>
-                        </RowBetween>
-                      </YellowCard>
-                    ) : null}
-                  </DynamicSection>
-                </RightContainer>
-              </>
-
-            </ResponsiveTwoColumns>
-          </Wrapper>
-        </PageWrapper>
-        <div style={{ margin: '32px 242px 0', }}>
-          <Buttons />
-        </div>
-        {showOwnershipWarning && <OwnershipWarning ownerAddress={owner} />}
-        {addIsUnsupported && (
-          <UnsupportedCurrencyFooter
-            show={addIsUnsupported}
-            currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]}
-          />
-        )}
       </ScrollablePage>
       <SwitchLocaleLink />
     </>

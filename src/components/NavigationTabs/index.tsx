@@ -104,7 +104,7 @@ export function AddRemoveTabs({
           ) : adding ? (
             <Trans>Add Liquidity 2</Trans>
           ) : (
-            <Trans>Remove Liquidity 2</Trans>
+            <Trans>Remove Liquidity</Trans>
           )}
         </ThemedText.DeprecatedMediumHeader>
         <Box style={{ marginRight: '.5rem' }}>{children}</Box>

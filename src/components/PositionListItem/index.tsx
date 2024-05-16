@@ -6,7 +6,7 @@ import RangeBadge from './RangeBadge'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import HoverInlineText from 'components/HoverInlineText'
 import Loader from 'components/Icons/LoadingSpinner'
-import { RowBetween } from 'components/Row'
+import Row, { RowBetween } from 'components/Row'
 import { useToken } from 'hooks/Tokens'
 import useIsTickAtLimit from 'hooks/useIsTickAtLimit'
 import { usePool } from 'hooks/usePools'
@@ -21,10 +21,11 @@ import { unwrappedToken } from 'utils/unwrappedToken'
 import { DAI, USDC_MAINNET, USDT, WBTC, WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
 import DoubleCurrencyName from 'components/DoubleCurrencyName'
 import { AutoColumn } from 'components/Column'
+import { useIsMobile } from 'nft/hooks'
 
-const LinkRow = styled(Link)`
+const LinkRow = styled(Link) <{ isMobile?: boolean }>`
   border-radius: 16px;
-  padding: 24px 32px;
+  padding: ${({ isMobile }) => isMobile ? '16px' : '24px 32px'};
   background: ${({ theme }) => theme.main};
 
   cursor: pointer;
@@ -68,9 +69,10 @@ const RangeLineItem = styled(DataLineItem)`
 `
 
 const DoubleArrow = styled.span`
-  font-size: 12px;
-  margin: 0 2px;
-  color: ${({ theme }) => theme.textTertiary};
+  // font-size: 12px;
+  // margin: 0 2px;
+  // color: ${({ theme }) => theme.textTertiary};
+  margin-left: 4px;
 `
 
 const RangeText = styled(ThemedText.Caption)`
@@ -181,6 +183,7 @@ export default function PositionListItem({
   tickLower,
   tickUpper,
 }: PositionListItemProps) {
+  const isMobile = useIsMobile()
   const token0 = useToken(token0Address)
   const token1 = useToken(token1Address)
 
@@ -212,19 +215,86 @@ export default function PositionListItem({
 
   const removed = liquidity?.eq(0)
 
+  if (isMobile) {
+    return (
+      <LinkRow to={positionSummaryLink} isMobile={true}>
+        <AutoColumn gap='8px' style={{ width: '100%' }}>
+          <RowBetween>
+            <Row gap='4px' flex='1 1'>
+              <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={32} margin />
+              <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} size={18} />
+            </Row>
+            <FeeTierText>
+              <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans>
+            </FeeTierText>
+          </RowBetween>
+
+          {priceLower && priceUpper ? (
+            <RangeLineItem>
+              <RangeText>
+                <ExtentsText>
+                  <Trans>Min: </Trans>
+                </ExtentsText>
+                <Trans>
+                  <span>
+                    {formatTickPrice({
+                      price: priceLower,
+                      atLimit: tickAtLimit,
+                      direction: Bound.LOWER,
+                    })}{' '}
+                  </span>
+                </Trans>
+              </RangeText>{' '}
+              /
+              <RangeText>
+                <ExtentsText>
+                  <Trans>Max.</Trans>
+                </ExtentsText>
+                <Trans>
+                  <span>
+                    {formatTickPrice({
+                      price: priceUpper,
+                      atLimit: tickAtLimit,
+                      direction: Bound.UPPER,
+                    })}{' '}
+                  </span>
+                  <HoverInlineText text={currencyQuote?.symbol} /> per{' '}
+                  <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
+                </Trans>
+              </RangeText>
+              <DoubleArrow>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                  <g id="Swap">
+                    <path id="Stroke 1" d="M1.1343 11.9308L11.915 11.9308" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 3" d="M4.37695 15.1591L1.13376 11.9309L4.37695 8.70264" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 5" d="M14.0635 4.07067L3.28274 4.07068" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 7" d="M10.8208 0.84253L14.064 4.07077L10.8208 7.29901" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
+              </DoubleArrow>{' '}
+            </RangeLineItem>
+          ) : (
+            <Loader />
+          )}
+          <RangeBadge removed={removed} inRange={!outOfRange} />
+        </AutoColumn>
+      </LinkRow>
+    )
+  }
+
   return (
     <LinkRow to={positionSummaryLink}>
       <RowBetween>
         <AutoColumn gap='12px'>
           <RowBetween>
-            <PrimaryPositionIdData>
+            <Row gap='12px'>
               <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={28} margin />
               <DoubleCurrencyName currency0={currencyBase} currency1={currencyQuote} />
 
               <FeeTierText>
                 <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans>
               </FeeTierText>
-            </PrimaryPositionIdData>
+            </Row>
           </RowBetween>
 
           {priceLower && priceUpper ? (
@@ -266,7 +336,24 @@ export default function PositionListItem({
                   <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
                 </Trans>
               </RangeText>
-              <DoubleArrow>↔</DoubleArrow>{' '}
+              <DoubleArrow>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                  <g id="Swap">
+                    <path id="Stroke 1" d="M1.1343 11.9308L11.915 11.9308" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 3" d="M4.37695 15.1591L1.13376 11.9309L4.37695 8.70264" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 5" d="M14.0635 4.07067L3.28274 4.07068" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Stroke 7" d="M10.8208 0.84253L14.064 4.07077L10.8208 7.29901" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
+              </DoubleArrow>{' '}
+              {/* <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+                <g id="Swap">
+                  <path id="Stroke 1" d="M1.1343 11.9308L11.915 11.9308" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  <path id="Stroke 3" d="M4.37695 15.1591L1.13376 11.9309L4.37695 8.70264" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  <path id="Stroke 5" d="M14.0635 4.07067L3.28274 4.07068" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                  <path id="Stroke 7" d="M10.8208 0.84253L14.064 4.07077L10.8208 7.29901" stroke="#BC42FF" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+              </svg> */}
             </RangeLineItem>
           ) : (
             <Loader />

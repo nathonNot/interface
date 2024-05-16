@@ -22,10 +22,11 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import Modal from '../Modal'
 import { RowBetween, RowFixed } from '../Row'
 import AnimatedConfirmation from './AnimatedConfirmation'
+import { useIsMobile } from 'nft/hooks'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isMobile?: boolean }>`
   background-color: ${({ theme }) => theme.toast2};
-  border-radius: 16px;
+  border-radius: ${({ isMobile }) => !isMobile ? '16px' : '16px 16px 0 0'};
   outline: none;
   width: 100%;
   padding: 24px;
@@ -176,14 +177,16 @@ export function ConfirmationModalContent({
   bottomContent,
   onDismiss,
   topContent,
+  isMobile = false
 }: {
   title: ReactNode
   onDismiss: () => void
   topContent: () => ReactNode
   bottomContent?: () => ReactNode | undefined
+  isMobile?: boolean
 }) {
   return (
-    <Wrapper>
+    <Wrapper isMobile={isMobile}>
       <Section gap='27px'>
         <RowBetween>
           <Text color='#F4F4F4' fontWeight={600} fontSize={24}>

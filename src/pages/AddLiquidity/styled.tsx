@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 `
 
 export const ScrollablePage = styled.div`
-  padding: 68px 8px 0px;
+  padding: 68px 16px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@ export const ScrollablePage = styled.div`
   `};
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.md}px`}) {
-    padding: 48px 8px 0px;
+    padding: 48px 16px;
   }
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
@@ -71,11 +71,12 @@ export const ResponsiveTwoColumns = styled.div<{ wide: boolean }>`
   `};
 `
 
-export const RightContainer = styled(AutoColumn)`
+export const RightContainer = styled(AutoColumn)<{ isMobile?: boolean }>`
   grid-row: 1 / 3;
   grid-column: 2;
   height: 100%;
   padding: 24px;
+  padding: ${({ isMobile }) => `24px ${isMobile ? 16 : 24}px`};
 
   border-left: 1px solid #312E63;
 

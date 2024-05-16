@@ -28,9 +28,10 @@ import Toggle from 'components/Toggle'
 import { SearchBar } from 'components/NavBar/SearchBar'
 import { Box } from 'nft/components/Box'
 import PageTitle from 'components/PageTitle'
+import { useIsMobile } from 'nft/hooks'
 
 const PageWrapper = styled(AutoColumn)`
-  padding: 68px 8px 0px;
+  padding: 68px 16px 0px;
   max-width: 870px;
   width: 100%;
 
@@ -131,8 +132,8 @@ const MainContentWrapper = styled.main`
   border-radius: 16px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
+  // box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+  //   0px 24px 32px rgba(0, 0, 0, 0.01);
 `
 
 const OperateBox = styled.div`
@@ -206,6 +207,8 @@ export default function Pool() {
   const theme = useTheme()
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
 
+  const isMobile = useIsMobile();
+
   const { positions, loading: positionsLoading } = useV3Positions(account)
 
   const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
@@ -263,35 +266,41 @@ export default function Pool() {
     },
   ]
 
+
   return (
     <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression>
       <PageWrapper>
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="32px" style={{ width: '100%' }}>
-            <TitleRow padding="0">
-              <ThemedText.LargeHeader>
-                <PageTitle title='Manage Liquidity' desc='Manage your assets here' />
-              </ThemedText.LargeHeader>
-              <ButtonRow>
-                {/* {showV2Features && (
-                  <PoolMenu
-                    menuItems={menuItems}
-                    flyoutAlignment={FlyoutAlignment.LEFT}
-                    ToggleUI={(props: any) => (
-                      <MoreOptionsButton {...props}>
-                        <MoreOptionsText>
-                          <Trans>More</Trans>
-                          <ChevronDown size={15} />
-                        </MoreOptionsText>
-                      </MoreOptionsButton>
-                    )}
-                  />
-                )} */}
-                <Button gap='8px' as={Link} to="/add/ETH">+ <Trans>Add Liquidity</Trans></Button>
-              </ButtonRow>
-            </TitleRow>
+            <RowBetween>
+              <PageTitle title='Manage Liquidity' desc='Manage your assets here' />
+              {
+                !isMobile && (
+                  <Button gap='8px' as={Link} to="/add/ETH">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <g id="Group">
+                        <path id="Vector" d="M10.5 20C10.5 20.3978 10.658 20.7794 10.9393 21.0607C11.2206 21.342 11.6022 21.5 12 21.5C12.3978 21.5 12.7794 21.342 13.0607 21.0607C13.342 20.7794 13.5 20.3978 13.5 20V13.5H20C20.3978 13.5 20.7794 13.342 21.0607 13.0607C21.342 12.7794 21.5 12.3978 21.5 12C21.5 11.6022 21.342 11.2206 21.0607 10.9393C20.7794 10.658 20.3978 10.5 20 10.5H13.5V4C13.5 3.60218 13.342 3.22064 13.0607 2.93934C12.7794 2.65804 12.3978 2.5 12 2.5C11.6022 2.5 11.2206 2.65804 10.9393 2.93934C10.658 3.22064 10.5 3.60218 10.5 4V10.5H4C3.60218 10.5 3.22064 10.658 2.93934 10.9393C2.65804 11.2206 2.5 11.6022 2.5 12C2.5 12.3978 2.65804 12.7794 2.93934 13.0607C3.22064 13.342 3.60218 13.5 4 13.5H10.5V20Z" fill="#BC42FF" />
+                      </g>
+                    </svg>
+                    <Trans>Add Liquidity</Trans>
+                  </Button>
+                )
+              }
+            </RowBetween>
             <OperateBox>
               <Box position="relative">
+                {
+                  isMobile && (
+                    <Button gap='8px' as={Link} to="/add/ETH">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <g id="Group">
+                          <path id="Vector" d="M10.5 20C10.5 20.3978 10.658 20.7794 10.9393 21.0607C11.2206 21.342 11.6022 21.5 12 21.5C12.3978 21.5 12.7794 21.342 13.0607 21.0607C13.342 20.7794 13.5 20.3978 13.5 20V13.5H20C20.3978 13.5 20.7794 13.342 21.0607 13.0607C21.342 12.7794 21.5 12.3978 21.5 12C21.5 11.6022 21.342 11.2206 21.0607 10.9393C20.7794 10.658 20.3978 10.5 20 10.5H13.5V4C13.5 3.60218 13.342 3.22064 13.0607 2.93934C12.7794 2.65804 12.3978 2.5 12 2.5C11.6022 2.5 11.2206 2.65804 10.9393 2.93934C10.658 3.22064 10.5 3.60218 10.5 4V10.5H4C3.60218 10.5 3.22064 10.658 2.93934 10.9393C2.65804 11.2206 2.5 11.6022 2.5 12C2.5 12.3978 2.65804 12.7794 2.93934 13.0607C3.22064 13.342 3.60218 13.5 4 13.5H10.5V20Z" fill="#BC42FF" />
+                        </g>
+                      </svg>
+                      <Trans>Add Liquidity</Trans>
+                    </Button>
+                  )
+                }
               </Box>
               <SwitchBox>
                 <div>Show Closed</div>
@@ -299,9 +308,10 @@ export default function Pool() {
                   id="show-closed"
                   isActive={!userHideClosedPositions}
                   toggle={() => setUserHideClosedPositions(!userHideClosedPositions)}
+                  bgColor={theme.primary}
                 />
               </SwitchBox>
-              
+
             </OperateBox>
 
             <MainContentWrapper>
@@ -313,24 +323,7 @@ export default function Pool() {
                 />
               ) : (
                 <ErrorContainer>
-                  <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
-                    <Empty />
-                  </ThemedText.DeprecatedBody>
-                  {showConnectAWallet && (
-                    <TraceEvent
-                      events={[BrowserEvent.onClick]}
-                      name={InterfaceEventName.CONNECT_WALLET_BUTTON_CLICKED}
-                      properties={{ received_swap_quote: false }}
-                      element={InterfaceElementName.CONNECT_WALLET_BUTTON}
-                    >
-                      <ButtonPrimary
-                        style={{ marginTop: '2em', marginBottom: '2em', padding: '8px 16px' }}
-                        onClick={toggleWalletDrawer}
-                      >
-                        <Trans>Connect a wallet</Trans>
-                      </ButtonPrimary>
-                    </TraceEvent>
-                  )}
+                  <Empty />
                 </ErrorContainer>
               )}
             </MainContentWrapper>

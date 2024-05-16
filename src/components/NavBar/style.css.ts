@@ -18,7 +18,7 @@ export const logo = style([
     color: 'textPrimary',
   }),
   {
-    marginRight: 100
+    // marginRight: 100
   }
 ])
 
@@ -65,7 +65,7 @@ const baseMenuItem = style([
     paddingY: '0',
     paddingX: '0',
     marginY: '0',
-    marginX: '20',
+    marginX: '0',
     borderRadius: '12',
     transition: '250',
     height: 'min',
@@ -78,13 +78,13 @@ const baseMenuItem = style([
   {
     lineHeight: '24px',
     textDecoration: 'none',
-    ':hover': {
-      background: vars.color.lightGrayOverlay,
-    },
+    // ':hover': {
+    //   background: vars.color.lightGrayOverlay,
+    // },
   },
   {
-    fontSize: 18,
-    fontWeight: 400
+    fontWeight: 400,
+    width: 'auto'
   }
 ])
 

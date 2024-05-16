@@ -6,13 +6,12 @@ import { useAccountDrawer } from 'components/AccountDrawer'
 import IconButton from 'components/AccountDrawer/IconButton'
 import { sendEvent } from 'components/analytics'
 import { AutoColumn } from 'components/Column'
-import { AutoRow } from 'components/Row'
-import { Connection, ConnectionType, getConnections, networkConnection } from 'connection'
+import Row, { AutoRow, RowBetween } from 'components/Row'
+import { Connection, ConnectionType, getConnections, getShowConnections, networkConnection } from 'connection'
 import { useGetConnection } from 'connection'
 import { ErrorCode } from 'connection/utils'
 import { isSupportedChain } from 'constants/chains'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Circle, Settings } from 'react-feather'
 import { useAppDispatch } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
 import { useConnectedWallets } from 'state/wallets/hooks'
@@ -22,20 +21,21 @@ import { flexColumnNoWrap } from 'theme/styles'
 
 import ConnectionErrorView from './ConnectionErrorView'
 import Option from './Option'
-import PrivacyPolicyNotice from './PrivacyPolicyNotice'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isMobile: boolean }>`
   ${flexColumnNoWrap};
-  background-color: ${({ theme }) => theme.backgroundSurface};
   width: 100%;
-  padding: 14px 16px 16px;
   flex: 1;
+
+  
+  padding: ${({ isMobile }) => !isMobile && '24px'};
+  border-radius: ${({ isMobile }) => !isMobile && '16px'};
+  background: ${({ theme, isMobile }) => !isMobile && theme.toast2};
 `
 
 const OptionGrid = styled.div`
   display: grid;
-  grid-gap: 2px;
-  border-radius: 12px;
+  grid-gap: 12px;
   overflow: hidden;
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
     grid-template-columns: 1fr;
@@ -80,7 +80,7 @@ function didUserReject(connection: Connection, error: any): boolean {
   )
 }
 
-export default function WalletModal({ closeModal }: { closeModal: () => void }) {
+export default function WalletModal({ closeModal, isMobile = false }: { closeModal: () => void; isMobile?: boolean }) {
   const dispatch = useAppDispatch()
   const { connector, account, chainId, provider } = useWeb3React()
   const [drawerOpen, toggleWalletDrawer] = useAccountDrawer()
@@ -90,7 +90,7 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
   const [pendingConnection, setPendingConnection] = useState<Connection | undefined>()
   const [pendingError, setPendingError] = useState<any>()
 
-  const connections = getConnections()
+  const connections = getShowConnections()
   const getConnection = useGetConnection()
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
         await connection.connector.activate()
         console.debug(`connection activated: ${connection.getName()}`)
         dispatch(updateSelectedWallet({ wallet: connection.type }))
-        
+
         closeModal()
       } catch (error) {
         console.debug(`web3-react connection error: ${JSON.stringify(error)}`)
@@ -178,34 +178,34 @@ export default function WalletModal({ closeModal }: { closeModal: () => void }) 
   )
 
   return (
-    <Wrapper data-testid="wallet-modal">
-      <AutoRow justify="space-between" width="100%" marginBottom="16px">
-        <ThemedText.SubHeader fontWeight={600} fontSize={24}>Connect a wallet</ThemedText.SubHeader>
-        <CloseIcon onClick={closeModal} data-cy="wallet-close" />
-      </AutoRow>
-      {pendingError ? (
-        pendingConnection && (
-          <ConnectionErrorView openOptions={openOptions} retryActivation={() => tryActivation(pendingConnection)} />
-        )
-      ) : (
-        <AutoColumn gap="16px">
-          <OptionGrid data-testid="option-grid">
-            {connections.map((connection) =>
-              connection.shouldDisplay() && (connection.getName() === 'WalletConnect' || connection.getName() === 'Browser Wallet' || connection.getName() === 'MetaMask') ? (
-                <Option
-                  key={connection.getName()}
-                  connection={connection}
-                  activate={() => tryActivation(connection)}
-                  pendingConnectionType={pendingConnection?.type}
-                />
-              ) : null
-            )}
-          </OptionGrid>
-          <PrivacyPolicyWrapper>
-            <PrivacyPolicyNotice />
-          </PrivacyPolicyWrapper>
-        </AutoColumn>
-      )}
+    <Wrapper data-testid="wallet-modal" isMobile={isMobile}>
+      <AutoColumn gap='27px'>
+        <RowBetween width="100%">
+          <ThemedText.SubHeader fontWeight={600} fontSize={24}>Connect a wallet</ThemedText.SubHeader>
+          <CloseIcon onClick={closeModal} data-cy="wallet-close" />
+        </RowBetween>
+        {pendingError ? (
+          pendingConnection && (
+            <ConnectionErrorView openOptions={openOptions} retryActivation={() => tryActivation(pendingConnection)} />
+          )
+        ) : (
+          <AutoColumn gap="16px">
+            <OptionGrid data-testid="option-grid">
+              {connections.map((connection) =>
+                connection.shouldDisplay() ? (
+                  <Option
+                    key={connection.getName()}
+                    connection={connection}
+                    activate={() => tryActivation(connection)}
+                    pendingConnectionType={pendingConnection?.type}
+                  />
+                ) : null
+              )}
+            </OptionGrid>
+          </AutoColumn>
+        )}
+      </AutoColumn>
+
     </Wrapper>
   )
 }

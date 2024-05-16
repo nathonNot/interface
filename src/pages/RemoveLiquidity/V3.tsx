@@ -47,6 +47,7 @@ import { useAppDispatch } from 'state/hooks'
 import { resetMintState } from 'state/mint/actions'
 import { resetMintState as resetMintV3State } from 'state/mint/v3/actions'
 import PageTitle from 'components/PageTitle'
+import { useIsMobile } from 'nft/hooks'
 
 const DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100)
 
@@ -310,7 +311,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const dispatch = useAppDispatch();
 
-  console.log(position, 'position')
+  const isMobile = useIsMobile();
   return (
     <AutoColumn>
       <TransactionConfirmationModal
@@ -320,6 +321,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         hash={txnHash ?? ''}
         content={() => (
           <ConfirmationModalContent
+            isMobile={isMobile}
             title={<Trans>Remove Liquidity</Trans>}
             onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
@@ -362,8 +364,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 <DoubleCurrencyLogo
                   currency0={feeValue0?.currency ?? undefined}
                   currency1={feeValue1?.currency ?? undefined}
-                  size={40}
+                  size={isMobile ? 32 : 40}
                   margin={true}
+                  diff
                 />
                 <AutoColumn gap='2px'>
                   <ThemedText.DeprecatedBlack fontSize="24px">

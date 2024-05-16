@@ -46,7 +46,7 @@ import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button
 import { GrayCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import SwapCurrencyInputPanel from '../../components/CurrencyInputPanel/SwapCurrencyInputPanel'
-import { AutoRow } from '../../components/Row'
+import { AutoRow, RowBetween } from '../../components/Row'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import { ArrowWrapper, PageWrapper, SwapCallbackError, SwapWrapper } from '../../components/swap/styleds'
@@ -65,6 +65,9 @@ import { computeFiatValuePriceImpact } from '../../utils/computeFiatValuePriceIm
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeRealizedPriceImpact, warningSeverity } from '../../utils/prices'
 import { supportedChainId } from '../../utils/supportedChainId'
+import { useAccountDrawer } from 'components/AccountModal'
+// import { isMobile } from 'utils/userAgent'
+import { useIsMobile } from 'nft/hooks'
 const ArrowContainer = styled.div`
   display: inline-block;
   display: inline-flex;
@@ -124,16 +127,13 @@ const DetailsSwapSection = styled(SwapSection)`
     border: none;
   }
 
-  margin-top: 31px;
-  border-top: 1px solid #322E70;
   padding: 0;
-  padding-top: 31px;
   border-radius: 0;
 `
 
 const SlippageBox = styled.div`
-  padding-top: 24px;
-  border-top: 1px solid #322E70;
+  // padding-top: 24px;
+  // border-top: 1px solid #322E70;
 
   display: flex;
   align-items: center;
@@ -172,6 +172,8 @@ export default function Swap({ className }: { className?: string }) {
   const [newSwapQuoteNeedsLogging, setNewSwapQuoteNeedsLogging] = useState(true)
   const [fetchingSwapQuoteStartTime, setFetchingSwapQuoteStartTime] = useState<Date | undefined>()
   const swapWidgetEnabled = useSwapWidgetEnabled()
+
+  const isMobile = useIsMobile();
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -212,6 +214,12 @@ export default function Swap({ className }: { className?: string }) {
 
   // toggle wallet when disconnected
   const toggleWalletDrawer = useToggleAccountDrawer()
+
+  const [, toggleAccountDrawer] = useAccountDrawer();
+  const handleWalletDropdownClick = useCallback(() => {
+    sendAnalyticsEvent(InterfaceEventName.ACCOUNT_DROPDOWN_BUTTON_CLICKED)
+    toggleAccountDrawer()
+  }, [toggleAccountDrawer])
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -521,78 +529,59 @@ export default function Swap({ className }: { className?: string }) {
               width="100%"
             />
           ) : (
-            <>
+            <AutoColumn gap={`${isMobile ? 24 : 32}px`}>
               <SwapWrapper chainId={chainId} className={className} id="swap-page">
-                <SwapHeader allowedSlippage={allowedSlippage} />
-                <ConfirmSwapModal
-                  isOpen={showConfirm}
-                  trade={trade}
-                  originalTrade={tradeToConfirm}
-                  onAcceptChanges={handleAcceptChanges}
-                  attemptingTxn={attemptingTxn}
-                  txHash={txHash}
-                  recipient={recipient}
-                  allowedSlippage={allowedSlippage}
-                  onConfirm={handleSwap}
-                  swapErrorMessage={swapErrorMessage}
-                  onDismiss={handleConfirmDismiss}
-                  swapQuoteReceivedDate={swapQuoteReceivedDate}
-                  fiatValueInput={fiatValueTradeInput}
-                  fiatValueOutput={fiatValueTradeOutput}
-                />
-
-                <div style={{ display: 'relative' }}>
-                  <SwapSection>
-                    <Trace section={InterfaceSectionName.CURRENCY_INPUT_PANEL}>
-                      <SwapCurrencyInputPanel
-                        label={<Trans>From</Trans>}
-                        value={formattedAmounts[Field.INPUT]}
-                        showMaxButton={showMaxButton}
-                        currency={currencies[Field.INPUT] ?? null}
-                        onUserInput={handleTypeInput}
-                        onMax={handleMaxInput}
-                        fiatValue={fiatValueInput}
-                        onCurrencySelect={handleInputSelect}
-                        otherCurrency={currencies[Field.OUTPUT]}
-                        showCommonBases={true}
-                        id={InterfaceSectionName.CURRENCY_INPUT_PANEL}
-                        loading={independentField === Field.OUTPUT && routeIsSyncing}
-                      />
-                    </Trace>
-                  </SwapSection>
-                  <ArrowWrapper clickable={isSupportedChain(chainId)}>
-                    <TraceEvent
-                      events={[BrowserEvent.onClick]}
-                      name={SwapEventName.SWAP_TOKENS_REVERSED}
-                      element={InterfaceElementName.SWAP_TOKENS_REVERSE_ARROW_BUTTON}
-                    >
-                      <ArrowContainer
-                        data-testid="swap-currency-button"
-                        onClick={() => {
-                          onSwitchTokens()
-                        }}
-                        color={theme.textPrimary}
+                <AutoColumn gap={`${isMobile ? 16 : 24}px`}>
+                  <SwapHeader allowedSlippage={allowedSlippage} />
+                  <AutoColumn gap='12px'>
+                    <SwapSection>
+                      <Trace section={InterfaceSectionName.CURRENCY_INPUT_PANEL}>
+                        <SwapCurrencyInputPanel
+                          label={<Trans>From</Trans>}
+                          value={formattedAmounts[Field.INPUT]}
+                          showMaxButton={showMaxButton}
+                          currency={currencies[Field.INPUT] ?? null}
+                          onUserInput={handleTypeInput}
+                          onMax={handleMaxInput}
+                          fiatValue={fiatValueInput}
+                          onCurrencySelect={handleInputSelect}
+                          otherCurrency={currencies[Field.OUTPUT]}
+                          showCommonBases={true}
+                          id={InterfaceSectionName.CURRENCY_INPUT_PANEL}
+                          loading={independentField === Field.OUTPUT && routeIsSyncing}
+                        />
+                      </Trace>
+                    </SwapSection>
+                    <ArrowWrapper clickable={isSupportedChain(chainId)}>
+                      <TraceEvent
+                        events={[BrowserEvent.onClick]}
+                        name={SwapEventName.SWAP_TOKENS_REVERSED}
+                        element={InterfaceElementName.SWAP_TOKENS_REVERSE_ARROW_BUTTON}
                       >
-                        {/* <ArrowDown
+                        <ArrowContainer
+                          data-testid="swap-currency-button"
+                          onClick={() => {
+                            onSwitchTokens()
+                          }}
+                          color={theme.textPrimary}
+                        >
+                          {/* <ArrowDown
                         size="16"
                         color={
                           currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.textTertiary
                         }
                       /> */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
-                          <rect x="0.5" width="48" height="48" rx="24" fill="#BC42FF" />
-                          <path d="M19.5343 15.959L19.5343 29.5768" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path d="M15.4567 20.0552L19.5345 15.9585L23.6123 20.0552" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path d="M29.462 32.2903L29.462 18.6725" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path d="M33.54 28.1942L29.4623 32.2909L25.3845 28.1942" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                      </ArrowContainer>
-                    </TraceEvent>
-                  </ArrowWrapper>
-                </div>
-                <AutoColumn gap="24px">
-                  <div>
-                    <OutputSwapSection showDetailsDropdown={showDetailsDropdown}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
+                            <rect x="0.5" width="48" height="48" rx="24" fill="#BC42FF" />
+                            <path d="M19.5343 15.959L19.5343 29.5768" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M15.4567 20.0552L19.5345 15.9585L23.6123 20.0552" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M29.462 32.2903L29.462 18.6725" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M33.54 28.1942L29.4623 32.2909L25.3845 28.1942" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </ArrowContainer>
+                      </TraceEvent>
+                    </ArrowWrapper>
+                    <SwapSection>
                       <Trace section={InterfaceSectionName.CURRENCY_OUTPUT_PANEL}>
                         <SwapCurrencyInputPanel
                           value={formattedAmounts[Field.OUTPUT]}
@@ -617,9 +606,8 @@ export default function Swap({ className }: { className?: string }) {
                           loading={independentField === Field.INPUT && routeIsSyncing}
                         />
                       </Trace>
-                    </OutputSwapSection>
-
-                  </div>
+                    </SwapSection>
+                  </AutoColumn>
                   {showPriceImpactWarning && <PriceImpactWarning priceImpact={largerPriceImpact} />}
                   <div>
                     {swapIsUnsupported ? (
@@ -635,9 +623,9 @@ export default function Swap({ className }: { className?: string }) {
                         properties={{ received_swap_quote: getIsValidSwapQuote(trade, tradeState, swapInputError) }}
                         element={InterfaceElementName.CONNECT_WALLET_BUTTON}
                       >
-                        <ButtonLight onClick={toggleWalletDrawer} fontWeight={600}>
+                        <ButtonPrimary onClick={handleWalletDropdownClick} fontWeight={600}>
                           <Trans>Connect Wallet</Trans>
-                        </ButtonLight>
+                        </ButtonPrimary>
                       </TraceEvent>
                     ) : showWrap ? (
                       <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap} fontWeight={600}>
@@ -729,39 +717,53 @@ export default function Swap({ className }: { className?: string }) {
                         </Text>
                       </ButtonError>
                     )}
-                    {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
                   </div>
+                  {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
                   {
                     userSlippageTolerance !== 'auto' && (
+                      <>
+                      <RowBetween height='1px' backgroundColor='#322E70' />
                       <SlippageBox>
                         <div>Slippage Tolerance</div>
                         <div style={{ color: theme.white }}>{userSlippageTolerance.toFixed(2)}%</div>
                       </SlippageBox>
+                      </>
                     )
                   }
                 </AutoColumn>
+                <ConfirmSwapModal
+                  isOpen={showConfirm}
+                  trade={trade}
+                  originalTrade={tradeToConfirm}
+                  onAcceptChanges={handleAcceptChanges}
+                  attemptingTxn={attemptingTxn}
+                  txHash={txHash}
+                  recipient={recipient}
+                  allowedSlippage={allowedSlippage}
+                  onConfirm={handleSwap}
+                  swapErrorMessage={swapErrorMessage}
+                  onDismiss={handleConfirmDismiss}
+                  swapQuoteReceivedDate={swapQuoteReceivedDate}
+                  fiatValueInput={fiatValueTradeInput}
+                  fiatValueOutput={fiatValueTradeOutput}
+                />
               </SwapWrapper>
               {showDetailsDropdown && (
-                <DetailsSwapSection>
+                <>
+                  <RowBetween height={1} backgroundColor='#322E70' />
                   <SwapDetailsDropdown
                     trade={trade}
                     syncing={routeIsSyncing}
                     loading={routeIsLoading}
                     allowedSlippage={allowedSlippage}
                   />
-                </DetailsSwapSection>
+                </>
               )}
-            </>
+            </AutoColumn>
           )}
-          <NetworkAlert />
+          {/* <NetworkAlert /> */}
         </PageWrapper>
         <SwitchLocaleLink />
-        {!swapIsUnsupported ? null : (
-          <UnsupportedCurrencyFooter
-            show={swapIsUnsupported}
-            currencies={[currencies[Field.INPUT], currencies[Field.OUTPUT]]}
-          />
-        )}
       </>
     </Trace>
   )

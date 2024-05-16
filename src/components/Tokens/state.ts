@@ -5,9 +5,9 @@ import { useCallback } from 'react'
 
 export enum TokenSortMethod {
   PRICE = 'Price',
-  PERCENT_CHANGE = 'Change',
+  PERCENT_CHANGE = 'Range',
   TOTAL_VALUE_LOCKED = 'TVL',
-  VOLUME = 'Volume',
+  VOLUME = 'Volume (24h)',
 }
 
 export const filterStringAtom = atomWithReset<string>('')
