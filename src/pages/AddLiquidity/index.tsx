@@ -28,7 +28,7 @@ import { useTheme } from 'styled-components/macro'
 import { addressesAreEquivalent } from 'utils/addressesAreEquivalent'
 
 import Button, { ButtonError, ButtonLight, ButtonPrimary, ButtonText } from '../../components/Button'
-import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
+import Card, { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import FeeSelector from '../../components/FeeSelector'
@@ -75,7 +75,6 @@ import {
   ScrollablePage,
   StackedContainer,
   StackedItem,
-  StyledInput,
   Wrapper,
 } from './styled'
 import styled from 'styled-components'
@@ -89,6 +88,8 @@ import BackBtn from 'components/BackBtn'
 import ToggleButton from 'components/ToggleButton'
 import { useIsMobile } from 'nft/hooks'
 import { Column } from 'nft/components/Flex'
+import { opacify } from 'theme/utils'
+import Input from 'components/NumericalInput'
 
 const TopContent = styled.div`
   position: relative;
@@ -127,6 +128,18 @@ const Label = styled(ThemedText.DeprecatedLabel)`
   color: #f4f4f4;
   font-size: 20px;
   line-height: 30px;
+`
+
+const NoLiquidityCard = styled(Card)`
+  background: ${({ theme }) => opacify(24, theme.primary)};
+  color: ${({ theme }) => theme.primary};
+  border-radius: 12px;
+`
+
+const StyledInput = styled(Input)`
+  text-align: left;
+  font-size: 18px;
+  width: 100%;
 `
 
 const DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
@@ -834,7 +847,7 @@ function AddLiquidity() {
                               </Label>
                             </RowBetween>
                             {noLiquidity && (
-                              <BlueCard
+                              <NoLiquidityCard
                                 style={{
                                   display: 'flex',
                                   flexDirection: 'row',
@@ -846,7 +859,7 @@ function AddLiquidity() {
                                   fontSize={14}
                                   style={{ fontWeight: 500 }}
                                   textAlign="left"
-                                  color={theme.accentAction}
+                                  color={theme.primary}
                                 >
                                   <Trans>
                                     This pool must be initialized before you can add liquidity. To initialize, select a
@@ -854,7 +867,7 @@ function AddLiquidity() {
                                     amount. Gas fees will be higher than usual due to the initialization transaction.
                                   </Trans>
                                 </ThemedText.DeprecatedBody>
-                              </BlueCard>
+                              </NoLiquidityCard>
                             )}
                             <OutlineCard padding="12px">
                               <StyledInput
@@ -1224,7 +1237,7 @@ function AddLiquidity() {
                             </Label>
                           </RowBetween>
                           {noLiquidity && (
-                            <BlueCard
+                            <NoLiquidityCard
                               style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -1236,7 +1249,7 @@ function AddLiquidity() {
                                 fontSize={14}
                                 style={{ fontWeight: 500 }}
                                 textAlign="left"
-                                color={theme.accentAction}
+                                color={theme.primary}
                               >
                                 <Trans>
                                   This pool must be initialized before you can add liquidity. To initialize, select a
@@ -1244,7 +1257,7 @@ function AddLiquidity() {
                                   amount. Gas fees will be higher than usual due to the initialization transaction.
                                 </Trans>
                               </ThemedText.DeprecatedBody>
-                            </BlueCard>
+                            </NoLiquidityCard>
                           )}
                           <OutlineCard padding="12px">
                             <StyledInput
