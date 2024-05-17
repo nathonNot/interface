@@ -65,9 +65,9 @@ const BodyWrapper = styled.div`
 
   background: url(${bg}) no-repeat;
   background-size: 100% 100%;
-  // max-height: calc(100vh - ${navHeight}px)
-  max-height: 100vh;
-  height: 100vh;
+  max-height: calc(100vh - ${bottomHeight}px);
+  // max-height: 100vh;
+  height: calc(100vh - ${bottomHeight}px);
   overflow: auto;
 `
 

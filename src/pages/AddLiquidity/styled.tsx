@@ -78,7 +78,12 @@ export const RightContainer = styled(AutoColumn)<{ isMobile?: boolean }>`
   padding: 24px;
   padding: ${({ isMobile }) => `24px ${isMobile ? 16 : 24}px`};
 
-  border-left: 1px solid #312E63;
+  border-width: 0;
+  border-style: solid;
+  border-color: #312E63;
+
+  border-left-width: ${({ isMobile }) => !isMobile && '1px'};
+  border-bottom-width: ${({ isMobile }) => isMobile && '1px'};
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
   grid-row: 2 / 3;
