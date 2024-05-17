@@ -24,8 +24,8 @@ import * as styles from './style.css'
 import { PageTabIcon } from 'components/Icons/PageTabIcon'
 import { AutoColumn } from 'components/Column'
 
-const Nav = styled.nav`
-  padding: 20px 12px;
+const Nav = styled.nav<{ isMobile: boolean }>`
+  padding: ${({ isMobile }) => isMobile ? '12px 16px' : '24px 75px'};
   width: 100%;
   z-index: 2;
 `
@@ -134,7 +134,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
   return (
     <>
       {blur && <Blur />}
-      <Nav>
+      <Nav isMobile={isMobile}>
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
