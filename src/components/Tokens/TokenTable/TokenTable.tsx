@@ -219,7 +219,7 @@ export default function TokenTable() {
                   <td width='15%'>-{token.tickSpacing}% ~ {token.tickSpacing}%</td>
                   <td width='15%'>${Number(token.total_24h_value)?.toFixed(2)}</td>
                   <td width='15%'>{(Number(token.apy) / 100)?.toFixed(2)}%</td>
-                  <td><Button padding='8px 16px' style={{ borderRadius: '6px', background: 'transparent' }} gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}`}><Trans>Add Liquidity</Trans></Button></td>
+                  <td><Button padding='8px 16px' style={{ borderRadius: '6px', background: 'transparent' }} gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}/${token.fee}`}><Trans>Add Liquidity</Trans></Button></td>
                 </tr>
               )
             })
@@ -233,7 +233,7 @@ export default function TokenTable() {
     tokens.map((token, index) => {
       return (
         <>
-          <AutoColumn gap='8px'>
+          <AutoColumn gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}/${token.fee}`} style={{ textDecoration: 'none' }}>
             <TokenInfo token0={token.token0} token1={token.token1} fee={token.fee} isMobile />
             <Row gap='20px'>
               <ContentBox>

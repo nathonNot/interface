@@ -9,6 +9,7 @@ import { useTokenInfoFromActiveList } from 'hooks/useTokenInfoFromActiveList'
 import { getTokenAddress } from 'lib/utils/analytics'
 import { Text } from 'rebass'
 import styled from 'styled-components/macro'
+import { opacify } from 'theme/utils'
 import { currencyId } from 'utils/currencyId'
 
 const MobileWrapper = styled(AutoColumn)`
@@ -18,8 +19,8 @@ const MobileWrapper = styled(AutoColumn)`
 `
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
-  border: 1px solid ${({ theme, disable }) => (disable ? theme.accentActive : theme.backgroundOutline)};
-  border-radius: 16px;
+  border: 1px solid ${({ theme, disable }) => (disable ? theme.primary : 'transparent')};
+  border-radius: 12px;
   display: flex;
   padding: 6px;
   padding-right: 12px;
@@ -30,8 +31,8 @@ const BaseWrapper = styled.div<{ disable?: boolean }>`
     background-color: ${({ theme }) => theme.hoverDefault};
   }
 
-  color: ${({ theme, disable }) => disable && theme.accentActive};
-  background-color: ${({ theme, disable }) => disable && theme.accentActiveSoft};
+  color: ${({ theme, disable }) => disable && theme.primary};
+  background-color: ${({ theme, disable }) => disable ? opacify(24, theme.primary) : '#262448'};
 `
 
 const formatAnalyticsEventProperties = (currency: Currency, searchQuery: string, isAddressSearch: string | false) => ({

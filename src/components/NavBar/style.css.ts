@@ -60,7 +60,7 @@ export const rightSideContainer = style([
 ])
 
 const baseMenuItem = style([
-  subhead,
+  // subhead,
   sprinkles({
     paddingY: '0',
     paddingX: '0',
@@ -76,7 +76,7 @@ const baseMenuItem = style([
     gap: '4',
   }),
   {
-    lineHeight: '24px',
+    lineHeight: 'normal',
     textDecoration: 'none',
     // ':hover': {
     //   background: vars.color.lightGrayOverlay,

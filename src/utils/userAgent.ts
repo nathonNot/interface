@@ -9,3 +9,5 @@ export const isIOS = platform === 'iOS'
 export const isNonIOSPhone = !isIOS && type === 'mobile'
 
 export const fontSize = isMobile ? 14 : 16;
+export const navHeight = isMobile ? 60 : 96;
+export const bottomHeight = isMobile ? 60 : 0;

@@ -197,13 +197,13 @@ export const ButtonOutlined = styled(BaseButton)`
   background-color: transparent;
   color: #8E8E8E;
   &:focus {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.deprecated_bg4};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.primary};
   }
   &:hover {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.textTertiary};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.primary};
   }
   &:active {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.deprecated_bg4};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.primary};
   }
   &:disabled {
     opacity: 50%;

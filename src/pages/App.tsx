@@ -45,6 +45,7 @@ import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Tokens from './Tokens'
 import bg from 'assets/images/bg.png'
+import { bottomHeight, navHeight } from 'utils/userAgent'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
 const Vote = lazy(() => import('./Vote'))
@@ -58,12 +59,16 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
-  padding: ${({ theme }) => theme.navHeight}px 0px 5rem 0px;
+  padding: ${navHeight}px 0px ${bottomHeight}px 0px;
   align-items: center;
   flex: 1;
 
   background: url(${bg}) no-repeat;
   background-size: 100% 100%;
+  max-height: calc(100vh - ${bottomHeight}px);
+  // max-height: 100vh;
+  height: calc(100vh - ${bottomHeight}px);
+  overflow: auto;
 `
 
 const MobileBottomBar = styled.div`
@@ -76,7 +81,7 @@ const MobileBottomBar = styled.div`
   width: 100vw;
   justify-content: space-around;
   // padding: 4px 8px;
-  // height: ${({ theme }) => theme.mobileBottomBarHeight}px;
+  height: ${bottomHeight}px;
   background: #18163B;
   // border-top: 1px solid ${({ theme }) => theme.backgroundOutline};
 
@@ -96,6 +101,7 @@ const HeaderWrapper = styled.div<{ transparent?: boolean }>`
   position: fixed;
   top: 0;
   z-index: ${Z_INDEX.dropdown};
+  height: ${navHeight}px;
 `
 
 function getCurrentPageFromLocation(locationPathname: string): InterfacePageName | undefined {
