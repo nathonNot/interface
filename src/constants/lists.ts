@@ -26,7 +26,7 @@ export const AVALANCHE_LIST =
 export const BASE_LIST =
   'https://raw.githubusercontent.com/ethereum-optimism/ethereum-optimism.github.io/master/optimism.tokenlist.json'
 export const BITLAYER_LIST =
-  'https://github.com/space-group/token-list/blob/main/token.list.json'
+  'https://raw.githubusercontent.com/space-group/token-list/main/token.list.json'
 
 const BA_LIST = 'https://raw.githubusercontent.com/The-Blockchain-Association/sec-notice-list/master/ba-sec-list.json'
 export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST, UNI_UNSUPPORTED_LIST]
