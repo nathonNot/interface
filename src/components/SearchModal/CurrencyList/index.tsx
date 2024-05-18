@@ -21,6 +21,7 @@ import Row, { RowFixed } from '../../Row'
 import { MouseoverTooltip } from '../../Tooltip'
 import { LoadingRows, MenuItem } from '../styleds'
 import { scrollbarStyle } from './index.css'
+import { useIsMobile } from 'nft/hooks'
 
 function currencyKey(currency: Currency): string {
   return currency.isToken ? currency.address : 'ETHER'
@@ -131,6 +132,7 @@ export function CurrencyRow({
   const warning = currency.isNative ? null : checkWarning(currency.address)
   const isBlockedToken = !!warning && !warning.canProceed
   const blockedTokenOpacity = '0.6'
+  const isMobile = useIsMobile()
 
   // only show add or remove buttons if not on selected list
   return (
@@ -142,7 +144,10 @@ export function CurrencyRow({
     >
       <MenuItem
         tabIndex={0}
-        style={style}
+        style={{
+          ...style,
+          padding: isMobile ? '8px' : '12px 8px'
+        }}
         className={`token-item-${key}`}
         onKeyPress={(e) => (!isSelected && e.key === 'Enter' ? onSelect(!!warning) : null)}
         onClick={() => (isSelected ? null : onSelect(!!warning))}

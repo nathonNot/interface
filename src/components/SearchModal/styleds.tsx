@@ -21,6 +21,8 @@ export const MenuItem = styled(RowBetween)<{ dim?: boolean }>`
     background-color: ${({ theme }) => theme.hoverDefault};
   }
   opacity: ${({ disabled, selected, dim }) => (dim || disabled || selected ? 0.4 : 1)};
+  background: #262448;
+  border-radius: 8px;
 `
 
 export const SearchInput = styled.input`
