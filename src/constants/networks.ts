@@ -22,12 +22,12 @@ if (typeof QUICKNODE_RPC_URL === 'undefined') {
 export const FALLBACK_URLS = {
   [SupportedChainId.MAINNET]: [
     // "Safe" URLs
-    'https://1rpc.io/eth',
     'https://cloudflare-eth.com',
+    'https://1rpc.io/eth',
     // "Fallback" URLs
     'https://rpc.ankr.com/eth',
     'https://eth-mainnet.public.blastapi.io',
-    "https://ethereum-rpc.publicnode.com"
+    'https://ethereum-rpc.publicnode.com',
   ],
   [SupportedChainId.GOERLI]: [
     // "Safe" URLs
@@ -110,12 +110,12 @@ export const FALLBACK_URLS = {
   [SupportedChainId.LINEA]: [
     // "Safe" URLs
     'https://linea.decubate.com',
-    'https://linea.drpc.org'
+    'https://linea.drpc.org',
   ],
   [SupportedChainId.LINEA_SEPOLIA]: [
     // "Safe" URLs
     'https://linea-sepolia.blockpi.network/v1/rpc/public',
-    'https://rpc.sepolia.linea.build'
+    'https://rpc.sepolia.linea.build',
   ],
   [SupportedChainId.BASE]: [
     // "Safe" URLs
@@ -138,28 +138,14 @@ export const FALLBACK_URLS = {
  * These are the URLs used by the interface when there is not another available source of chain data.
  */
 export const RPC_URLS = {
-  [SupportedChainId.MAINNET]: [
-    ...FALLBACK_URLS[SupportedChainId.MAINNET],
-  ],
+  [SupportedChainId.MAINNET]: [...FALLBACK_URLS[SupportedChainId.MAINNET]],
   [SupportedChainId.GOERLI]: [...FALLBACK_URLS[SupportedChainId.GOERLI]],
-  [SupportedChainId.OPTIMISM]: [
-    ...FALLBACK_URLS[SupportedChainId.OPTIMISM],
-  ],
-  [SupportedChainId.OPTIMISM_GOERLI]: [
-    ...FALLBACK_URLS[SupportedChainId.OPTIMISM_GOERLI],
-  ],
-  [SupportedChainId.ARBITRUM_ONE]: [
-    ...FALLBACK_URLS[SupportedChainId.ARBITRUM_ONE],
-  ],
-  [SupportedChainId.ARBITRUM_GOERLI]: [
-    ...FALLBACK_URLS[SupportedChainId.ARBITRUM_GOERLI],
-  ],
-  [SupportedChainId.POLYGON]: [
-    ...FALLBACK_URLS[SupportedChainId.POLYGON],
-  ],
-  [SupportedChainId.POLYGON_MUMBAI]: [
-    ...FALLBACK_URLS[SupportedChainId.POLYGON_MUMBAI],
-  ],
+  [SupportedChainId.OPTIMISM]: [...FALLBACK_URLS[SupportedChainId.OPTIMISM]],
+  [SupportedChainId.OPTIMISM_GOERLI]: [...FALLBACK_URLS[SupportedChainId.OPTIMISM_GOERLI]],
+  [SupportedChainId.ARBITRUM_ONE]: [...FALLBACK_URLS[SupportedChainId.ARBITRUM_ONE]],
+  [SupportedChainId.ARBITRUM_GOERLI]: [...FALLBACK_URLS[SupportedChainId.ARBITRUM_GOERLI]],
+  [SupportedChainId.POLYGON]: [...FALLBACK_URLS[SupportedChainId.POLYGON]],
+  [SupportedChainId.POLYGON_MUMBAI]: [...FALLBACK_URLS[SupportedChainId.POLYGON_MUMBAI]],
   [SupportedChainId.CELO]: FALLBACK_URLS[SupportedChainId.CELO],
   [SupportedChainId.CELO_ALFAJORES]: FALLBACK_URLS[SupportedChainId.CELO_ALFAJORES],
   [SupportedChainId.BNB]: [QUICKNODE_RPC_URL, ...FALLBACK_URLS[SupportedChainId.BNB]],
@@ -171,5 +157,4 @@ export const RPC_URLS = {
   [SupportedChainId.LINEA_SEPOLIA]: [...FALLBACK_URLS[SupportedChainId.LINEA_SEPOLIA]],
   [SupportedChainId.BASE]: [...FALLBACK_URLS[SupportedChainId.BASE]],
   [SupportedChainId.BASE_GOERLI]: [...FALLBACK_URLS[SupportedChainId.BASE_GOERLI]],
-
 }
