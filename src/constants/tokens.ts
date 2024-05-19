@@ -471,7 +471,7 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
   ),
   [SupportedChainId.LINEA]: new Token(
     SupportedChainId.LINEA,
-    '0x4200000000000000000000000000000000000006',
+    '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f',
     18,
     'WETH',
     'Wrapped ETH'
@@ -540,7 +540,6 @@ function isBsc(chainId: number): chainId is SupportedChainId.BNB {
   return chainId === SupportedChainId.BNB
 }
 
-
 class BscNativeCurrency extends NativeCurrency {
   equals(other: Currency): boolean {
     return other.isNative && other.chainId === this.chainId
@@ -605,10 +604,9 @@ export function nativeOnChain(chainId: number): NativeCurrency | Token {
     nativeCurrency = getCeloNativeCurrency(chainId)
   } else if (isBsc(chainId)) {
     nativeCurrency = new BscNativeCurrency(chainId)
-  } else if (isBitlayer(chainId)){
+  } else if (isBitlayer(chainId)) {
     nativeCurrency = new BitlayerNativeCurrency(chainId)
-  }
-  else {
+  } else {
     nativeCurrency = ExtendedEther.onChain(chainId)
   }
   return (cachedNativeCurrency[chainId] = nativeCurrency)
