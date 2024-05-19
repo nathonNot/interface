@@ -161,7 +161,7 @@
     "@uniswap/sdk-core": "^3.2.2",
     "@uniswap/smart-order-router": "https://github.com/space-group/iswap-smart-order-router.git#linea-v4",
     "@uniswap/token-lists": "^1.0.0-beta.30",
-    "@uniswap/universal-router-sdk": "https://github.com/space-group/iswap-universal-router-sdk.git#vc9da3d760ee49b00eb1827580e2ac082e8ac1116",
+    "@uniswap/universal-router-sdk": "https://github.com/space-group/iswap-universal-router-sdk.git#dist",
     "@uniswap/v2-core": "1.0.0",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@uniswap/v2-sdk": "^3.0.1",
