@@ -63,7 +63,7 @@ const Container = styled.div<{ hideInput: boolean; disabled: boolean }>`
   `}
   padding: 20px 20px 13px;
   border-radius: 15px;
-  border: none;
+  border: 1px solid transparent;
   background: var(--Dark-Primari-Dark-Blue, radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%));
 `
 
