@@ -443,7 +443,7 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
   ),
   [SupportedChainId.BITLAYER]: new Token(
     SupportedChainId.BITLAYER,
-    '0x3e57d6946f893314324C975AA9CEBBdF3232967E',
+    '0xfF204e2681A6fA0e2C3FaDe68a1B28fb90E4Fc5F',
     18,
     'WBTC',
     'Wrapped BTC'
