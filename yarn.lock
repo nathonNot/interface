@@ -5196,9 +5196,9 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@uniswap/smart-order-router@^3.6.0", "@uniswap/smart-order-router@https://github.com/space-group/iswap-smart-order-router.git#base":
+"@uniswap/smart-order-router@^3.6.0", "@uniswap/smart-order-router@https://github.com/space-group/iswap-smart-order-router.git#linea-v4":
   version "3.6.1"
-  resolved "https://github.com/space-group/iswap-smart-order-router.git#87454abd7be6c90437b7be0979a48086ab8c313f"
+  resolved "https://github.com/space-group/iswap-smart-order-router.git#9aaac00d3690307b74c1c6751231bd57bd9d1da4"
   dependencies:
     "@uniswap/default-token-list" "^2.0.0"
     "@uniswap/permit2-sdk" "^1.2.0"
@@ -5276,9 +5276,9 @@
     bignumber.js "^9.0.2"
     ethers "^5.3.1"
 
-"@uniswap/universal-router-sdk@https://github.com/space-group/iswap-universal-router-sdk.git#linea":
+"@uniswap/universal-router-sdk@https://github.com/space-group/iswap-universal-router-sdk.git#vc9da3d760ee49b00eb1827580e2ac082e8ac1116":
   version "1.9.0"
-  resolved "https://github.com/space-group/iswap-universal-router-sdk.git#b983aa1bd65f75640849d3462ff56c4d40a3a564"
+  resolved "https://github.com/space-group/iswap-universal-router-sdk.git#c9da3d760ee49b00eb1827580e2ac082e8ac1116"
   dependencies:
     "@uniswap/permit2-sdk" "^1.2.0"
     "@uniswap/router-sdk" "^1.9.0"
@@ -16113,6 +16113,11 @@ polished@^3.3.2:
   integrity sha512-/QgHrNGYwIA4mwxJ/7FSvalUJsm7KNfnXiScVSEG2Xa5qxDeBn4nmdjN2pW00mkM2Tts64ktc47U8F7Ed1BRAA==
   dependencies:
     "@babel/runtime" "^7.12.5"
+
+polyfill-object.fromentries@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/polyfill-object.fromentries/-/polyfill-object.fromentries-1.0.1.tgz#1a5d89e3777684a852c9b6a6a1d2c3f9c262fc86"
+  integrity sha512-zlEL/n2S73hX7BQXIPapzirQw4yM/VC7slrcOyfbsH0ZyUQ/lLh4NF9wshSJ354v0F3KDMC8FCxeTQ7UUPpu9g==
 
 popper-max-size-modifier@^0.2.0:
   version "0.2.0"
