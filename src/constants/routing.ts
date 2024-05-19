@@ -34,12 +34,14 @@ import {
   TRIBE,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
+  USDC_BASE,
   USDC_BSC,
   USDC_MAINNET,
   USDC_OPTIMISM,
   USDC_POLYGON,
   USDT,
   USDT_ARBITRUM_ONE,
+  USDT_BITLAYERTESTNET,
   USDT_BSC,
   USDT_OPTIMISM,
   USDT_POLYGON,
@@ -50,8 +52,6 @@ import {
   WETH_POLYGON,
   WETH_POLYGON_MUMBAI,
   WRAPPED_NATIVE_CURRENCY,
-  USDT_BITLAYERTESTNET,
-  USDC_BASE,
 } from './tokens'
 
 type ChainTokenList = {
@@ -109,8 +109,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ],
   [SupportedChainId.CELO]: [CUSD_CELO, CEUR_CELO, CMC02_CELO, PORTAL_USDC_CELO, PORTAL_ETH_CELO],
   [SupportedChainId.BITLAYER]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER]],
-  [SupportedChainId.BITLAYER_TESTNET]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER_TESTNET], USDT_BITLAYERTESTNET],
+  [SupportedChainId.BITLAYER_TESTNET]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER_TESTNET],
+    USDT_BITLAYERTESTNET,
+  ],
   [SupportedChainId.LINEA_SEPOLIA]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.LINEA_SEPOLIA]],
+  [SupportedChainId.LINEA]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.LINEA]],
   [SupportedChainId.CYBER_TESTNET]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.CYBER_TESTNET]],
 }
 
@@ -174,7 +178,11 @@ export const COMMON_BASES: ChainCurrencyList = {
     WBTC_OPTIMISM,
   ],
   [SupportedChainId.OPTIMISM_GOERLI]: [nativeOnChain(SupportedChainId.OPTIMISM_GOERLI)],
-  [SupportedChainId.BASE]: [nativeOnChain(SupportedChainId.BASE), WRAPPED_NATIVE_CURRENCY[SupportedChainId.BASE] as Token, USDC_BASE],
+  [SupportedChainId.BASE]: [
+    nativeOnChain(SupportedChainId.BASE),
+    WRAPPED_NATIVE_CURRENCY[SupportedChainId.BASE] as Token,
+    USDC_BASE,
+  ],
   [SupportedChainId.POLYGON]: [
     nativeOnChain(SupportedChainId.POLYGON),
     WETH_POLYGON,
@@ -212,17 +220,11 @@ export const COMMON_BASES: ChainCurrencyList = {
     BTC_BSC,
     BUSD_BSC,
   ],
-  [SupportedChainId.BITLAYER]: [
-    nativeOnChain(SupportedChainId.BITLAYER),
-  ],
-  [SupportedChainId.BITLAYER_TESTNET]: [
-    nativeOnChain(SupportedChainId.BITLAYER_TESTNET),
-    USDT_BITLAYERTESTNET,
-  ],
-  [SupportedChainId.LINEA_SEPOLIA]: [
-    nativeOnChain(SupportedChainId.LINEA_SEPOLIA),
-    USDT_BITLAYERTESTNET,
-  ],
+  [SupportedChainId.BITLAYER]: [nativeOnChain(SupportedChainId.BITLAYER)],
+  [SupportedChainId.BITLAYER_TESTNET]: [nativeOnChain(SupportedChainId.BITLAYER_TESTNET), USDT_BITLAYERTESTNET],
+  [SupportedChainId.LINEA_SEPOLIA]: [nativeOnChain(SupportedChainId.LINEA_SEPOLIA), USDT_BITLAYERTESTNET],
+  [SupportedChainId.LINEA]: [nativeOnChain(SupportedChainId.LINEA)],
+  [SupportedChainId.BASE_GOERLI]: [nativeOnChain(SupportedChainId.BASE_GOERLI)],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -244,9 +246,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     BUSD_BSC,
     ETH_BSC,
   ],
-  [SupportedChainId.BITLAYER]: [
-    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER],
-  ],
+  [SupportedChainId.BITLAYER]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER]],
   [SupportedChainId.BITLAYER_TESTNET]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BITLAYER_TESTNET],
     USDT_BITLAYERTESTNET,
@@ -255,6 +255,9 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.LINEA_SEPOLIA],
     USDT_BITLAYERTESTNET,
   ],
+  [SupportedChainId.BASE]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BASE]],
+  [SupportedChainId.LINEA]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.LINEA]],
+  [SupportedChainId.BASE_GOERLI]: [...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.BASE_GOERLI]],
 }
 export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
   [SupportedChainId.MAINNET]: [
