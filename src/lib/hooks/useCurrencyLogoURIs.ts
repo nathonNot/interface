@@ -7,6 +7,7 @@ import EthereumLogo from '../../assets/images/ethereum-logo.png'
 import BnbLogo from '../../assets/svg/bnb-logo.svg'
 import CeloLogo from '../../assets/svg/celo_logo.svg'
 import MaticLogo from '../../assets/svg/matic-token-icon.svg'
+import BitlayerLogo from '../../assets/svg/bitlayer-logo-icon.svg'
 import { isCelo, NATIVE_CHAIN_ID, nativeOnChain } from '../../constants/tokens'
 
 type Network = 'ethereum' | 'arbitrum' | 'optimism' | 'polygon' | 'smartchain'
@@ -38,6 +39,9 @@ export function getNativeLogoURI(chainId: SupportedChainId = SupportedChainId.MA
     case SupportedChainId.CELO:
     case SupportedChainId.CELO_ALFAJORES:
       return CeloLogo
+    case SupportedChainId.BITLAYER:
+    case SupportedChainId.BITLAYER_TESTNET:
+        return BitlayerLogo
     default:
       return EthereumLogo
   }
@@ -50,6 +54,9 @@ function getTokenLogoURI(address: string, chainId: SupportedChainId = SupportedC
     SupportedChainId.MAINNET,
     SupportedChainId.OPTIMISM,
     SupportedChainId.BNB,
+    SupportedChainId.LINEA,
+    SupportedChainId.BITLAYER,
+    SupportedChainId.BITLAYER_TESTNET,
   ]
   if (networksWithUrls.includes(chainId)) {
     return `https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/${networkName}/assets/${address}/logo.png`
