@@ -247,11 +247,7 @@ export default function TokenSafety({
   }
 
   const { heading, description } = getWarningCopy(displayWarning, plural)
-  const learnMoreUrl = (
-    <StyledExternalLink href={TOKEN_SAFETY_ARTICLE}>
-      <Trans>Learn more</Trans>
-    </StyledExternalLink>
-  )
+  
   const tokenNotFoundWarning = {
     level: WARNING_LEVEL.UNKNOWN,
     message: <Trans>Token not found</Trans>,
@@ -269,7 +265,7 @@ export default function TokenSafety({
         </ShortColumn>
         <ShortColumn>
           <InfoText>
-            {heading} {description} {learnMoreUrl}
+            {heading} {description}
           </InfoText>
         </ShortColumn>
         <LinkColumn>{urls}</LinkColumn>
@@ -290,7 +286,7 @@ export default function TokenSafety({
         </ShortColumn>
         <ShortColumn>
           <InfoText>
-            {heading} {description} {learnMoreUrl}
+            {heading} {description}
           </InfoText>
         </ShortColumn>
         <Buttons warning={tokenNotFoundWarning} onCancel={onCancel} showCancel={true} />
