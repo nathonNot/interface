@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
+  background: ${({ theme }) => theme.toast2}
 `
 
 const Container = styled.div`

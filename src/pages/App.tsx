@@ -46,6 +46,8 @@ import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Tokens from './Tokens'
 import bg from 'assets/images/bg.png'
 import { bottomHeight, navHeight } from 'utils/userAgent'
+import { useIsMobile } from 'nft/hooks'
+import Home from './Home'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
 const Vote = lazy(() => import('./Vote'))
@@ -238,7 +240,7 @@ export default function App() {
             <Suspense fallback={<Loader />}>
               {isLoaded ? (
                 <Routes>
-                  <Route path="/" element={<Swap />} />
+                  <Route path="/" element={<Home />} />
 
                   <Route path="tokens" element={<Tokens />}>
                     <Route path=":chainName" />
