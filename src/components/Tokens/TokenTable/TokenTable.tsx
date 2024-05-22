@@ -151,7 +151,7 @@ export default function TokenTable() {
   useEffect(() => {
     if (!chainId) return;
     setLoadingTokens(true);
-    fetch(`http://chain-watch.appk.cc/api/token_list/${chainId}`).then(response => {
+    fetch(`http://chain-watch.appk.cc/api/v1/token_list/${chainId}`).then(response => {
       if (response.status === 200) {
         return response.json()
       }
@@ -176,13 +176,13 @@ export default function TokenTable() {
   }, [chainId])
 
   const liquidity = tokens?.reduce((prev, next) => {
-    const pre = typeof prev === 'number' ? prev : prev.liquidity_price;
-    return (pre + (next?.liquidity_price))
+    const pre = typeof prev === 'number' ? prev : prev.txCount;
+    return (pre + (next?.txCount))
   }, 0);
 
   const volume = tokens?.reduce((prev, next) => {
-    const pre = typeof prev === 'number' ? prev : prev.total_24h_value;
-    return (Number(pre) + Number(next?.total_24h_value))
+    const pre = typeof prev === 'number' ? prev : prev.volume24h;
+    return (Number(pre) + Number(next?.volume24h))
   }, 0);
 
   const content = (
@@ -203,7 +203,7 @@ export default function TokenTable() {
         <thead>
           <td>Name</td>
           <td>Liquidity</td>
-          <td>Range</td>
+          <td>TVL</td>
           <td>Volume (24h)</td>
           <td>APR</td>
         </thead>
@@ -213,13 +213,19 @@ export default function TokenTable() {
               return (
                 <tr>
                   <td>
-                    <TokenInfo token0={token.token0} token1={token.token1} fee={token.fee} />
+                    <TokenInfo token0={token.token0} token1={token.token1} fee={token.feeTier} />
                   </td>
-                  <td width='15%'>${Number(token.liquidity_price)?.toFixed(2)}</td>
-                  <td width='15%'>-{token.tickSpacing}% ~ {token.tickSpacing}%</td>
-                  <td width='15%'>${Number(token.total_24h_value)?.toFixed(2)}</td>
-                  <td width='15%'>{(Number(token.apy) / 100)?.toFixed(2)}%</td>
-                  <td><Button padding='8px 16px' style={{ borderRadius: '6px', background: 'transparent' }} gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}/${token.fee}`}><Trans>Add Liquidity</Trans></Button></td>
+                  <td width='15%'>
+                    ${Number(token.txCount)?.toFixed(2)}
+                  </td>
+                  <td width='15%'>
+                    ${Number(token.totalLiquidity)?.toFixed(2)}
+                  </td>
+                  <td width='15%'>
+                    ${Number(token.volume24h)?.toFixed(2)}
+                  </td>
+                  <td width='15%'>{token.apr}</td>
+                  <td><Button padding='8px 16px' style={{ borderRadius: '6px', background: 'transparent' }} gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}/${token.feeTier}`}><Trans>Add Liquidity</Trans></Button></td>
                 </tr>
               )
             })
@@ -233,20 +239,20 @@ export default function TokenTable() {
     tokens.map((token, index) => {
       return (
         <>
-          <AutoColumn gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}/${token.fee}`} style={{ textDecoration: 'none' }}>
-            <TokenInfo token0={token.token0} token1={token.token1} fee={token.fee} isMobile />
+          <AutoColumn gap='8px' as={Link} to={`/add/${token.token0}/${token.token1}/${token.feeTier}`} style={{ textDecoration: 'none' }}>
+            <TokenInfo token0={token.token0} token1={token.token1} fee={token.feeTier} isMobile />
             <Row gap='20px'>
               <ContentBox>
                 <div>Liquidity</div>
-                <div>${Number(token.liquidity_price)?.toFixed(2)}</div>
+                <div>${Number(token.txCount)?.toFixed(2)}</div>
               </ContentBox>
               <ContentBox>
-                <div>Range</div>
-                <div>-{token.tickSpacing}% ~ {token.tickSpacing}%</div>
+                <div>TVL</div>
+                <div>${Number(token.totalLiquidity)?.toFixed(2)}</div>
               </ContentBox>
               <ContentBox>
                 <div>APR</div>
-                <div>{(Number(token.apy) / 100)?.toFixed(2)}%</div>
+                <div>{token.apr}</div>
               </ContentBox>
             </Row>
           </AutoColumn>
