@@ -58,7 +58,7 @@ import { Bound, Field } from '../../state/mint/v3/actions'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { TransactionType } from '../../state/transactions/types'
 import { useIsExpertMode, useUserSlippageToleranceWithDefault } from '../../state/user/hooks'
-import { ThemedText } from '../../theme'
+import { BREAKPOINTS, ThemedText } from '../../theme'
 import approveAmountCalldata from '../../utils/approveAmountCalldata'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { currencyId } from '../../utils/currencyId'
@@ -108,6 +108,10 @@ const PageWrapper = styled(BodyWrapper) <{ wide: boolean }>`
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
     max-width: 480px;
   `};
+
+  @media screen and (max-width: ${BREAKPOINTS.sm}px) {
+    max-width: 100%;
+  }
 
   border: none;
   border-radius: 24px;
