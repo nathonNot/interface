@@ -44,7 +44,7 @@ import { SwitchLocaleLink } from '../../components/SwitchLocaleLink'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { NONFUNGIBLE_POSITION_MANAGER_ADDRESSES } from '../../constants/addresses'
 import { ZERO_PERCENT } from '../../constants/misc'
-import { WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
+import { WRAPPED_NATIVE_CURRENCY, nativeOnChain } from '../../constants/tokens'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { useArgentWalletContract } from '../../hooks/useArgentWalletContract'
@@ -195,7 +195,12 @@ function AddLiquidity() {
       ? parseFloat(feeAmountFromUrl)
       : undefined
 
-  const baseCurrency = useCurrency(currencyIdA)
+  let baseCurrency: Currency | null | undefined;
+  if (currencyIdA) {
+    baseCurrency = useCurrency(currencyIdA)
+  } else {
+    baseCurrency = nativeOnChain(chainId!)
+  }
   const currencyB = useCurrency(currencyIdB)
   // prevent an error if they input ETH/WETH
   const quoteCurrency =
@@ -367,7 +372,7 @@ function AddLiquidity() {
               setAttemptingTxn(false)
               addTransaction(response, {
                 type: TransactionType.ADD_LIQUIDITY_V3_POOL,
-                baseCurrencyId: currencyId(baseCurrency),
+                baseCurrencyId: currencyId(baseCurrency!),
                 quoteCurrencyId: currencyId(quoteCurrency),
                 createPool: Boolean(noLiquidity),
                 expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
