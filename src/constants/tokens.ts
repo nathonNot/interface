@@ -471,7 +471,7 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
   ),
   [SupportedChainId.LINEA]: new Token(
     SupportedChainId.LINEA,
-    '0x4200000000000000000000000000000000000006',
+    '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f',
     18,
     'WETH',
     'Wrapped ETH'
@@ -558,6 +558,28 @@ class BscNativeCurrency extends NativeCurrency {
   }
 }
 
+function isBitlayer(chainId: number): chainId is SupportedChainId.BITLAYER {
+  return chainId === SupportedChainId.BITLAYER || chainId === SupportedChainId.BITLAYER_TESTNET
+}
+
+class BitlayerNativeCurrency extends NativeCurrency {
+  equals(other: Currency): boolean {
+    return other.isNative && other.chainId === this.chainId
+  }
+
+  get wrapped(): Token {
+    if (!isBitlayer(this.chainId)) throw new Error('Not BTC')
+    const wrapped = WRAPPED_NATIVE_CURRENCY[this.chainId]
+    invariant(wrapped instanceof Token)
+    return wrapped
+  }
+
+  public constructor(chainId: number) {
+    if (!isBitlayer(chainId)) throw new Error('Not BTC')
+    super(chainId, 18, 'BTC', 'BTC')
+  }
+}
+
 class ExtendedEther extends Ether {
   public get wrapped(): Token {
     const wrapped = WRAPPED_NATIVE_CURRENCY[this.chainId]
@@ -582,6 +604,8 @@ export function nativeOnChain(chainId: number): NativeCurrency | Token {
     nativeCurrency = getCeloNativeCurrency(chainId)
   } else if (isBsc(chainId)) {
     nativeCurrency = new BscNativeCurrency(chainId)
+  } else if (isBitlayer(chainId)) {
+    nativeCurrency = new BitlayerNativeCurrency(chainId)
   } else {
     nativeCurrency = ExtendedEther.onChain(chainId)
   }
