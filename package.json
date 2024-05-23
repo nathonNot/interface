@@ -161,7 +161,7 @@
     "@uniswap/sdk-core": "^3.2.2",
     "@uniswap/smart-order-router": "https://github.com/space-group/iswap-smart-order-router.git#bitlayer-v1",
     "@uniswap/token-lists": "^1.0.0-beta.30",
-    "@uniswap/universal-router-sdk": "https://github.com/space-group/iswap-universal-router-sdk.git#dist",
+    "@uniswap/universal-router-sdk": "https://github.com/space-group/iswap-universal-router-sdk.git#i.0.1",
     "@uniswap/v2-core": "1.0.0",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@uniswap/v2-sdk": "^3.0.1",
@@ -267,7 +267,7 @@
   },
   "engines": {
     "npm": "please-use-yarn",
-    "node": "16",
+    "node": ">16",
     "yarn": ">=1.22"
   }
 }
