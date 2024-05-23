@@ -1,5 +1,4 @@
-import { Trans } from '@lingui/macro'
-import { getWarningCopy, TOKEN_SAFETY_ARTICLE, Warning } from 'constants/tokenSafety'
+import { getWarningCopy, Warning } from 'constants/tokenSafety'
 import { useTokenWarningColor, useTokenWarningTextColor } from 'hooks/useTokenWarningColor'
 import { AlertTriangle, Slash } from 'react-feather'
 import { Text } from 'rebass'
@@ -61,11 +60,7 @@ export default function TokenSafetyMessage({ warning, tokenAddress }: TokenSafet
         {Boolean(heading) && ' '}
         {description}
         {Boolean(description) && ' '}
-        {tokenAddress && (
-          <StyledLink href={TOKEN_SAFETY_ARTICLE}>
-            <Trans>Learn more</Trans>
-          </StyledLink>
-        )}
+        {tokenAddress}
       </DetailsRow>
     </Label>
   )
